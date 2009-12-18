@@ -1,4 +1,4 @@
-package StreamRipStar;
+package thread;
 /* This program is licensed under the terms of the GPL V3 or newer*/
 /* Written by Johannes Putzke*/
 /* eMail: die_eule@gmx.net*/ 
@@ -8,12 +8,14 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ResourceBundle;
+import gui.*;
+import misc.*;
 
 
 //This Thread read streams from the process of an streamripper process
 //and updates names and error in the right cell on StreamRipStars mainwindow.
 
-public class Thread_UpdateName extends Thread
+public class UpdateName extends Thread
 {
 	private String i = "";
 	private Stream stream;
@@ -24,7 +26,7 @@ public class Thread_UpdateName extends Thread
 	private Process streamProcess;
 	private BufferedReader b,c;
 	
-	public Thread_UpdateName(Stream astream, int arow, Gui_TablePanel tablePanel)
+	public UpdateName(Stream astream, int arow, Gui_TablePanel tablePanel)
 	{
 		this.stream = astream;
 		this.row = arow;

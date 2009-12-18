@@ -1,10 +1,12 @@
-package StreamRipStar;
+package thread;
 /* This program is licensed under the terms of the GPLV3 or newer*/
 /* Written by Johannes Putzke*/
 /* eMail: die_eule@gmx.net*/ 
 
 import java.util.ResourceBundle;
 import java.util.Vector;
+import gui.*;
+import control.*;
 
 /**
  * This gets the genres from the website
@@ -12,7 +14,7 @@ import java.util.Vector;
  * @author eule
  *
  */
-public class Thread_GetStreams extends Thread
+public class GetStreams extends Thread
 {
 	private boolean killMe = false;	//if true; ignore all other
 	private Gui_StreamBrowser streamBrowser = null;
@@ -21,7 +23,7 @@ public class Thread_GetStreams extends Thread
 	private Vector<String[]> streamTmp = null;
 	private ResourceBundle trans = null;
 	
-	public Thread_GetStreams(Gui_StreamBrowser streamBrowser,String genre,ResourceBundle trans) {
+	public GetStreams(Gui_StreamBrowser streamBrowser,String genre,ResourceBundle trans) {
 		this.streamBrowser = streamBrowser;
 		this.genre = genre;
 		this.trans = trans;

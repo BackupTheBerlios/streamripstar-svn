@@ -1,4 +1,4 @@
-package StreamRipStar;
+package gui;
 /* This program is licensed under the terms of the GPLV3 or newer*/
 /* Written by Johannes Putzke*/
 /* eMail: die_eule@gmx.net*/ 
@@ -10,8 +10,12 @@ import java.text.*;
 import java.util.*;
 import javax.swing.*;
 import javax.swing.text.DateFormatter;
+import StreamRipStar.*; 
+import misc.*;
+import control.*;
+import thread.*;
 
-public class Gui_AddSchedul extends JFrame implements WindowListener{
+public class AddSchedul extends JFrame implements WindowListener{
 	private static final long serialVersionUID = 1L;
 
 	private ResourceBundle trans = ResourceBundle.getBundle("translations.StreamRipStar");
@@ -64,8 +68,8 @@ public class Gui_AddSchedul extends JFrame implements WindowListener{
 	 * @param controlDB: object to control the xml-file access
 	 * @param oldJob: the job witch should be updated
 	 */
-	public Gui_AddSchedul(Gui_SchedulManager schedulManager, boolean createNew,
-			Control_Stream controlStreams, Thread_Control_Schedul controlJob, SchedulJob oldJob)
+	public AddSchedul(Gui_SchedulManager schedulManager, boolean createNew,
+			StreamsControler controlStreams, Thread_Control_Schedul controlJob, SchedulJob oldJob)
 	{
 		super("Add SchedulJob");
 		this.schedulManager = schedulManager;

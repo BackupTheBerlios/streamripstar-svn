@@ -1,4 +1,4 @@
-package StreamRipStar;
+package control;
 /* This program is licensed under the terms of the GPLV3 or newer*/
 /* Written by Johannes Putzke*/
 /* eMail: die_eule@gmx.net*/
@@ -12,7 +12,7 @@ import java.util.NoSuchElementException;
 import java.util.Scanner;
 import java.util.Vector;
 
-public class Control_http_Shoutcast {
+public class http_Shoutcast {
 	private BufferedReader bw = null;
 	private InputStream readGenresStream = null;
 	private InputStream readStream = null;
@@ -35,7 +35,7 @@ public class Control_http_Shoutcast {
 	// streaminfo[7] = Link
 
 	// Constructor
-	public Control_http_Shoutcast() {
+	public http_Shoutcast() {
 
 	}
 

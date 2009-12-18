@@ -1,4 +1,4 @@
-package StreamRipStar;
+package control;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -7,9 +7,10 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.ResourceBundle;
+import gui.*;
 
 
-public class Control_http_Playlist extends Thread{
+public class http_Playlist extends Thread{
 	private ResourceBundle trans = ResourceBundle.getBundle("translations.StreamRipStar");
 	private BufferedReader bw;
 	private Boolean stopSearching = false;		//stop fetching the internet site
@@ -21,7 +22,7 @@ public class Control_http_Playlist extends Thread{
 	 * The url must have the port included
 	 * @param url
 	 */
-	public Control_http_Playlist(String url, Gui_Infodialog dialog) {
+	public http_Playlist(String url, Gui_Infodialog dialog) {
 		this.url = url;
 		this.dialog = dialog;
 	}

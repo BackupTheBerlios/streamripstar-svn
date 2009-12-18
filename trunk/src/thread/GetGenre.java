@@ -1,13 +1,13 @@
-package StreamRipStar;
+package thread;
 /* This program is licensed under the terms of the GPLV3 or newer*/
 /* Written by Johannes Putzke*/
 /* eMail: die_eule@gmx.net*/ 
 
 import java.util.ResourceBundle;
 import java.util.Vector;
-
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreeSelectionModel;
+import gui.*;
 
 /**
  * This gets the genres from the website
@@ -15,14 +15,14 @@ import javax.swing.tree.TreeSelectionModel;
  * @author eule
  *
  */
-public class Thread_GetGenre extends Thread
+public class GetGenre extends Thread
 {
 	private boolean killMe = false;	//if true; ignore all other
 	private Gui_StreamBrowser streamBrowser = null;
 	private Vector<Vector<String>> genres = null;
 	private ResourceBundle trans = null;
 	
-	public Thread_GetGenre(Gui_StreamBrowser streamBrowser, ResourceBundle trans) {
+	public GetGenre(Gui_StreamBrowser streamBrowser, ResourceBundle trans) {
 		this.streamBrowser = streamBrowser;
 		this.trans = trans;
 	}

@@ -1,11 +1,11 @@
-package StreamRipStar;
+package control;
  /* This program is licensed under the terms of the GPLV3 or newer*/
 /* Written by Johanes Putzke*/
 /* eMail: die_eule@gmx.net*/ 
 
 import java.io.File;
 
-public class Control_TestStartFirst {
+public class TestStartFirst {
 	
 //	The Class looks for the HOME on the spec. OS
 //	If a known OS exist, it looks for the folder StreamRipStar
@@ -17,7 +17,7 @@ public class Control_TestStartFirst {
 //	If no know OS is available the settings will be saved
 //	in the working-directory
 	
-	public Control_TestStartFirst() {
+	public TestStartFirst() {
 	}
 
 	public String[][] searchPrograms() {

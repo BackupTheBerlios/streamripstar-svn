@@ -1,4 +1,4 @@
-package StreamRipStar;
+package gui;
 /* This program is licensed under the terms of the GPL V3 or newer*/
 /* Written by Johannes Putzke*/
 /* eMail: die_eule@gmx.net*/ 
@@ -26,12 +26,14 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.KeyStroke;
 
-public class Gui_AboutStreamRipStar extends JFrame
+import control.*;
+
+public class AboutStreamRipStar extends JFrame
 {
 	private static final long serialVersionUID = 1L;
 
 	private ResourceBundle trans = null;
-	private Control_Stream controlStreams = null;
+	private StreamsControler controlStreams = null;
 	
 	private JLabel programming = new JLabel("Programming :");
 	private JTextField programmerName = new JTextField("Johannes Putzke"); 
@@ -59,7 +61,7 @@ public class Gui_AboutStreamRipStar extends JFrame
 	private JButton OKButton = new JButton("OK");
 
 	
-	public Gui_AboutStreamRipStar(ResourceBundle trans,Control_Stream controlStreams)
+	public AboutStreamRipStar(ResourceBundle trans,StreamsControler controlStreams)
 	{
 		this.trans = trans;
 		this.controlStreams = controlStreams;

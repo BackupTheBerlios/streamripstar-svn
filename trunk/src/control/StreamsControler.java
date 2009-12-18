@@ -1,4 +1,4 @@
-package StreamRipStar;
+package control;
 /* This program is licensed under the terms of the GPL V3 or newer*/
 /* Written by Johanes Putzke*/
 /* eMail: die_eule@gmx.net*/  
@@ -19,9 +19,11 @@ import javax.xml.stream.XMLStreamConstants;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 import javax.xml.stream.events.XMLEvent;
+import gui.*;
+import misc.*;
 
 //This class include a Stream with all options
-public class Control_Stream
+public class StreamsControler
 {
 	private Gui_StreamRipStar mainGui = null;
 	private Vector<Stream> streamVector = new Vector<Stream>(0,1);
@@ -34,7 +36,7 @@ public class Control_Stream
 	private String fileBrowserPath = "";
 	private String generalPath = "";
 	
-	public Control_Stream(Gui_StreamRipStar mainGui) {
+	public StreamsControler(Gui_StreamRipStar mainGui) {
 		this.mainGui = mainGui;
 		trans = mainGui.getTrans();
 	}
@@ -44,7 +46,7 @@ public class Control_Stream
 	 * the "Streams.xml" file
 	 */
 	public void saveStreamVector() {
-		String savePath =  new Control_GetPath().getStreamRipStarPath();
+		String savePath =  new GetPath().getStreamRipStarPath();
 		XMLOutputFactory outputFactory = XMLOutputFactory.newInstance(); 
 		try {
 			XMLEventWriter writer = outputFactory.createXMLEventWriter( new FileOutputStream(savePath+"/Streams.xml" ) );
@@ -225,7 +227,7 @@ public class Control_Stream
 	 * the "Streams.xml" file
 	 */
 	public void saveDefaultStream() {
-		String savePath =  new Control_GetPath().getStreamRipStarPath();
+		String savePath =  new GetPath().getStreamRipStarPath();
 		XMLOutputFactory outputFactory = XMLOutputFactory.newInstance(); 
 		try {
 			XMLEventWriter writer = outputFactory.createXMLEventWriter( new FileOutputStream(savePath+"/DefaultStream.xml" ) );
@@ -420,7 +422,7 @@ public class Control_Stream
 	 * for every stream in xml-file an object
 	 */
 	public void loadStreamsOnStart() {
-		String loadPath =  new Control_GetPath().getStreamRipStarPath();
+		String loadPath =  new GetPath().getStreamRipStarPath();
 		try {
 			XMLInputFactory factory = XMLInputFactory.newInstance(); 
 			XMLStreamReader parser;
@@ -608,7 +610,7 @@ public class Control_Stream
 	 * the stream object
 	 */
 	public void loadDefaultStreamOnStart() {
-		String loadPath =  new Control_GetPath().getStreamRipStarPath();
+		String loadPath =  new GetPath().getStreamRipStarPath();
 		try {
 			XMLInputFactory factory = XMLInputFactory.newInstance(); 
 			XMLStreamReader parser;
@@ -895,7 +897,7 @@ public class Control_Stream
 		if(path == null)
 			System.err.println("Can't find mp3Player");
 		else
-			new Control_RunExternProgram(path + " " + content).run();
+			new RunExternProgram(path + " " + content).run();
 	}
 	
 	public void startWebBrowser(String url) {
@@ -906,7 +908,7 @@ public class Control_Stream
 						trans.getString("setBrowserOnly"));
 		}
 		else
-			new Control_RunExternProgram(path + " " + url).run();
+			new RunExternProgram(path + " " + url).run();
 	}
 	
 	public Process startStreamripper(Stream stream) {

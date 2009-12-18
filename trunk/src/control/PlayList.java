@@ -1,4 +1,4 @@
-package StreamRipStar;
+package control;
 /* This program is licensed under the terms of the GPL V3 or newer*/
 /* Written by Johannes Putzke*/
 /* eMail: die_eule@gmx.net*/ 
@@ -10,9 +10,9 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.Vector;
 
-public class Control_PlayList
+public class PlayList
 {
-	public Control_PlayList()
+	public PlayList()
 	{
 		
 	}

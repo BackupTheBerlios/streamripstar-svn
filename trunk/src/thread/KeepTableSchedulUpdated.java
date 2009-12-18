@@ -1,16 +1,17 @@
-package StreamRipStar;
+package thread;
 /* This program is licensed under the terms of the GPL V3 or newer*/
 /* Written by Johannes Putzke*/
 /* eMail: die_eule@gmx.net*/
 
+import gui.*;
 
-public class Thread_KeepTableSchedulUpdated extends Thread{
+public class KeepTableSchedulUpdated extends Thread{
 	
 	private Gui_SchedulManager sM = null;
-	private Thread_Control_Schedul control = null;
+	private Control_Schedul control = null;
 	private Boolean stop = false;
 	
-	public Thread_KeepTableSchedulUpdated(Gui_SchedulManager sM, Thread_Control_Schedul control) {
+	public KeepTableSchedulUpdated(Gui_SchedulManager sM, Control_Schedul control) {
 		this.sM = sM;
 		this.control = control;
 	}

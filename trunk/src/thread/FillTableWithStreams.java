@@ -1,18 +1,21 @@
-package StreamRipStar;
+package thread;
 /* This program is licensed under the terms of the GPLV3 or newer*/
 /* Written by Johannes Putzke*/
 /* eMail: die_eule@gmx.net*/ 
 
+import gui.*;
+import control.*;
+
 /**
  * starts filling the table with streams
  */
-public class Thread_FillTableWithStreams extends Thread {
+public class FillTableWithStreams extends Thread {
 
-	private Control_Stream controlStreams = null;
+	private StreamsControler controlStreams = null;
 	private Gui_TablePanel tablePanel = null;
-	private Control_Threads controlThreads = null;
+	private ThreadsStartControl controlThreads = null;
 	
-	public Thread_FillTableWithStreams(Control_Stream controlStreams,Gui_TablePanel tablePanel,Control_Threads controlThreads) {
+	public FillTableWithStreams(StreamsControler controlStreams,TablePanel tablePanel,ThreadsStartControl controlThreads) {
 		this.controlStreams = controlStreams;
 		this.tablePanel = tablePanel;
 		this.controlThreads = controlThreads;

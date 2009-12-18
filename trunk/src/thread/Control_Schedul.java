@@ -1,4 +1,4 @@
-package StreamRipStar;
+package thread;
 /* This program is licensed under the terms of the GPL V3 or newer*/
 /* Written by Johannes Putzke*/
 /* eMail: die_eule@gmx.net*/
@@ -17,19 +17,21 @@ import javax.xml.stream.XMLStreamConstants;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 import javax.xml.stream.events.XMLEvent;
+import misc.*;
+import gui.*;
+import control.*;
 
-
-public class Thread_Control_Schedul extends Thread{
+public class Control_Schedul extends Thread{
 	
 	//contains all scheduljobs
 	private Vector<SchedulJob> schedulVector = new Vector<SchedulJob>(0,1);
 	private Gui_StreamRipStar mainGui = null;
 	private Boolean stop = false;
 	private Boolean updateView = false;
-	private Control_Threads controlThread = null;
+	private ThreadsStartControl controlThread = null;
 	private ResourceBundle trans = ResourceBundle.getBundle("translations.StreamRipStar");
 	
-	public Thread_Control_Schedul(Gui_StreamRipStar mainGui, Control_Threads controlThread) {
+	public Control_Schedul(Gui_StreamRipStar mainGui, ThreadsStartControl controlThread) {
 		this.mainGui = mainGui;
 		this.controlThread = controlThread;
 	}

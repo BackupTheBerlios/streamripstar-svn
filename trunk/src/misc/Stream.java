@@ -1,4 +1,4 @@
-package StreamRipStar;
+package misc;
 /* This program is licensed under the terms of the GPL V3 or newer*/
 /* Written by Johannes Putzke*/
 /* eMail: die_eule@gmx.net*/ 

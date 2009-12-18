@@ -1,4 +1,4 @@
-package StreamRipStar;
+package control;
 /* This program is licensed under the terms of the GPLV3 or newer*/
 /* Written by Johannes Putzke*/
 /* eMail: die_eule@gmx.net*/
@@ -13,7 +13,7 @@ import javax.swing.JOptionPane;
  * @author Schmoffel
  *
  */
-public class Control_GetPath {
+public class GetPath {
 	private String path = null;
 	private String home = System.getProperty("user.home");
 	private String opsys = System.getProperty("os.name");
@@ -22,7 +22,7 @@ public class Control_GetPath {
 	/**
 	 * empty constructor
 	 */
-	public Control_GetPath() {
+	public GetPath() {
 		
 	}
 	
