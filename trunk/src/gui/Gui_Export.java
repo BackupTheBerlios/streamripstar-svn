@@ -26,6 +26,7 @@ import java.util.Vector;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComponent;
+import javax.swing.JDialog;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -43,7 +44,7 @@ import misc.Stream;
 import control.Control_PlayList;
 import control.Control_Stream;
 
-public class Gui_Export extends JFrame
+public class Gui_Export extends JDialog
 {
 	private static final long serialVersionUID = 1L;
 	private ResourceBundle toolTips = ResourceBundle.getBundle("translations.ToolTips");
@@ -102,9 +103,10 @@ public class Gui_Export extends JFrame
 	
 	public Gui_Export(Control_Stream controlStream, Gui_StreamRipStar mainGui)
 	{
-		super("Exportiere Stream");
+		super(mainGui, "Exportiere Stream");
 		this.controlStream = controlStream;
 		this.mainGui = mainGui;
+		this.setModalityType(ModalityType.APPLICATION_MODAL);
 		init();
 		setLanguage();
 		setToolTips();

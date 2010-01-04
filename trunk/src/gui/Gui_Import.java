@@ -21,6 +21,7 @@ import java.util.Vector;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComponent;
+import javax.swing.JDialog;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -37,7 +38,7 @@ import javax.swing.table.DefaultTableModel;
 import control.Control_PlayList;
 import control.Control_Stream;
 
-public class Gui_Import extends JFrame {
+public class Gui_Import extends JDialog {
 	private static final long serialVersionUID = 1L;
 
 	private JPanel mainPanel = new JPanel();
@@ -78,10 +79,11 @@ public class Gui_Import extends JFrame {
 	private Control_Stream controlStreams = null;
 	
 	public Gui_Import(Gui_StreamRipStar gui, Control_Stream controlStreams)	{
-		super("importiere Stream");
+		super(gui,"importiere Stream");
 		this.mainGui = gui;
 		this.trans = mainGui.getTrans();
 		this.controlStreams = controlStreams;
+		this.setModalityType(ModalityType.APPLICATION_MODAL);
 		setLanguage();
 		init();
 

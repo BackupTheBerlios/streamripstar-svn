@@ -24,8 +24,8 @@ import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
+import javax.swing.JDialog;
 import javax.swing.JFileChooser;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
@@ -44,7 +44,7 @@ import javax.xml.stream.events.XMLEvent;
 import control.Control_GetPath;
 import control.Control_TestStartFirst;
 
-public class Gui_Settings extends JFrame
+public class Gui_Settings extends JDialog
 {
 	private static final long serialVersionUID = 1L;
 	
@@ -116,8 +116,9 @@ public class Gui_Settings extends JFrame
 	private Gui_StreamRipStar mainGui = null;
 	
 	public Gui_Settings(Gui_StreamRipStar mainGui) {
-		super("Preferences");
+		super(mainGui, "Preferences");
 		this.mainGui = mainGui;
+		this.setModalityType(ModalityType.APPLICATION_MODAL);
 		
 		//create rest of components at runtime
 		lookAndFeelInfos = UIManager.getInstalledLookAndFeels();

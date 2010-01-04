@@ -15,6 +15,7 @@ import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 
 import javax.swing.JButton;
+import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -25,7 +26,7 @@ import misc.Stream;
 
 import control.Control_http_Playlist;
 
-public class Gui_Infodialog extends JFrame
+public class Gui_Infodialog extends JDialog
 {
 	private static final long serialVersionUID = 1L;
 
@@ -54,10 +55,12 @@ public class Gui_Infodialog extends JFrame
 	 * open a window where all information are shown, which are
 	 * given with streamripper
 	 * @param ownStream
+	 * @param mainWin The mainwindow of streamripstar
 	 */
-	public Gui_Infodialog(Stream ownStream) {
-		super("Information about "+ownStream.name);
-		stream = ownStream;
+	public Gui_Infodialog(Gui_StreamRipStar mainWin, Stream ownStream) {
+		super(mainWin, "Information about "+ownStream.name);
+		this.stream = ownStream;
+		this.setModalityType(ModalityType.APPLICATION_MODAL);
 		setLanguage();
 		fillWithData();
 		buildGui();

@@ -27,6 +27,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComponent;
+import javax.swing.JDialog;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -41,7 +42,7 @@ import javax.swing.border.TitledBorder;
 import misc.Stream;
 
 
-public class Gui_Stream4AllOptions extends JFrame implements WindowListener {
+public class Gui_Stream4AllOptions extends JDialog implements WindowListener {
 	private static final long serialVersionUID = 1L;
 
 	private ImageIcon saveAndExitIcon = new ImageIcon((URL)getClass().getResource("/Icons/ok_small.png"));
@@ -214,7 +215,7 @@ public class Gui_Stream4AllOptions extends JFrame implements WindowListener {
 	 */
 	public Gui_Stream4AllOptions(Gui_StreamRipStar mainGui) {
 		
-		super();
+		super(mainGui);
 		this.mainGui = mainGui;
 		
 		//Set basic proportions and Objects
@@ -914,7 +915,7 @@ public class Gui_Stream4AllOptions extends JFrame implements WindowListener {
         //set location
         setLocation(x, y);
         
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setVisible(true);
 		
         //escape for exit

@@ -19,7 +19,7 @@ import thread.Thread_Control_Schedul;
 
 import control.Control_Stream;
 
-public class Gui_AddSchedul extends JFrame implements WindowListener{
+public class Gui_AddSchedul extends JDialog implements WindowListener{
 	private static final long serialVersionUID = 1L;
 
 	private ResourceBundle trans = ResourceBundle.getBundle("translations.StreamRipStar");
@@ -75,11 +75,12 @@ public class Gui_AddSchedul extends JFrame implements WindowListener{
 	public Gui_AddSchedul(Gui_SchedulManager schedulManager, boolean createNew,
 			Control_Stream controlStreams, Thread_Control_Schedul controlJob, SchedulJob oldJob)
 	{
-		super("Add SchedulJob");
+		super(schedulManager,"Add SchedulJob");
 		this.schedulManager = schedulManager;
 		this.createNew = createNew;
 		this.controlJob = controlJob;
 		this.oldJob = oldJob;
+		this.setModalityType(ModalityType.APPLICATION_MODAL);
 		//set new language
 		setLanguage();
 		
@@ -323,7 +324,7 @@ public class Gui_AddSchedul extends JFrame implements WindowListener{
 	 * 
 	 * @return: this object
 	 */
-	public JFrame getMe() {
+	public Gui_AddSchedul getMe() {
 		return this;
 	}
 	

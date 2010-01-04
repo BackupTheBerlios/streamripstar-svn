@@ -1134,7 +1134,7 @@ public class Gui_StreamRipStar extends JFrame implements WindowListener
 				//get der Stream Object witch is selected
 				Stream stream = table.getSelectedStream();
 				//open infodialog
-				new Gui_Infodialog(stream);
+				new Gui_Infodialog(getMe(),stream);
 
 			}
 			else

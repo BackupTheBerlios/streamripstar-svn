@@ -157,3 +157,9 @@
  - add some key events (e.g. del -> delete the selected stream)
  - fix: crashed when skipping tracks (due to translation issues)
  - fix bug [2913598]: streamripper process sends to fast -> inadvertently splitting files (Tanks @ Tom)
+ 
+  
+    
+----------------------------
+ 0.5.6 -> 0.6
+ - All windows that pop ups are dialogs to keep a better overview
