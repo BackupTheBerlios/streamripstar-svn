@@ -32,7 +32,7 @@ public class Control_TestStartFirst {
 	
 	public String[][] searchProgrammsLinux() {
 //	
-//		These method searches for some standard programms
+//		These method searches for some standard programs
 //		with are usually installed on a linux system.
 //		The return String[] includes:
 //		[0] - FileBrowser
@@ -41,12 +41,18 @@ public class Control_TestStartFirst {
 //		[3] - streamripper
 //	
 		String[][] programNames = {
-/*[0]*/		{"konqueror","nautilus"},
-/*[1]*/		{"firefox","firefox-bin","iceweasel"},
+/*[0]*/		{"thunar","konqueror","nautilus","dolphin"},
+/*[1]*/		{"firefox","firefox-bin","iceweasel","opera","epiphany","galeon"},
 /*[2]*/		{"audacious","xmms","beep-media-player","amarok","mplayer"},
 /*[3]*/		{"streamripper"}};
 		String[] binPath = getPathBinLinux();
-		String[][] foundPrograms = new String[programNames.length][5];
+		
+		//catch an empty array for wrong installed java systems
+		if(binPath == null) {
+			System.err.println("No executable bin path found on the linux system");
+			return null;
+		}
+		String[][] foundPrograms = new String[programNames.length][6];
 		
 		for(int i=0;i<programNames.length;i++) {
 			int k=0;
