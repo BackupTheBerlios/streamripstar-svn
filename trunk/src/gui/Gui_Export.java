@@ -115,6 +115,7 @@ public class Gui_Export extends JDialog
 		allTable.getColumn(tableheader[1]).setMaxWidth(0);
 		exportTable.getColumn(tableheader[1]).setMinWidth(0);
 		exportTable.getColumn(tableheader[1]).setMaxWidth(0);
+		setVisible(true);
 	}
 	
 	//set up all graphic components 
@@ -222,8 +223,6 @@ public class Gui_Export extends JDialog
         //set location
         
         setLocation(x, y);
-
-		setVisible(true);
 		
         //escape for exit
         KeyStroke escStroke = KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0, true);

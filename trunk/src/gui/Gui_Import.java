@@ -181,13 +181,13 @@ public class Gui_Import extends JDialog {
         //set location
         
         setLocation(x, y);
-		setVisible(true);
-		
+
         //escape for exit
         KeyStroke escStroke = KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0, true);
         //register all Strokes
         getRootPane().registerKeyboardAction(new AbortListener(), escStroke,
                 JComponent.WHEN_IN_FOCUSED_WINDOW);
+        setVisible(true);
 	}
 	
 	private void setLanguage() {
