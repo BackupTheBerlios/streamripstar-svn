@@ -637,9 +637,7 @@ public class Control_Stream
 
 				    	//get all attributes from file and set the options
 				    	for ( int i = 0; i < parser.getAttributeCount(); i++ ) {
-				    		if(parser.getAttributeLocalName( i ).equals("lastStreamID")) {
-				    			Stream.lastID = Integer.valueOf(parser.getAttributeValue( i ));
-				    		} else if(parser.getAttributeLocalName( i ).equals("id")) {
+				    		if(parser.getAttributeLocalName( i ).equals("id")) {
 				    			stream.id = Integer.valueOf(parser.getAttributeValue( i ));
 				    		} else if (parser.getAttributeLocalName( i ).equals("name")) {
 				    			stream.name = parser.getAttributeValue( i );

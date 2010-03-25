@@ -143,12 +143,12 @@ public class Stream
 	}
 	
 	//increase the number of recording streams
-	public void increaseRippingCount() {
+	public synchronized void increaseRippingCount() {
 		activeStreams++;
 	}
 	
 	//decrease the number of recording streams 
-	public void decreaseRippingCount() {
+	public synchronized void decreaseRippingCount() {
 		activeStreams--;
 	}
 
@@ -200,7 +200,7 @@ public class Stream
 		this.updateName = updateName; 
 	}
 	
-	public static int getNewStreamID() {
+	public synchronized static int getNewStreamID() {
 		lastID++;
 		return lastID-1;
 	}
