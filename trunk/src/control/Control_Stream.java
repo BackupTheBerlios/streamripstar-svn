@@ -239,10 +239,8 @@ public class Control_Stream
 			//header for the file
 			XMLEvent header = eventFactory.createStartDocument();
 			XMLEvent startRootAllStreams = eventFactory.createStartElement( "", "", "defaultStream" ); 
-			XMLEvent lastStreamID = eventFactory.createAttribute( "lastStreamID", String.valueOf( Stream.lastID )); 
 			writer.add( header ); 
 			writer.add( startRootAllStreams );
-			writer.add( lastStreamID );
 
 			XMLEvent startStream = eventFactory.createStartElement( "", "", "Stream" );
 				
