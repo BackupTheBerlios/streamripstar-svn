@@ -28,11 +28,17 @@ import javax.swing.KeyStroke;
 
 import control.Control_Stream;
 
+/**
+ * Shows an Dialog with all information about StreamRipStar. Here you can find the
+ * link to StreamRipStars website, the version and revision.
+ * 
+ * @author Johannes Putzke
+ *
+ */
 public class Gui_AboutStreamRipStar extends JFrame
 {
 	private static final long serialVersionUID = 1L;
-
-	private ResourceBundle trans = null;
+	private ResourceBundle trans = ResourceBundle.getBundle("translations.StreamRipStar");
 	private Control_Stream controlStreams = null;
 	
 	private JLabel programming = new JLabel("Programming :");
@@ -46,7 +52,7 @@ public class Gui_AboutStreamRipStar extends JFrame
 	private JLabel revision = new JLabel("Revision :");
 	private JTextField revisionnumber = new JTextField("626");
 	private JLabel streamRipStarSourceforgeSite = new JLabel("StreamRipStars Projektpage :");
-	private JTextField streamRipStarSourceforgeAddress = new JTextField("http://sourceforge.net/projects/stripper");
+	private JTextField streamRipStarSourceforgeAddress = new JTextField("http://developer.berlios.de/projects/streamripstar/");
 	private JLabel streamRipStarHomepage = new JLabel("StreamRipStars Wiki :");
 	private JTextField streamRipStarHomepageAddress = new JTextField("http://sourceforge.net/apps/mediawiki/stripper");
 	private JLabel edmolfHomepage = new JLabel("EdMolfs Homepage");
@@ -60,10 +66,13 @@ public class Gui_AboutStreamRipStar extends JFrame
 			.getResource("/Icons/banner.png")),JLabel.CENTER);
 	private JButton OKButton = new JButton("OK");
 
-	
-	public Gui_AboutStreamRipStar(ResourceBundle trans,Control_Stream controlStreams)
-	{
-		this.trans = trans;
+	/**
+	 * Create the About-Dialog by give the controlStream object. The controlstream
+	 * is necessary to open the links in a webbrowser.
+	 * 
+	 * @param controlStreams The used controlstream, where you can start the webbrowser 
+	 */
+	public Gui_AboutStreamRipStar(Control_Stream controlStreams) {
 		this.controlStreams = controlStreams;
 		JPanel panel = new JPanel();
 		add(panel);
@@ -173,6 +182,11 @@ public class Gui_AboutStreamRipStar extends JFrame
     	setVisible(true);
 	}
 	
+	/**
+	 * make all textfields editable or not
+	 * 
+	 * @param edit
+	 */
 	public void makeEditable(Boolean edit)
 	{
 		programmerName.setEditable(edit);
@@ -207,17 +221,21 @@ public class Gui_AboutStreamRipStar extends JFrame
 	}
 	
 	
-	//Listeners
+	/**
+	 * 
+	 * @author Johannes Putzke
+	 *
+	 */
     public class OKListener implements ActionListener {
         public void actionPerformed(ActionEvent e) {
             dispose();
         }
     }
     
-	public class OpenWebSiteListener implements MouseListener
-	{
-		public void mouseClicked(MouseEvent e)
-		{
+	public class OpenWebSiteListener implements MouseListener {
+		
+		public void mouseClicked(MouseEvent e) {
+			
 				controlStreams.startWebBrowser(((JTextField)e.getSource()).getText());
 		}
 		
