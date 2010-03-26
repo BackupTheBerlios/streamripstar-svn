@@ -146,6 +146,7 @@ public class Gui_StreamRipStar extends JFrame implements WindowListener
 	private JMenuItem stream4AllOptions = new JMenuItem("Overwrite Options For Every Stream");
 	private JMenuItem streamDefaultOptions = new JMenuItem("Edit The Default Options For A New Stream");
 	private JMenuItem onlineHelp = new JMenuItem("Online Help");
+	private JMenuItem updateMenuItem = new JMenuItem("Look for an Update");
 	private JMenuItem about = new JMenuItem("About StreamRipStar",aboutStreamRipStarMenu);
 	private JMenuItem streamRipStarSite = new JMenuItem("Go to StreamRipStars Website");
 	private JMenuItem exit = new JMenuItem("Exit");
@@ -427,6 +428,7 @@ public class Gui_StreamRipStar extends JFrame implements WindowListener
 		
 		helpMenu.add(onlineHelp);
 		helpMenu.add(streamRipStarSite);
+		helpMenu.add(updateMenuItem);
 		helpMenu.add(about);
 		
 //		set shortcuts
@@ -468,6 +470,7 @@ public class Gui_StreamRipStar extends JFrame implements WindowListener
 		startRecordStream.addActionListener(new StartRecordListener());
 		stopRecordStream.addActionListener(new StopRecordListener());
 		onlineHelp.addActionListener(new GoToHelpSiteListener());
+		updateMenuItem.addActionListener(new SearchUpdateListener());
 		streamOptions.addActionListener(new EditStreamListener());
 		stream4AllOptions.addActionListener(new Edit4AllStreamListener());
 		streamDefaultOptions.addActionListener(new EditDefaultStreamListener());
@@ -1242,6 +1245,11 @@ public class Gui_StreamRipStar extends JFrame implements WindowListener
 		}
 	}
 	
+	class SearchUpdateListener implements ActionListener {
+		public void actionPerformed(ActionEvent e) {
+			new Gui_searchUpdate(controlStreams);
+		}
+	}
 	
 	public void windowClosing (WindowEvent e) {
 		//Do nothing

@@ -1,4 +1,7 @@
 package control;
+/* This program is licensed under the terms of the GPL V3 or newer*/
+/* Written by Johanes Putzke*/
+/* eMail: die_eule@gmx.net*/
 
 import gui.Gui_Infodialog;
 
@@ -44,8 +47,6 @@ public class Control_http_Playlist extends Thread{
 				} else {
 					shoutcast = new URL(url+"/played.html");
 				}
-				
-							
 
 				if(!stopSearching) {
 					URLConnection connection = shoutcast.openConnection();

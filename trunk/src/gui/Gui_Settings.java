@@ -334,9 +334,8 @@ public class Gui_Settings extends JDialog
 			}
 		}
 		
-		//repaint all components
-		repaintCommon();
-
+		
+		
 		//set size of window
 		//pack together
 		pack();
