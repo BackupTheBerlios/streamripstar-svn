@@ -68,7 +68,7 @@ public class SearchUpdate extends Thread {
 				
 				//look, if the version of StreamRipStar is a new one! -> this version is up to date
 				else if(Integer.valueOf(revision) < StreamRipStar.releaseRevision) {
-					
+					gui.setNewVersion();
 				} 
 				
 				//an new version is available

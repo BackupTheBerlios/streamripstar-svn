@@ -32,6 +32,7 @@ public class Gui_searchUpdate extends JDialog{
 	private ImageIcon loadingIcon = new ImageIcon((URL)getClass().getResource("/Icons/update_loading.png"));
 	private ImageIcon okIcon = new ImageIcon((URL)getClass().getResource("/Icons/update_ok.png"));
 	private ImageIcon availableIcon = new ImageIcon((URL)getClass().getResource("/Icons/update_available.png"));
+	private ImageIcon failIcon = new ImageIcon((URL)getClass().getResource("/Icons/update_fail.png"));
 	private JPanel panel = new JPanel();
 	private JButton okButton = new JButton("Beenden");
 	private JLabel iconLabel = new JLabel(loadingIcon);
@@ -91,6 +92,17 @@ public class Gui_searchUpdate extends JDialog{
 	}
 	
 	/**
+	 * Show the user, that it has a newer version, that the sever knows
+	 */
+	public void setNewVersion() {
+		iconLabel.setIcon(okIcon);
+		infoLabel.setText("Gratulation. You have a NEWER version of StreamRipStar than available");
+		
+		//show the new size
+		pack();
+	}
+	
+	/**
 	 * Show all information about the new release.  
 	 * @param revision The new revision (integer value)
 	 * @param version The name of the version (e.g. StreamRipStar 0.6 Alpha 1)
@@ -134,10 +146,15 @@ public class Gui_searchUpdate extends JDialog{
 	}
 	
 	/**
-	 * 
+	 * If something did wrong (e.g. no connection to the internet),
+	 * show it to the user
 	 */
 	public void setFailedToFetchInformation() {
-
+		iconLabel.setIcon(failIcon);
+		infoLabel.setText("Fail to load information about a new release");
+		
+		//show the new size
+		pack();
 	}
 	
 	/**
