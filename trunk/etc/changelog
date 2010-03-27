@@ -165,3 +165,4 @@
  - All windows that pop ups are dialogs to keep a better overview
  - add: can now search for updates
  - fix: can't update a stream in the correct cell name
+ - change in streambrowser from single to double click

@@ -44,6 +44,7 @@ import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
 import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.DefaultTreeCellRenderer;
 import javax.xml.stream.XMLEventFactory;
 import javax.xml.stream.XMLEventWriter;
 import javax.xml.stream.XMLInputFactory;
@@ -109,16 +110,17 @@ public class Gui_StreamBrowser extends JFrame implements WindowListener {
 	private JToolBar mediaIconBar = new JToolBar();
 		
 	//Icons for Iconbars
-	private ImageIcon saveIcon = new ImageIcon((URL)getClass().getResource("/Icons/SB_save.png"));
-	private ImageIcon hearMusicIcon = new ImageIcon((URL)getClass().getResource("/Icons/SB_play.png"));
-	private ImageIcon abortIcon = new ImageIcon((URL)getClass().getResource("/Icons/SB_cancel.png"));
-	private ImageIcon shoutCastIcon = new ImageIcon((URL)getClass().getResource("/Icons/SB_search.png"));
-	private ImageIcon addAndRecordIcon = new ImageIcon((URL)getClass().getResource("/Icons/SB_save_quick.png"));
-	private ImageIcon showColumnIcon = new ImageIcon((URL)getClass().getResource("/Icons/SB_showColumns.png"));
-	private ImageIcon filterIcon = new ImageIcon((URL)getClass().getResource("/Icons/SB_filter.png"));
+	private ImageIcon saveIcon = new ImageIcon((URL)getClass().getResource("/Icons/streambrowser/save.png"));
+	private ImageIcon hearMusicIcon = new ImageIcon((URL)getClass().getResource("/Icons/streambrowser/play2.png"));
+	private ImageIcon abortIcon = new ImageIcon((URL)getClass().getResource("/Icons/streambrowser/cancel.png"));
+	private ImageIcon shoutCastIcon = new ImageIcon((URL)getClass().getResource("/Icons/streambrowser/search.png"));
+	private ImageIcon addAndRecordIcon = new ImageIcon((URL)getClass().getResource("/Icons/streambrowser/save_quick2.png"));
+	private ImageIcon filterIcon = new ImageIcon((URL)getClass().getResource("/Icons/streambrowser/filter.png"));
 	private ImageIcon startRecordIcon = new ImageIcon((URL)getClass().getResource("/Icons/record_small.png"));
 	private ImageIcon hearMusicIconForPopUp = new ImageIcon((URL)getClass().getResource("/Icons/player_small.png"));
 	private ImageIcon saveIconForPopUp = new ImageIcon((URL)getClass().getResource("/Icons/save_small.png"));
+	private ImageIcon leafIcon = new ImageIcon((URL)getClass().getResource("/Icons/streambrowser/leaf-24.png"));
+	private ImageIcon openIcon = new ImageIcon((URL)getClass().getResource("/Icons/streambrowser/root.png"));
 	
 	//buttons for Iconbars
 	private JButton addToStreamRipStarButton = new JButton("Add to StreamRipStar",saveIcon);	
@@ -126,7 +128,6 @@ public class Gui_StreamBrowser extends JFrame implements WindowListener {
 	private JButton abortButton = new JButton("Abort",abortIcon);
 	private JButton shoutCastButton = new JButton("ShoutCast",shoutCastIcon);
 	private JButton addAndRecButton = new JButton("Add and Record", addAndRecordIcon);
-	private JButton showColumnButton = new JButton("Control Columns",showColumnIcon);
 	private JButton filterButton = new JButton("Filter", filterIcon );
 	
 	//label for status
@@ -185,6 +186,14 @@ public class Gui_StreamBrowser extends JFrame implements WindowListener {
 	public Gui_StreamBrowser(Gui_StreamRipStar StreamRipStar) {
 		super("StreamBrowser");
 		this.StreamRipStar = StreamRipStar;
+		
+
+		DefaultTreeCellRenderer renderer = new DefaultTreeCellRenderer();
+		renderer.setOpenIcon(openIcon);
+		renderer.setClosedIcon(openIcon);
+		renderer.setLeafIcon(leafIcon);
+		browseTree.setCellRenderer(renderer);
+		
 		//make all columns visible
 		for(int i=0;i<isColumnShow.length;i++)
 			isColumnShow[i] = true;
@@ -219,7 +228,6 @@ public class Gui_StreamBrowser extends JFrame implements WindowListener {
 		listenToButton.setToolTipText(toolTips.getString("StreamBrowser.listen"));
 		addToStreamRipStarButton.setToolTipText(toolTips.getString("StreamBrowser.addToStreamRipStar"));
 		shoutCastButton.setToolTipText(toolTips.getString("StreamBrowser.shoutcast"));
-		showColumnButton.setToolTipText(toolTips.getString("StreamBrowser.Columns"));
 		addAndRecButton.setToolTipText(toolTips.getString("StreamBrowser.addAndRecord"));
 		abortButton.setToolTipText(toolTips.getString("StreamBrowser.abort"));
 		filterButton.setToolTipText(toolTips.getString("StreamBrowser.filter"));
@@ -237,7 +245,6 @@ public class Gui_StreamBrowser extends JFrame implements WindowListener {
 			listenToButton.setText(trans.getString("iconPanel.listenToButton"));
 			addToStreamRipStarButton.setText(trans.getString("iconPanel.addToStreamRipStarButton"));
 			shoutCastButton.setText(trans.getString("iconPanel.shoutCastButton"));
-			showColumnButton.setText(trans.getString("iconPanel.showColumnButton"));
 			addAndRecButton.setText(trans.getString("iconPanel.addAndRecButton"));
 			abortButton.setText(trans.getString("iconPanel.abortButton"));
 			filterButton.setText(trans.getString("iconPanel.filterButton"));
@@ -246,7 +253,6 @@ public class Gui_StreamBrowser extends JFrame implements WindowListener {
 				listenToButton.setFont(newFont);
 				addToStreamRipStarButton.setFont(newFont);
 				shoutCastButton.setFont(newFont);
-				showColumnButton.setFont(newFont);
 				addAndRecButton.setFont(newFont);
 				abortButton.setFont(newFont);
 				filterButton.setFont(newFont);
@@ -255,7 +261,6 @@ public class Gui_StreamBrowser extends JFrame implements WindowListener {
 			listenToButton.setText(null);
 			addToStreamRipStarButton.setText(null);
 			shoutCastButton.setText(null);
-			showColumnButton.setText(null);
 			addAndRecButton.setText(null);
 			abortButton.setText(null);
 			filterButton.setText(null);
@@ -327,7 +332,6 @@ public class Gui_StreamBrowser extends JFrame implements WindowListener {
 		browseTable.getTableHeader().setComponentPopupMenu(selShowPopup);
 		listenToButton.addActionListener( new playMusikListener() );
 		addToStreamRipStarButton.addActionListener( new AddToStreamRipStarListener() );
-		showColumnButton.addMouseListener( new ShowPopupListener() );
 		abortButton.addActionListener(new AbortThreadsListener());
 		addAndRecButton.addActionListener(new AddAndStartRecordListener());
 		filterButton.addActionListener(new FilterListener());
@@ -349,7 +353,6 @@ public class Gui_StreamBrowser extends JFrame implements WindowListener {
 			listenToButton.setText(trans.getString("iconPanel.listenToButton"));
 			addToStreamRipStarButton.setText(trans.getString("iconPanel.addToStreamRipStarButton"));
 			shoutCastButton.setText(trans.getString("iconPanel.shoutCastButton"));
-			showColumnButton.setText(trans.getString("iconPanel.showColumnButton"));
 			addAndRecButton.setText(trans.getString("iconPanel.addAndRecButton"));
 			abortButton.setText(trans.getString("iconPanel.abortButton"));
 			filterButton.setText(trans.getString("iconPanel.filterButton"));
@@ -446,9 +449,6 @@ public class Gui_StreamBrowser extends JFrame implements WindowListener {
 		shoutCastButton.setHorizontalTextPosition(SwingConstants.CENTER);
 		shoutCastButton.setVerticalTextPosition(SwingConstants.BOTTOM);
 		shoutCastButton.setBorderPainted(false);
-		showColumnButton.setHorizontalTextPosition(SwingConstants.CENTER);
-		showColumnButton.setVerticalTextPosition(SwingConstants.BOTTOM);
-		showColumnButton.setBorderPainted(false);
 		addAndRecButton.setHorizontalTextPosition(SwingConstants.CENTER);
 		addAndRecButton.setVerticalTextPosition(SwingConstants.BOTTOM);
 		addAndRecButton.setBorderPainted(false);
@@ -461,9 +461,8 @@ public class Gui_StreamBrowser extends JFrame implements WindowListener {
 		
 		//add Buttons to CommIconBar
 		commonIconBar.add(addToStreamRipStarButton);
-		commonIconBar.add(listenToButton);
-		commonIconBar.add(showColumnButton);
 		commonIconBar.add(addAndRecButton);
+		commonIconBar.add(listenToButton);
 		commonIconBar.add(abortButton);
 		commonIconBar.add(filterButton);
 		
@@ -1038,23 +1037,6 @@ public class Gui_StreamBrowser extends JFrame implements WindowListener {
 		}
 	}
 	
-	public class ShowPopupListener implements MouseListener {
-			public void mouseClicked(MouseEvent e){
-				//save the layout from all columns
-				saveColumnWidth();
-				//place the popup under the button. orientation: left 
-		    		selShowPopup.show(showColumnButton,
-		    				showColumnButton.getX()-showColumnButton.getWidth(),
-		    				showColumnButton.getY()+showColumnButton.getHeight());
-			}
-			public void mousePressed(MouseEvent e){}
-			public void mouseReleased(MouseEvent e){}
-			public void mouseEntered(MouseEvent e) {}
-			public void mouseExited(MouseEvent e) {}
-	}
-	
-	
-	
 	/**
 	 *This class change the visibility of a cell and
 	 * sort the columns
@@ -1091,7 +1073,7 @@ public class Gui_StreamBrowser extends JFrame implements WindowListener {
 		public void mouseClicked(MouseEvent e){
 			boolean stop = false;
 			//get selected path and look for last element
-			if(e.getClickCount() == 1 && !disableClick) {
+			if(e.getClickCount() == 2 && !disableClick) {
 				if(browseTree.getSelectionPath() != null) {
 					String selectedGenre = browseTree.getSelectionPath()
 						.getLastPathComponent().toString();
