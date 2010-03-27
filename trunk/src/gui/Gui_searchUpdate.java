@@ -10,6 +10,8 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.net.URL;
+import java.util.MissingResourceException;
+import java.util.ResourceBundle;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -30,6 +32,7 @@ import control.*;
  */
 public class Gui_searchUpdate extends JDialog{
 	private static final long serialVersionUID = 4165135034469872266L;
+	private ResourceBundle trans = ResourceBundle.getBundle("translations.StreamRipStar");
 	private Control_Stream controlStream;
 	private SearchUpdate searchUpdate = new SearchUpdate(this);
 	private ImageIcon loadingIcon = new ImageIcon((URL)getClass().getResource("/Icons/update_loading.png"));
@@ -82,7 +85,23 @@ public class Gui_searchUpdate extends JDialog{
         
         //set location
         setLocation(x, y);
+        setLanguage();
 		setVisible(true);
+	}
+	
+	/**
+	 * Update the components with the language specific contents
+	 */
+	public void setLanguage() {
+		try {
+			//title of window
+			setTitle(trans.getString("searchUpdate.title"));
+			okButton.setText(trans.getString("searchUpdate.okButton"));
+			
+		} catch ( MissingResourceException e ) { 
+			System.err.println("Error in translation in Gui_searchUpdate: ");
+			e.printStackTrace();
+	    }		
 	}
 	
 	/**
@@ -91,18 +110,18 @@ public class Gui_searchUpdate extends JDialog{
 	 */
 	public void setAllOk() {
 		iconLabel.setIcon(okIcon);
-		infoLabel.setText("You have already the latest version of StreamRipStar");
+		infoLabel.setText(trans.getString("searchUpdate.infoLabel_alreadyNewest"));
 		
 		//show the new size
 		pack();
 	}
 	
 	/**
-	 * Show the user, that it has a newer version, that the sever knows
+	 * Show the user, that it has a newer version, that the server knows
 	 */
 	public void setNewVersion() {
 		iconLabel.setIcon(okIcon);
-		infoLabel.setText("Gratulation. You have a NEWER version of StreamRipStar than available");
+		infoLabel.setText(trans.getString("searchUpdate.infoLabel_newer"));
 		
 		//show the new size
 		pack();
@@ -121,7 +140,7 @@ public class Gui_searchUpdate extends JDialog{
 		c.gridwidth = 3;
 		
 		iconLabel.setIcon(availableIcon);
-		infoLabel.setText("Found a new Version of StreamRipStar");
+		infoLabel.setText(trans.getString("searchUpdate.infoLabel_foundNewVersion"));
 		JTextField downloadTF = new JTextField(url,20);
 		JTextField versionTF = new JTextField(version);
 		JTextField revisionTF = new JTextField(revision);
@@ -137,17 +156,17 @@ public class Gui_searchUpdate extends JDialog{
 		
 		c.gridx = 0;
 		c.gridy = 2;
-		panel.add(new JLabel("Version :"),c);
+		panel.add(new JLabel(trans.getString("searchUpdate.version")),c);
 		c.gridx = 1;
 		panel.add(versionTF,c);	
 		c.gridx = 0;
 		c.gridy = 3;
-		panel.add(new JLabel("Revision :"),c);
+		panel.add(new JLabel(trans.getString("searchUpdate.revision")),c);
 		c.gridx = 1;
 		panel.add(revisionTF,c);
 		c.gridx = 0;
 		c.gridy = 4;
-		panel.add(new JLabel("Download :"),c);
+		panel.add(new JLabel(trans.getString("searchUpdate.download")),c);
 		c.gridx = 1;
 		panel.add(downloadTF,c);
 		
@@ -167,7 +186,7 @@ public class Gui_searchUpdate extends JDialog{
 	 */
 	public void setFailedToFetchInformation() {
 		iconLabel.setIcon(failIcon);
-		infoLabel.setText("Fail to load information about a new release");
+		infoLabel.setText(trans.getString("searchUpdate.infoLabel_failedToLoad"));
 		
 		//show the new size
 		pack();

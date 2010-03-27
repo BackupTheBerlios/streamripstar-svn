@@ -569,6 +569,7 @@ public class Gui_StreamRipStar extends JFrame implements WindowListener
 			//Menubar help
 			onlineHelp.setText(trans.getString("onlineHelp"));
 			streamRipStarSite.setText(trans.getString("streamRipStarWebsite"));
+			updateMenuItem.setText(trans.getString("checkUpdateItem"));
 			about.setText(trans.getString("about"));
 			
 			//Tooltip
