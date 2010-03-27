@@ -20,6 +20,7 @@ import java.util.ResourceBundle;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JComponent;
+import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -35,7 +36,7 @@ import control.Control_Stream;
  * @author Johannes Putzke
  *
  */
-public class Gui_AboutStreamRipStar extends JFrame
+public class Gui_AboutStreamRipStar extends JDialog
 {
 	private static final long serialVersionUID = 1L;
 	private ResourceBundle trans = ResourceBundle.getBundle("translations.StreamRipStar");
@@ -70,9 +71,11 @@ public class Gui_AboutStreamRipStar extends JFrame
 	 * Create the About-Dialog by give the controlStream object. The controlstream
 	 * is necessary to open the links in a webbrowser.
 	 * 
-	 * @param controlStreams The used controlstream, where you can start the webbrowser 
+	 * @param controlStreams The used controlstream, where you can start the webbrowser
+	 * @param mainWindow The parent window for this dialog 
 	 */
-	public Gui_AboutStreamRipStar(Control_Stream controlStreams) {
+	public Gui_AboutStreamRipStar(Control_Stream controlStreams, JFrame mainWindow) {
+		super(mainWindow);
 		this.controlStreams = controlStreams;
 		JPanel panel = new JPanel();
 		add(panel);

@@ -16,6 +16,7 @@ import java.util.ResourceBundle;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JDialog;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
@@ -30,7 +31,7 @@ import control.*;
  * The GUI where the user can look for informations about new
  * releases for StreamRipStar
  */
-public class Gui_searchUpdate extends JDialog{
+public class Gui_searchUpdate extends JDialog {
 	private static final long serialVersionUID = 4165135034469872266L;
 	private ResourceBundle trans = ResourceBundle.getBundle("translations.StreamRipStar");
 	private Control_Stream controlStream;
@@ -44,8 +45,14 @@ public class Gui_searchUpdate extends JDialog{
 	private JLabel iconLabel = new JLabel(loadingIcon);
 	private JLabel infoLabel = new JLabel("Searching for new Version. Please wait...");
 	
-	public Gui_searchUpdate(Control_Stream controlStream) {
-		super();
+	/**
+	 * Create the GUI as an dialog 
+	 * 
+	 * @param controlStream The controlstream, where this dialog can find the webbrowsser
+	 * @param mainWin The parent for this Dialog
+	 */
+	public Gui_searchUpdate(Control_Stream controlStream, JFrame mainWin) {
+		super(mainWin);
 		this.setTitle("Check for Updates");
 		
 		this.controlStream = controlStream;

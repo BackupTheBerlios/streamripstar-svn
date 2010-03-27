@@ -1224,7 +1224,7 @@ public class Gui_StreamRipStar extends JFrame implements WindowListener
 	
 	class AboutDialogListener implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
-			new Gui_AboutStreamRipStar(controlStreams);
+			new Gui_AboutStreamRipStar(controlStreams,Gui_StreamRipStar.this);
 		}
 	}
 	
@@ -1248,7 +1248,7 @@ public class Gui_StreamRipStar extends JFrame implements WindowListener
 	
 	class SearchUpdateListener implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
-			new Gui_searchUpdate(controlStreams);
+			new Gui_searchUpdate(controlStreams,Gui_StreamRipStar.this);
 		}
 	}
 	
