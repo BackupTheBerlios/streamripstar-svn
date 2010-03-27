@@ -68,6 +68,7 @@ public class Gui_Infodialog extends JDialog
 		getLastTrack = new Control_http_Playlist(stream.address,this);
 		getLastTrack.start();
 		
+		setVisible(true);
 	}
 	
 	/**
@@ -152,10 +153,8 @@ public class Gui_Infodialog extends JDialog
         int y = (screenDim.height - frameDim.height)/2;
         //set location
         setLocation(x, y);
-		
-		setVisible(true);
-		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
+		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 	}
 	
 	public void fillWithData()
@@ -198,7 +197,6 @@ public class Gui_Infodialog extends JDialog
 	        //set location
 	        setLocation(x, y);
 	        repaint();
-		
 	}
 	
 	/**
