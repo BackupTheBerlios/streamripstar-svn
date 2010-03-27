@@ -27,6 +27,7 @@ public class SearchUpdate extends Thread {
 	private String text = "";
 	private String revision = "";
 	private String name = "";
+	private String download = "";
 	private Gui_searchUpdate gui;
 	
 	public SearchUpdate(Gui_searchUpdate gui) {
@@ -55,6 +56,7 @@ public class SearchUpdate extends Thread {
 						//now read the next information
 						revision = bw.readLine().substring(9);
 						name = bw.readLine().substring(5);
+						download = bw.readLine().substring(9);
 					}
 				}
 			}
@@ -73,7 +75,7 @@ public class SearchUpdate extends Thread {
 				
 				//an new version is available
 				else {
-					gui.setNewVersionAvailable(revision, name, "Noch kann keine URL angezeigt werden");
+					gui.setNewVersionAvailable(revision, name, download);
 				}
 			}
 

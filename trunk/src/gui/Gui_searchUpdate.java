@@ -7,6 +7,8 @@ import java.awt.Insets;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.net.URL;
 
 import javax.swing.ImageIcon;
@@ -14,6 +16,7 @@ import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JTextField;
 
 import control.*;
 
@@ -39,6 +42,9 @@ public class Gui_searchUpdate extends JDialog{
 	private JLabel infoLabel = new JLabel("Searching for new Version. Please wait...");
 	
 	public Gui_searchUpdate(Control_Stream controlStream) {
+		super();
+		this.setTitle("Check for Updates");
+		
 		this.controlStream = controlStream;
 		searchUpdate.start();
 		panel.setLayout(new GridBagLayout());
@@ -116,6 +122,16 @@ public class Gui_searchUpdate extends JDialog{
 		
 		iconLabel.setIcon(availableIcon);
 		infoLabel.setText("Found a new Version of StreamRipStar");
+		JTextField downloadTF = new JTextField(url,20);
+		JTextField versionTF = new JTextField(version);
+		JTextField revisionTF = new JTextField(revision);
+		
+		downloadTF.setEditable(false);
+		versionTF.setEditable(false);
+		revisionTF.setEditable(false);
+		
+		downloadTF.addMouseListener(new WebsiteListener(url));
+		iconLabel.addMouseListener(new WebsiteListener(url));
 		
 		c.gridwidth = 1;
 		
@@ -123,17 +139,17 @@ public class Gui_searchUpdate extends JDialog{
 		c.gridy = 2;
 		panel.add(new JLabel("Version :"),c);
 		c.gridx = 1;
-		panel.add(new JLabel(version),c);	
+		panel.add(versionTF,c);	
 		c.gridx = 0;
 		c.gridy = 3;
 		panel.add(new JLabel("Revision :"),c);
 		c.gridx = 1;
-		panel.add(new JLabel(revision),c);
+		panel.add(revisionTF,c);
 		c.gridx = 0;
 		c.gridy = 4;
 		panel.add(new JLabel("Download :"),c);
 		c.gridx = 1;
-		panel.add(new JLabel(url),c);
+		panel.add(downloadTF,c);
 		
 		c.insets = new Insets( 15, 5, 5, 5);
 		c.gridwidth = 3;
@@ -165,6 +181,29 @@ public class Gui_searchUpdate extends JDialog{
 	class AbortListener implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
 			dispose();
+		}
+	}
+	
+	/**
+	 * Is executed when the user clicks on the download
+	 * 
+	 * @author Johannes Putzke
+	 */
+	class WebsiteListener extends MouseAdapter {
+		
+		String url;
+		
+		/**
+		 * Need the url where the download is as a parameter
+		 * @param url The url to the website you like to open
+		 */
+		public WebsiteListener(String url) {
+			this.url = url;
+		}
+
+		@Override
+		public void mouseClicked(MouseEvent arg0) {
+			controlStream.startWebBrowser(url);
 		}
 	}
 }
