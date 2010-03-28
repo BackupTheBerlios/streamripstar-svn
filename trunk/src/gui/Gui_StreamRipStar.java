@@ -74,6 +74,7 @@ public class Gui_StreamRipStar extends JFrame implements WindowListener
 	private Control_Stream controlStreams = null;
 	private Gui_TablePanel table = null; 	//Table that shows all streams
 	private Thread_Control_Schedul controlJob = null;
+	private Gui_StreamBrowser streamBrowser = null;
 	
 	//for runtime
 	private Boolean tray = false;				// false = hide tray icon
@@ -1242,7 +1243,11 @@ public class Gui_StreamRipStar extends JFrame implements WindowListener
 	
 	class StreamBrowserListener implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
-			new Gui_StreamBrowser(getMe());
+			if(streamBrowser == null) {
+				streamBrowser = new Gui_StreamBrowser(getMe());
+			} else {
+				streamBrowser.setVisible(true);
+			}
 		}
 	}
 	

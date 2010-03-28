@@ -49,9 +49,9 @@ public class Thread_GetGenre extends Thread
 			streamBrowser.getControlHttp().getGenresFromWebsite();
 		}
 		
-//		get Genres for Genres
+		//get Genres for Genres
 		if(!killMe) {
-		genres = streamBrowser.getControlHttp().getAllGenres();
+			genres = streamBrowser.getControlHttp().getAllGenres();
 		}
 		
 		//create root genres

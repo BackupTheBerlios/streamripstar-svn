@@ -103,6 +103,9 @@ public class Control_http_Shoutcast {
 	 * Vector in this class
 	 */
 	public void getGenresFromWebsite() {
+		//first empty the genres, else you will have it twice or more
+		addGenre.removeAllElements();
+		
 		try {
 			URL shoutcast = new URL("http://classic.shoutcast.com");
 			readGenresStream = shoutcast.openStream();

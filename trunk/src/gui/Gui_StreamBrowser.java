@@ -45,6 +45,7 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeCellRenderer;
+import javax.swing.tree.DefaultTreeModel;
 import javax.xml.stream.XMLEventFactory;
 import javax.xml.stream.XMLEventWriter;
 import javax.xml.stream.XMLInputFactory;
@@ -93,8 +94,10 @@ public class Gui_StreamBrowser extends JFrame implements WindowListener {
 	
 	
 	//JTree and components
-	DefaultMutableTreeNode root = new DefaultMutableTreeNode( "Shoutcast" ); 
-	private JTree browseTree = new JTree(root); 
+    private DefaultMutableTreeNode root = new DefaultMutableTreeNode( "Shoutcast" );
+    private DefaultTreeCellRenderer renderer;
+    private DefaultTreeModel treeModel;
+	private JTree browseTree = new JTree(); 
 	private JPanel mainPanel = new JPanel();
 	private JPanel topPanel = new JPanel();
 	private JPanel iconPanel = new JPanel();
@@ -107,13 +110,11 @@ public class Gui_StreamBrowser extends JFrame implements WindowListener {
 
 	//set different Iconbars
 	private JToolBar commonIconBar = new JToolBar();
-	private JToolBar mediaIconBar = new JToolBar();
 		
 	//Icons for Iconbars
 	private ImageIcon saveIcon = new ImageIcon((URL)getClass().getResource("/Icons/streambrowser/save.png"));
 	private ImageIcon hearMusicIcon = new ImageIcon((URL)getClass().getResource("/Icons/streambrowser/play2.png"));
 	private ImageIcon abortIcon = new ImageIcon((URL)getClass().getResource("/Icons/streambrowser/cancel.png"));
-	private ImageIcon shoutCastIcon = new ImageIcon((URL)getClass().getResource("/Icons/streambrowser/search.png"));
 	private ImageIcon addAndRecordIcon = new ImageIcon((URL)getClass().getResource("/Icons/streambrowser/save_quick2.png"));
 	private ImageIcon filterIcon = new ImageIcon((URL)getClass().getResource("/Icons/streambrowser/filter.png"));
 	private ImageIcon startRecordIcon = new ImageIcon((URL)getClass().getResource("/Icons/record_small.png"));
@@ -121,12 +122,13 @@ public class Gui_StreamBrowser extends JFrame implements WindowListener {
 	private ImageIcon saveIconForPopUp = new ImageIcon((URL)getClass().getResource("/Icons/save_small.png"));
 	private ImageIcon leafIcon = new ImageIcon((URL)getClass().getResource("/Icons/streambrowser/leaf-24.png"));
 	private ImageIcon openIcon = new ImageIcon((URL)getClass().getResource("/Icons/streambrowser/root.png"));
+	private ImageIcon reloadIcon = new ImageIcon((URL)getClass().getResource("/Icons/streambrowser/reload.png"));
 	
 	//buttons for Iconbars
 	private JButton addToStreamRipStarButton = new JButton("Add to StreamRipStar",saveIcon);	
 	private JButton listenToButton = new JButton ("Hear it",hearMusicIcon);
 	private JButton abortButton = new JButton("Abort",abortIcon);
-	private JButton shoutCastButton = new JButton("ShoutCast",shoutCastIcon);
+	private JButton reloadButton = new JButton("Reload",reloadIcon);
 	private JButton addAndRecButton = new JButton("Add and Record", addAndRecordIcon);
 	private JButton filterButton = new JButton("Filter", filterIcon );
 	
@@ -188,11 +190,13 @@ public class Gui_StreamBrowser extends JFrame implements WindowListener {
 		this.StreamRipStar = StreamRipStar;
 		
 
-		DefaultTreeCellRenderer renderer = new DefaultTreeCellRenderer();
+		renderer = new DefaultTreeCellRenderer();
 		renderer.setOpenIcon(openIcon);
 		renderer.setClosedIcon(openIcon);
 		renderer.setLeafIcon(leafIcon);
 		browseTree.setCellRenderer(renderer);
+		treeModel = new DefaultTreeModel(root);
+		browseTree.setModel(treeModel);
 		
 		//make all columns visible
 		for(int i=0;i<isColumnShow.length;i++)
@@ -227,9 +231,9 @@ public class Gui_StreamBrowser extends JFrame implements WindowListener {
 	public void setToolTips() {
 		listenToButton.setToolTipText(toolTips.getString("StreamBrowser.listen"));
 		addToStreamRipStarButton.setToolTipText(toolTips.getString("StreamBrowser.addToStreamRipStar"));
-		shoutCastButton.setToolTipText(toolTips.getString("StreamBrowser.shoutcast"));
 		addAndRecButton.setToolTipText(toolTips.getString("StreamBrowser.addAndRecord"));
 		abortButton.setToolTipText(toolTips.getString("StreamBrowser.abort"));
+		reloadButton.setToolTipText(toolTips.getString("StreamBrowser.reload"));
 		filterButton.setToolTipText(toolTips.getString("StreamBrowser.filter"));
 	}
 	
@@ -244,25 +248,25 @@ public class Gui_StreamBrowser extends JFrame implements WindowListener {
 		if(visibility) {
 			listenToButton.setText(trans.getString("iconPanel.listenToButton"));
 			addToStreamRipStarButton.setText(trans.getString("iconPanel.addToStreamRipStarButton"));
-			shoutCastButton.setText(trans.getString("iconPanel.shoutCastButton"));
 			addAndRecButton.setText(trans.getString("iconPanel.addAndRecButton"));
 			abortButton.setText(trans.getString("iconPanel.abortButton"));
+			reloadButton.setText(trans.getString("iconPanel.reload"));
 			filterButton.setText(trans.getString("iconPanel.filterButton"));
 			
 			if (newFont != null) {
 				listenToButton.setFont(newFont);
 				addToStreamRipStarButton.setFont(newFont);
-				shoutCastButton.setFont(newFont);
 				addAndRecButton.setFont(newFont);
 				abortButton.setFont(newFont);
+				reloadButton.setFont(newFont);
 				filterButton.setFont(newFont);
 			}
 		} else {
 			listenToButton.setText(null);
 			addToStreamRipStarButton.setText(null);
-			shoutCastButton.setText(null);
 			addAndRecButton.setText(null);
 			abortButton.setText(null);
+			reloadButton.setText(null);
 			filterButton.setText(null);
 		}
 	}
@@ -333,9 +337,9 @@ public class Gui_StreamBrowser extends JFrame implements WindowListener {
 		listenToButton.addActionListener( new playMusikListener() );
 		addToStreamRipStarButton.addActionListener( new AddToStreamRipStarListener() );
 		abortButton.addActionListener(new AbortThreadsListener());
+		reloadButton.addActionListener(new ReloadListener());
 		addAndRecButton.addActionListener(new AddAndStartRecordListener());
 		filterButton.addActionListener(new FilterListener());
-		shoutCastButton.addActionListener(new GetGenreListener());
 		addWindowListener(this);
 		
 		//no extra space for the genretable
@@ -352,9 +356,9 @@ public class Gui_StreamBrowser extends JFrame implements WindowListener {
 			//iconPanel
 			listenToButton.setText(trans.getString("iconPanel.listenToButton"));
 			addToStreamRipStarButton.setText(trans.getString("iconPanel.addToStreamRipStarButton"));
-			shoutCastButton.setText(trans.getString("iconPanel.shoutCastButton"));
 			addAndRecButton.setText(trans.getString("iconPanel.addAndRecButton"));
 			abortButton.setText(trans.getString("iconPanel.abortButton"));
+			reloadButton.setText(trans.getString("iconPanel.reload"));
 			filterButton.setText(trans.getString("iconPanel.filterButton"));
 			
 			//popup - ColumControl
@@ -394,8 +398,9 @@ public class Gui_StreamBrowser extends JFrame implements WindowListener {
 			getGenres = new Thread_GetGenre(getMe(),trans);
 			getGenres.start();
 			System.out.println("loading genres...");
-		} else 
+		} else {
 			System.out.println("It seems, that it already loading...");
+		}
 	}
 	
 	public DefaultMutableTreeNode getTreeRoot() {
@@ -414,8 +419,9 @@ public class Gui_StreamBrowser extends JFrame implements WindowListener {
 		stautsLabel.setText(statusText);
 	}
 	
-	public void updateUITree() {
+	public synchronized void updateUITree() {
 		browseTree.expandRow(0);
+		treeModel.reload();
 	}
 	
 	public DefaultTableModel getBrowseModel() {
@@ -432,6 +438,7 @@ public class Gui_StreamBrowser extends JFrame implements WindowListener {
 	
 	public void setAbortButtonEnable(boolean enable) {
 		abortButton.setEnabled(enable);
+		reloadButton.setEnabled(!enable);
 	}
 	
 	
@@ -446,15 +453,15 @@ public class Gui_StreamBrowser extends JFrame implements WindowListener {
 		addToStreamRipStarButton.setHorizontalTextPosition(SwingConstants.CENTER);
 		addToStreamRipStarButton.setVerticalTextPosition(SwingConstants.BOTTOM);
 		addToStreamRipStarButton.setBorderPainted(false);
-		shoutCastButton.setHorizontalTextPosition(SwingConstants.CENTER);
-		shoutCastButton.setVerticalTextPosition(SwingConstants.BOTTOM);
-		shoutCastButton.setBorderPainted(false);
 		addAndRecButton.setHorizontalTextPosition(SwingConstants.CENTER);
 		addAndRecButton.setVerticalTextPosition(SwingConstants.BOTTOM);
 		addAndRecButton.setBorderPainted(false);
 		abortButton.setHorizontalTextPosition(SwingConstants.CENTER);
 		abortButton.setVerticalTextPosition(SwingConstants.BOTTOM);
 		abortButton.setBorderPainted(false);
+		reloadButton.setHorizontalTextPosition(SwingConstants.CENTER);
+		reloadButton.setVerticalTextPosition(SwingConstants.BOTTOM);
+		reloadButton.setBorderPainted(false);
 		filterButton.setHorizontalTextPosition(SwingConstants.CENTER);
 		filterButton.setVerticalTextPosition(SwingConstants.BOTTOM);
 		filterButton.setBorderPainted(false);
@@ -464,16 +471,12 @@ public class Gui_StreamBrowser extends JFrame implements WindowListener {
 		commonIconBar.add(addAndRecButton);
 		commonIconBar.add(listenToButton);
 		commonIconBar.add(abortButton);
+		commonIconBar.add(reloadButton);
 		commonIconBar.add(filterButton);
-		
-		//add Buttons to MediaIconBar
-		mediaIconBar.add(shoutCastButton);
-		
+
 		//set the color of all button the backgroundcolor
 		//from the iconbar and disable der Border
 		commonIconBar.setBackground(new Color(238,238,238,255));
-		mediaIconBar.setBackground(new Color(238,238,238,255));
-
 		
 		//Build JPopupMenu
 		selShowPopup.add(showGenreColumn);
@@ -519,7 +522,7 @@ public class Gui_StreamBrowser extends JFrame implements WindowListener {
 	 * the defaultTableModel must be given on startup
 	 * @param model
 	 */
-	public void removeAllFromTable(DefaultTableModel model) {
+	public synchronized void removeAllFromTable(DefaultTableModel model) {
 		int rowCount = model.getRowCount();
 		for(int i=rowCount; i>0;i--)
 			model.removeRow(i-1);
@@ -940,20 +943,50 @@ public class Gui_StreamBrowser extends JFrame implements WindowListener {
 	
 	class AbortThreadsListener implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
-			if(getGenres != null) {
-				getGenres.killMe();
-				getGenres = null;
-			}
-			
-			if(getStreams != null) {
-				getStreams.killMe();
-				getStreams = null;
-			}
-
-		}
-		
+			abortLoadingGenresAndStreams();
+		}	
 	}
 	
+	/**
+	 * Stops the threads for loading streams and genres in the table
+	 */
+	public void abortLoadingGenresAndStreams() {
+		if(getGenres != null) {
+			getGenres.killMe();
+			getGenres = null;
+		}
+		
+		if(getStreams != null) {
+			getStreams.killMe();
+			getStreams = null;
+		}
+	}
+	
+	/**
+	 * Reloads the genres from the website. Before fill the generes
+	 * in the table, delete all old geners
+	 *  
+	 * @author Johannes Putzke
+	 */
+	class ReloadListener implements ActionListener {
+		public void actionPerformed(ActionEvent e) {
+			//stop all loading Threads for the table and the tree
+			abortLoadingGenresAndStreams();
+			
+			//delete all old tree nodes
+			root.removeAllChildren();
+			Gui_StreamBrowser.this.updateUITree();
+			
+			//create the new one
+			createBrowseTree();
+		}
+	}
+	
+	/**
+	 * Toogle the filterbar when is filterbar button is clicked
+	 * 
+	 * @author Johannes Putzke
+	 */
 	class FilterListener implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
 			if(filter.isVisible())
@@ -962,17 +995,6 @@ public class Gui_StreamBrowser extends JFrame implements WindowListener {
 				filter.setVisible(true);
 		}
 	}
-	
-	/**
-	 * load the genres from www.shoutcast.com
-	 *
-	 */
-	class GetGenreListener implements ActionListener {
-		public void actionPerformed(ActionEvent e) {
-			createBrowseTree();
-		}
-	}
-
 	
 	/**
 	 * This Class gets content of a selected stream
