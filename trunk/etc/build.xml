@@ -37,8 +37,6 @@
         description="generate the distribution" >
         <!-- Create the distribution directory -->
         <mkdir dir="${dist}"/>
-
-        <!-- Put everything in ${build} into the DesktopDemo.jar file -->
         <jar jarfile="${dist}/StreamRipStar.jar" basedir="${build}/classes" manifest="manifest.mf"/>
     </target>
 

@@ -1,4 +1,3 @@
-Manifest-Version: 1.0
+Manifest-Version: 1.1
 Created-By: Johannes Putzke
-Main-Class: StreamRipStar.StreamRipStar
-Class-Path: lib/derby.jar
+Main-Class: misc.StreamRipStar
