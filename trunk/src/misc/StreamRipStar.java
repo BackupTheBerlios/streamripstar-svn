@@ -22,18 +22,16 @@ import control.Control_GetPath;
  */
 public class StreamRipStar
 {	
-	public static final int releaseRevision = 624; 
+	public static final int releaseRevision = 24; 
 	private static boolean noConfiFileFound = false;
 	private static String lang="",reg ="", lnfClassName = null;
 	
 	public static void main(String[] args) {
-            start();
+		start();
 	}
 	
 	private static void start() {
 
-		
-		
 		//get language from file
 		// 0 = english
 		// 1 = german

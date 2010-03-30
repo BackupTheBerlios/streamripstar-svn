@@ -28,7 +28,9 @@ import javax.swing.JDialog;
 import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
+import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.KeyStroke;
 import javax.swing.UIManager;
@@ -78,6 +80,9 @@ public class Gui_Settings extends JDialog
 	private JLabel currentTrackLabel = new JLabel("Current Track: ");
 	private JLabel windowClosing = new JLabel("Action when clicking on closing window");
 	private JLabel lnfLabel = new JLabel("All installed Look and Feels");
+	
+	private JTextArea translationTA = new JTextArea();
+	private JScrollPane translationSP = new JScrollPane(translationTA);
 	
 	private JButton abortButton = new JButton("Abort", abortIcon);
 	private JButton saveAndExitButton = new JButton ("OK", saveAndExitIcon);
@@ -131,6 +136,8 @@ public class Gui_Settings extends JDialog
 		LookAndFeelBox = new JComboBox(lookAndFeelList);
 		
 		setLayout(new BorderLayout());
+		
+		translationTA.setEditable(false);
 		
 		settingsPane.addTab("General", commonPanel);
 		settingsPane.addTab("Path",pathPanel);
@@ -217,6 +224,19 @@ public class Gui_Settings extends JDialog
 		c.gridx = 0;
 		c.gridwidth = 2;
 		languagePanel.add(reqRestart,c);
+	//3. line on lang: langchange
+		c.weightx = 0.0;
+		c.gridy = 2;
+		c.gridx = 0;
+		c.gridwidth = 2;
+		languagePanel.add(new JLabel(" "),c);
+	//4. line on lang: langchange
+		c.weightx = 0.0;
+		c.weighty = 0.0;
+		c.gridy = 3;
+		c.gridx = 0;
+		c.gridwidth = 2;
+		languagePanel.add(translationSP,c);
 		
 //ACTIONPANEL
 	//1. Line: explain what you are doing
@@ -419,6 +439,8 @@ public class Gui_Settings extends JDialog
 			
 			//languages panel
 			reqRestart.setText(trans.getString("reqRestart"));
+			translationTA.setText(trans.getString("settings.translationTA"));
+
 			
 			//buttons
 			abortButton.setText(trans.getString("abortButton"));

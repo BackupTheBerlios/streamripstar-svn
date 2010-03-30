@@ -112,6 +112,7 @@ public class Gui_StreamBrowser extends JFrame implements WindowListener {
 	private JToolBar commonIconBar = new JToolBar();
 		
 	//Icons for Iconbars
+	//Icons are from oxygen project for kde4. Licenced under gpl 
 	private ImageIcon saveIcon = new ImageIcon((URL)getClass().getResource("/Icons/streambrowser/save.png"));
 	private ImageIcon hearMusicIcon = new ImageIcon((URL)getClass().getResource("/Icons/streambrowser/play2.png"));
 	private ImageIcon abortIcon = new ImageIcon((URL)getClass().getResource("/Icons/streambrowser/cancel.png"));
@@ -551,7 +552,6 @@ public class Gui_StreamBrowser extends JFrame implements WindowListener {
 			//get Nr. of Stream
 			Object content = browseTable.getValueAt(browseTable.getSelectedRow(),0);
 			int nr = Integer.valueOf(content.toString());
-			System.out.println("Debug: Selected Line nummber: "+nr);
 			
 			//get Streams in Vector
 			//if the stream is filtered, get the filtered stream vector
@@ -902,19 +902,9 @@ public class Gui_StreamBrowser extends JFrame implements WindowListener {
 			if(e.getClickCount()==2) {
 				//only if table is filled with streams
 				if(browseModel.getColumnCount()>0 ) {
-					//get selected genre from table
-					Object selectedStream =	browseTable.getValueAt(browseTable.getSelectedRow(),0);
-					
-					//debugmessage
-					System.out.println("Debug: "+selectedStream.toString());
-					
 					//play selected stream in media player
 					playStream();
 				}
-			}
-			//Right-click button for menu
-			if(e.getButton() == 3) {
-				System.out.println("Debug: rightlick debug");
 			}
 		}
 		
@@ -1116,8 +1106,6 @@ public class Gui_StreamBrowser extends JFrame implements WindowListener {
 						}
 
 					}
-							
-			    	System.out.println("Debug: "+selectedGenre);
 			    	//fill table with streams
 			    	if(!stop) {
 			    		getStreams = new Thread_GetStreams(getMe(),selectedGenre,trans);

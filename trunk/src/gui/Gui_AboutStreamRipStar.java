@@ -51,7 +51,7 @@ public class Gui_AboutStreamRipStar extends JDialog
 	private JLabel version = new JLabel("Version :");
 	private JTextField versionName = new JTextField("StreamRipStar 0.5.7");
 	private JLabel revision = new JLabel("Revision :");
-	private JTextField revisionnumber = new JTextField("626");
+	private JTextField revisionnumber = new JTextField("24");
 	private JLabel streamRipStarSourceforgeSite = new JLabel("StreamRipStars Projektpage :");
 	private JTextField streamRipStarSourceforgeAddress = new JTextField("http://developer.berlios.de/projects/streamripstar/");
 	private JLabel streamRipStarHomepage = new JLabel("StreamRipStars Wiki :");
@@ -59,7 +59,7 @@ public class Gui_AboutStreamRipStar extends JDialog
 	private JLabel edmolfHomepage = new JLabel("EdMolfs Homepage");
 	private JTextField edmolfHomepageAddress = new JTextField("http://www.edmolf.net");
 	private JLabel streamripperHomepage = new JLabel("Streamrippers Homepage");
-	private JTextField streamripperHomepageAddress = new JTextField("http://streamripper.sourceforge.net");
+	private JTextField streamripperHomepageAddress = new JTextField("http://developer.berlios.de/projects/streamripstar/");
 	
 	private JLabel copyRight = new JLabel("Copyright @ Johannes Putzke");
 	

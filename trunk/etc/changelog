@@ -161,10 +161,11 @@
   
     
 ----------------------------
- 0.5.6 -> 0.6
+ 0.5.6 -> 0.5.7
  - Change some windows from frames to dialogs to keep a better overview
  - add: can now search for updates
  - fix: can't update a stream in the correct cell name
  - change in streambrowser from single to double click
  - new Icons for better orientation in streambrowser
- - add: "reload genres" in streambrowser 
+ - add: "reload genres" in streambrowser
+ - remember the streambrowser: you will open only one now
