@@ -56,15 +56,12 @@ import javax.xml.stream.XMLStreamReader;
 import javax.xml.stream.events.XMLEvent;
 
 import misc.Stream;
-
-import thread.Thread_GetGenre;
 import thread.Thread_GetStreams;
-
-
 import control.Control_GetPath;
 import control.Control_http_Shoutcast;
+import control.Shoutcast2;
 
-public class Gui_StreamBrowser extends JFrame implements WindowListener {
+public class Gui_StreamBrowser2 extends JFrame implements WindowListener {
 
 	private static final long serialVersionUID = 1L;
 	
@@ -72,8 +69,8 @@ public class Gui_StreamBrowser extends JFrame implements WindowListener {
 	private ResourceBundle trans = ResourceBundle.getBundle("translations.StreamRipStar");
 	
 	private Control_http_Shoutcast controlHttp = new Control_http_Shoutcast();
-	private Object[] browseHeader = {"Nr.","Genre","Description", "Playing Now",
-			"Listeners","Max. Listeners","Bitrate","Type","Website"};
+	private Object[] browseHeader = {"ID","Name","Genre", "Playing Now",
+			"Listeners","Bitrate","Type","Website"};
 	
 	private String[][] allData = {};
 	
@@ -84,10 +81,9 @@ public class Gui_StreamBrowser extends JFrame implements WindowListener {
         public Class<?> getColumnClass( int column ) {
 			
             switch( column ){
-                case 0: return Integer.class;
-                case 4: return Integer.class;	//listeners
-                case 5: return Integer.class;	//max Listeners
-                case 6: return Integer.class;	//bitrate
+                case 0: return Integer.class;	// ID at Shoutcast
+                case 4: return Integer.class;	// listeners
+                case 5: return Integer.class;	// Bitrate
                 default: return String.class;
             }
         }};
@@ -123,13 +119,11 @@ public class Gui_StreamBrowser extends JFrame implements WindowListener {
 	private ImageIcon saveIconForPopUp = new ImageIcon((URL)getClass().getResource("/Icons/save_small.png"));
 	private ImageIcon leafIcon = new ImageIcon((URL)getClass().getResource("/Icons/streambrowser/leaf-24.png"));
 	private ImageIcon openIcon = new ImageIcon((URL)getClass().getResource("/Icons/streambrowser/root.png"));
-	private ImageIcon reloadIcon = new ImageIcon((URL)getClass().getResource("/Icons/streambrowser/reload.png"));
 	
 	//buttons for Iconbars
 	private JButton addToStreamRipStarButton = new JButton("Add to StreamRipStar",saveIcon);	
 	private JButton listenToButton = new JButton ("Hear it",hearMusicIcon);
 	private JButton abortButton = new JButton("Abort",abortIcon);
-	private JButton reloadButton = new JButton("Reload",reloadIcon);
 	private JButton addAndRecButton = new JButton("Add and Record", addAndRecordIcon);
 	private JButton filterButton = new JButton("Filter", filterIcon );
 	
@@ -145,7 +139,6 @@ public class Gui_StreamBrowser extends JFrame implements WindowListener {
 	private JCheckBoxMenuItem showDescriptionColumn = new JCheckBoxMenuItem("Show Description Column");
 	private JCheckBoxMenuItem showPlayNowColumn = new JCheckBoxMenuItem("Show Now Playing Column");
 	private JCheckBoxMenuItem showListenersColumn = new JCheckBoxMenuItem("Show Listener Column");
-	private JCheckBoxMenuItem showMaxListenersColumn = new JCheckBoxMenuItem("Show Max. Listener Column");
 	private JCheckBoxMenuItem showBitrateColumn = new JCheckBoxMenuItem("Show Bitrate Column");
 	private JCheckBoxMenuItem showTypeColumn = new JCheckBoxMenuItem("Show Type Column");
 	private JCheckBoxMenuItem showWebsitewColumn = new JCheckBoxMenuItem("Show Website Column");
@@ -156,22 +149,20 @@ public class Gui_StreamBrowser extends JFrame implements WindowListener {
 	private JMenuItem hearMenuItem = new JMenuItem("Hear Stream In Media Player",hearMusicIconForPopUp);
 	
 	//is Column shown?
-	private boolean[] isColumnShow = new boolean[9];
-	// 0 boolean isNrShown = true 	MUST EVER BE TRUE
-	// 1 boolean isGenreShown = true;
-	// 2 boolean isDescriptionShown = true;
+	private boolean[] isColumnShow = new boolean[8];
+	// 0 boolean isIDShown = true 	MUST EVER BE TRUE
+	// 1 boolean isNameShown = true;
+	// 2 boolean isGenreShown = true;
 	// 3 boolean isPlayNowShown = true;
 	// 4 boolean isListenerShown = true;
-	// 5 boolean isListenerShown = true;
-	// 6 boolean isBitrateShown = true;
-	// 7 boolean isTypeShown = true;
-	// 8 boolean isWebsiteShown = true;
+	// 5 boolean isBitrateShown = true;
+	// 6 boolean isTypeShown = true;
+	// 7 boolean isWebsiteShown = true;
 	
 	private Thread_GetStreams getStreams = null;
-	private Thread_GetGenre getGenres = null;
 	
 	//width of every column
-	private int[] columnWidths = new int[9];
+	private int[] columnWidths = new int[8];
 
 	//main window object of StreamRipStar
 	private Gui_StreamRipStar StreamRipStar = null;
@@ -186,10 +177,9 @@ public class Gui_StreamBrowser extends JFrame implements WindowListener {
 	//the table models
 	private boolean disableClick = false;
 	
-	public Gui_StreamBrowser(Gui_StreamRipStar StreamRipStar) {
+	public Gui_StreamBrowser2(Gui_StreamRipStar StreamRipStar) {
 		super("StreamBrowser");
 		this.StreamRipStar = StreamRipStar;
-		
 
 		renderer = new DefaultTreeCellRenderer();
 		renderer.setOpenIcon(openIcon);
@@ -234,7 +224,6 @@ public class Gui_StreamBrowser extends JFrame implements WindowListener {
 		addToStreamRipStarButton.setToolTipText(toolTips.getString("StreamBrowser.addToStreamRipStar"));
 		addAndRecButton.setToolTipText(toolTips.getString("StreamBrowser.addAndRecord"));
 		abortButton.setToolTipText(toolTips.getString("StreamBrowser.abort"));
-		reloadButton.setToolTipText(toolTips.getString("StreamBrowser.reload"));
 		filterButton.setToolTipText(toolTips.getString("StreamBrowser.filter"));
 	}
 	
@@ -251,7 +240,6 @@ public class Gui_StreamBrowser extends JFrame implements WindowListener {
 			addToStreamRipStarButton.setText(trans.getString("iconPanel.addToStreamRipStarButton"));
 			addAndRecButton.setText(trans.getString("iconPanel.addAndRecButton"));
 			abortButton.setText(trans.getString("iconPanel.abortButton"));
-			reloadButton.setText(trans.getString("iconPanel.reload"));
 			filterButton.setText(trans.getString("iconPanel.filterButton"));
 			
 			if (newFont != null) {
@@ -259,7 +247,6 @@ public class Gui_StreamBrowser extends JFrame implements WindowListener {
 				addToStreamRipStarButton.setFont(newFont);
 				addAndRecButton.setFont(newFont);
 				abortButton.setFont(newFont);
-				reloadButton.setFont(newFont);
 				filterButton.setFont(newFont);
 			}
 		} else {
@@ -267,7 +254,6 @@ public class Gui_StreamBrowser extends JFrame implements WindowListener {
 			addToStreamRipStarButton.setText(null);
 			addAndRecButton.setText(null);
 			abortButton.setText(null);
-			reloadButton.setText(null);
 			filterButton.setText(null);
 		}
 	}
@@ -338,7 +324,6 @@ public class Gui_StreamBrowser extends JFrame implements WindowListener {
 		listenToButton.addActionListener( new playMusikListener() );
 		addToStreamRipStarButton.addActionListener( new AddToStreamRipStarListener() );
 		abortButton.addActionListener(new AbortThreadsListener());
-		reloadButton.addActionListener(new ReloadListener());
 		addAndRecButton.addActionListener(new AddAndStartRecordListener());
 		filterButton.addActionListener(new FilterListener());
 		addWindowListener(this);
@@ -359,7 +344,6 @@ public class Gui_StreamBrowser extends JFrame implements WindowListener {
 			addToStreamRipStarButton.setText(trans.getString("iconPanel.addToStreamRipStarButton"));
 			addAndRecButton.setText(trans.getString("iconPanel.addAndRecButton"));
 			abortButton.setText(trans.getString("iconPanel.abortButton"));
-			reloadButton.setText(trans.getString("iconPanel.reload"));
 			filterButton.setText(trans.getString("iconPanel.filterButton"));
 			
 			//popup - ColumControl
@@ -367,7 +351,6 @@ public class Gui_StreamBrowser extends JFrame implements WindowListener {
 			showDescriptionColumn.setText(trans.getString("ColumControl.showDescriptionColumn"));
 			showPlayNowColumn.setText(trans.getString("ColumControl.showPlayNowColumn"));
 			showListenersColumn.setText(trans.getString("ColumControl.showListenersColumn"));
-			showMaxListenersColumn.setText(trans.getString("ColumControl.showMaxListenersColumn"));
 			showBitrateColumn.setText(trans.getString("ColumControl.showBitrateColumn"));
 			showTypeColumn.setText(trans.getString("ColumControl.showTypeColumn"));
 			showWebsitewColumn.setText(trans.getString("ColumControl.showWebsitewColumn"));
@@ -378,10 +361,9 @@ public class Gui_StreamBrowser extends JFrame implements WindowListener {
 			browseHeader[2] = trans.getString("Header.Description");
 			browseHeader[3] = trans.getString("Header.PlayingNow");
 			browseHeader[4] = trans.getString("Header.Listeners");
-			browseHeader[5] = trans.getString("Header.MaxListeners");
-			browseHeader[6] = trans.getString("Header.Bitrate");
-			browseHeader[7] = trans.getString("Header.Type");
-			browseHeader[8] = trans.getString("Header.Website");
+			browseHeader[5] = trans.getString("Header.Bitrate");
+			browseHeader[6] = trans.getString("Header.Type");
+			browseHeader[7] = trans.getString("Header.Website");
 			browseModel.setColumnIdentifiers(browseHeader);
 			
 			//the table popup
@@ -394,13 +376,40 @@ public class Gui_StreamBrowser extends JFrame implements WindowListener {
 		}
 	}
 	
+	/**
+	 * Create the tree, where all genres are listed. Get the genres
+	 * from somewhere else
+	 */
 	public void createBrowseTree() {
-		if (getGenres == null) {
-			getGenres = new Thread_GetGenre(getMe(),trans);
-			getGenres.start();
-			System.out.println("loading genres...");
-		} else {
-			System.out.println("It seems, that it already loading...");
+		try {
+				
+			String[][] genres = new Shoutcast2().getGenres();
+			
+				//add an option to search for free values in Shoutcast
+				root.add(new DefaultMutableTreeNode(trans.getObject("GetGenres.search")) );
+				
+				//create for every node with their leaves 
+				for(int i=0; i < genres.length; i++) {
+					if(genres[i].length > 0) {
+						
+						//create the node for the leaves 
+						DefaultMutableTreeNode tmp = new DefaultMutableTreeNode(genres[i][0]);
+						
+						//the the node the the root node
+						root.add(tmp);
+						
+						//now create and add every leaves to the node
+						for(int j=1; j < genres[i].length; j++) {
+							tmp.add(new DefaultMutableTreeNode(genres[i][j]));
+						}
+					}
+				}
+				//update the view 
+				updateUITree();
+			}
+		catch (NullPointerException e) {
+			System.err.println("Failed to load genres");
+			this.setStatusText("Failed to load genres");
 		}
 	}
 	
@@ -439,7 +448,6 @@ public class Gui_StreamBrowser extends JFrame implements WindowListener {
 	
 	public void setAbortButtonEnable(boolean enable) {
 		abortButton.setEnabled(enable);
-		reloadButton.setEnabled(!enable);
 	}
 	
 	
@@ -460,9 +468,6 @@ public class Gui_StreamBrowser extends JFrame implements WindowListener {
 		abortButton.setHorizontalTextPosition(SwingConstants.CENTER);
 		abortButton.setVerticalTextPosition(SwingConstants.BOTTOM);
 		abortButton.setBorderPainted(false);
-		reloadButton.setHorizontalTextPosition(SwingConstants.CENTER);
-		reloadButton.setVerticalTextPosition(SwingConstants.BOTTOM);
-		reloadButton.setBorderPainted(false);
 		filterButton.setHorizontalTextPosition(SwingConstants.CENTER);
 		filterButton.setVerticalTextPosition(SwingConstants.BOTTOM);
 		filterButton.setBorderPainted(false);
@@ -472,7 +477,6 @@ public class Gui_StreamBrowser extends JFrame implements WindowListener {
 		commonIconBar.add(addAndRecButton);
 		commonIconBar.add(listenToButton);
 		commonIconBar.add(abortButton);
-		commonIconBar.add(reloadButton);
 		commonIconBar.add(filterButton);
 
 		//set the color of all button the backgroundcolor
@@ -484,7 +488,6 @@ public class Gui_StreamBrowser extends JFrame implements WindowListener {
 		selShowPopup.add(showDescriptionColumn);
 		selShowPopup.add(showPlayNowColumn);
 		selShowPopup.add(showListenersColumn);
-		selShowPopup.add(showMaxListenersColumn);
 		selShowPopup.add(showBitrateColumn);
 		selShowPopup.add(showTypeColumn);
 		selShowPopup.add(showWebsitewColumn);
@@ -498,10 +501,9 @@ public class Gui_StreamBrowser extends JFrame implements WindowListener {
 		showDescriptionColumn.addActionListener(new ShowRightColumnOrder(2));
 		showPlayNowColumn.addActionListener(new ShowRightColumnOrder(3));
 		showListenersColumn.addActionListener(new ShowRightColumnOrder(4));
-		showMaxListenersColumn.addActionListener(new ShowRightColumnOrder(5));
-		showBitrateColumn.addActionListener(new ShowRightColumnOrder(6));
-		showTypeColumn.addActionListener(new ShowRightColumnOrder(7));
-		showWebsitewColumn.addActionListener(new ShowRightColumnOrder(8));
+		showBitrateColumn.addActionListener(new ShowRightColumnOrder(5));
+		showTypeColumn.addActionListener(new ShowRightColumnOrder(6));
+		showWebsitewColumn.addActionListener(new ShowRightColumnOrder(7));
 		
 		startRecordMenuItem.addActionListener(new AddAndStartRecordListener());
 		saveMenuItem.addActionListener( new AddToStreamRipStarListener() );
@@ -511,10 +513,9 @@ public class Gui_StreamBrowser extends JFrame implements WindowListener {
 		showDescriptionColumn.setSelected(isColumnShow[2]);
 		showPlayNowColumn.setSelected(isColumnShow[3]);
 		showListenersColumn.setSelected(isColumnShow[4]);
-		showMaxListenersColumn.setSelected(isColumnShow[5]);
-		showBitrateColumn.setSelected(isColumnShow[6]);
-		showTypeColumn.setSelected(isColumnShow[7]);
-		showWebsitewColumn.setSelected(isColumnShow[8]);
+		showBitrateColumn.setSelected(isColumnShow[5]);
+		showTypeColumn.setSelected(isColumnShow[6]);
+		showWebsitewColumn.setSelected(isColumnShow[7]);
 	
 	}
 
@@ -529,7 +530,7 @@ public class Gui_StreamBrowser extends JFrame implements WindowListener {
 			model.removeRow(i-1);
 	}
 	
-	public Gui_StreamBrowser getMe() {
+	public Gui_StreamBrowser2 getMe() {
 		return this;
 	}
 	
@@ -676,7 +677,6 @@ public class Gui_StreamBrowser extends JFrame implements WindowListener {
 			XMLEvent b5 = eventFactory.createAttribute( "b5",  String.valueOf( isColumnShow[5] ));
 			XMLEvent b6 = eventFactory.createAttribute( "b6",  String.valueOf( isColumnShow[6] ));
 			XMLEvent b7 = eventFactory.createAttribute( "b7",  String.valueOf( isColumnShow[7] ));
-			XMLEvent b8 = eventFactory.createAttribute( "b8",  String.valueOf( isColumnShow[8] ));
 			
 			XMLEvent endRoot = eventFactory.createEndElement( "", "", "Settings" ); 
 			XMLEvent endDocument = eventFactory.createEndDocument();
@@ -715,7 +715,6 @@ public class Gui_StreamBrowser extends JFrame implements WindowListener {
 			writer.add( b5 ); 
 			writer.add( b6 ); 
 			writer.add( b7 ); 
-			writer.add( b8 ); 
 			
 			writer.add( endRoot ); 
 			writer.add( endDocument ); 
@@ -777,8 +776,6 @@ public class Gui_StreamBrowser extends JFrame implements WindowListener {
 				    			columnWidths[6] = Integer.valueOf(parser.getAttributeValue(i));
 				    		} else if (parser.getAttributeLocalName( i ).equals("i10")) {
 				    			columnWidths[7] = Integer.valueOf(parser.getAttributeValue(i));
-				    		} else if (parser.getAttributeLocalName( i ).equals("i11")) {
-				    			columnWidths[8] = Integer.valueOf(parser.getAttributeValue(i));
 				    		} else if (parser.getAttributeLocalName( i ).equals("s0")) {
 				    			strOptions[0] = parser.getAttributeValue(i);
 				    		} else if (parser.getAttributeLocalName( i ).equals("s1")) {
@@ -809,8 +806,6 @@ public class Gui_StreamBrowser extends JFrame implements WindowListener {
 				    			isColumnShow[6] = Boolean.valueOf(parser.getAttributeValue(i));
 				    		} else if (parser.getAttributeLocalName( i ).equals("b7")) {
 				    			isColumnShow[7] = Boolean.valueOf(parser.getAttributeValue(i));
-				    		} else if (parser.getAttributeLocalName( i ).equals("b8")) {
-				    			isColumnShow[8] = Boolean.valueOf(parser.getAttributeValue(i));
 				    		}
 				    	}
 				    	filter.loadSettings(strOptions);
@@ -825,12 +820,15 @@ public class Gui_StreamBrowser extends JFrame implements WindowListener {
 		} catch (FileNotFoundException e) {
 			System.err.println("No configuartion file found: Streambrowser.xml");
 		} catch (XMLStreamException e) {
-			e.printStackTrace();
+			if(e.getMessage().startsWith("Message: Premature end of file.")) {
+				System.err.println("Error: Streambrowser: XML file had an unexpected end");
+			} else {
+				e.printStackTrace();
+			}
 		}
 	}
 	
 	public void setThreadToNull() {
-		getGenres = null;
 		getStreams = null;
 	}
 	
@@ -867,6 +865,7 @@ public class Gui_StreamBrowser extends JFrame implements WindowListener {
 					.setPreferredWidth(columnWidths[i]);
 			}
 		}
+		browseTable.getColumn(browseHeader[0]).setMaxWidth(50);
 	}
 	
 	/**
@@ -941,11 +940,6 @@ public class Gui_StreamBrowser extends JFrame implements WindowListener {
 	 * Stops the threads for loading streams and genres in the table
 	 */
 	public void abortLoadingGenresAndStreams() {
-		if(getGenres != null) {
-			getGenres.killMe();
-			getGenres = null;
-		}
-		
 		if(getStreams != null) {
 			getStreams.killMe();
 			getStreams = null;
@@ -965,7 +959,7 @@ public class Gui_StreamBrowser extends JFrame implements WindowListener {
 			
 			//delete all old tree nodes
 			root.removeAllChildren();
-			Gui_StreamBrowser.this.updateUITree();
+			Gui_StreamBrowser2.this.updateUITree();
 			
 			//create the new one
 			createBrowseTree();
@@ -1127,9 +1121,6 @@ public class Gui_StreamBrowser extends JFrame implements WindowListener {
 
 		if(getStreams != null) {
 			getStreams.killMe();
-		}
-		if(getGenres != null) {
-			getGenres.killMe();
 		}
 		saveColumnWidth();
 		save();

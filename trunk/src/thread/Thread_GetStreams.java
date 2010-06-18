@@ -3,8 +3,7 @@ package thread;
 /* Written by Johannes Putzke*/
 /* eMail: die_eule@gmx.net*/ 
 
-import gui.Gui_StreamBrowser;
-
+import gui.Gui_StreamBrowser2;
 import java.util.ResourceBundle;
 import java.util.Vector;
 
@@ -17,13 +16,13 @@ import java.util.Vector;
 public class Thread_GetStreams extends Thread
 {
 	private boolean killMe = false;	//if true; ignore all other
-	private Gui_StreamBrowser streamBrowser = null;
+	private Gui_StreamBrowser2 streamBrowser = null;
 	private String genre = "";
 	private Vector<String[]> streamsPG = null;
 	private Vector<String[]> streamTmp = null;
 	private ResourceBundle trans = null;
 	
-	public Thread_GetStreams(Gui_StreamBrowser streamBrowser,String genre,ResourceBundle trans) {
+	public Thread_GetStreams(Gui_StreamBrowser2 streamBrowser,String genre,ResourceBundle trans) {
 		this.streamBrowser = streamBrowser;
 		this.genre = genre;
 		this.trans = trans;

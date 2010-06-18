@@ -53,14 +53,14 @@ public class Gui_Filter extends JPanel {
 	
 	private Vector<String[]> streamsPG = null;
 	
-	Gui_StreamBrowser streamBrowser = null;
+	Gui_StreamBrowser2 streamBrowser = null;
 	
 	/**
 	 * creates a gui where you can enter bitrates and 
 	 * types for filtering.
 	 * the visibility must be given on start 
 	 */
-	public Gui_Filter(Gui_StreamBrowser streamBrowser,boolean visible){
+	public Gui_Filter(Gui_StreamBrowser2 streamBrowser,boolean visible){
 		super();
 		this.visible = visible;
 		this.streamBrowser = streamBrowser;

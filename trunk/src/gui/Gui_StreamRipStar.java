@@ -74,7 +74,7 @@ public class Gui_StreamRipStar extends JFrame implements WindowListener
 	private Control_Stream controlStreams = null;
 	private Gui_TablePanel table = null; 	//Table that shows all streams
 	private Thread_Control_Schedul controlJob = null;
-	private Gui_StreamBrowser streamBrowser = null;
+	private Gui_StreamBrowser2 streamBrowser = null;
 	
 	//for runtime
 	private Boolean tray = false;				// false = hide tray icon
@@ -252,7 +252,7 @@ public class Gui_StreamRipStar extends JFrame implements WindowListener
 			    PopupMenu popup = new PopupMenu();
 			    MenuItem exitItem = new MenuItem("Exit StreamRipStar");
 			    MenuItem showMainWindowItem = new MenuItem("Show StreamRipStar");
-			    exitItem.addActionListener(new ExitListener(getMe()));
+			    exitItem.addActionListener(new ExitListener(Gui_StreamRipStar.this));
 			    showMainWindowItem.addActionListener(new ShowStreamRipStarListener());
 			    
 			    //visible
@@ -463,7 +463,7 @@ public class Gui_StreamRipStar extends JFrame implements WindowListener
 		editStream.addActionListener(new EditStreamListener());
 		delStream.addActionListener(new DeleteListener());
 		tuneInto.addActionListener(new playMusikListener());
-		exit.addActionListener(new ExitListener(getMe()));
+		exit.addActionListener(new ExitListener(Gui_StreamRipStar.this));
 		openMusicFolder.addActionListener(new OpenMusikFolder());
 		openWebsite.addActionListener(new BrowserListener());
 		about.addActionListener(new AboutDialogListener());
@@ -807,13 +807,9 @@ public class Gui_StreamRipStar extends JFrame implements WindowListener
 		} 
 	}
 	
-	public Gui_StreamRipStar getMe() {
-		return this;
-	}
-	
 	public void closeAll() {	
 		if(Stream.activeStreams > 0) {
-			int i = JOptionPane.showConfirmDialog(getMe(),
+			int i = JOptionPane.showConfirmDialog(Gui_StreamRipStar.this,
 					trans.getString("countStream")+" "+Stream.activeStreams+
 					"\n"+trans.getString("realyExit"),
 			"streamRipStarExit",JOptionPane.YES_NO_OPTION);
@@ -919,7 +915,7 @@ public class Gui_StreamRipStar extends JFrame implements WindowListener
 			} catch (UnsupportedLookAndFeelException e) {
 				e.printStackTrace();
 			}
-			SwingUtilities.updateComponentTreeUI(getMe());
+			SwingUtilities.updateComponentTreeUI(Gui_StreamRipStar.this);
 		}
 	}
 	
@@ -931,14 +927,14 @@ public class Gui_StreamRipStar extends JFrame implements WindowListener
 		if(getTabel().isTHSelected()) {
 			//If its currently recording -> show waring
 			if(table.getSelectedStream().getStatus()) {
-				JOptionPane.showMessageDialog(getMe()
+				JOptionPane.showMessageDialog(Gui_StreamRipStar.this
 						,trans.getString("noEditRecord"));
 			}
 			
-			new Gui_StreamOptions(table.getSelectedStream(), getMe(), false, true,false);
+			new Gui_StreamOptions(table.getSelectedStream(), Gui_StreamRipStar.this, false, true,false);
 		}
 		else {
-			JOptionPane.showMessageDialog(getMe()
+			JOptionPane.showMessageDialog(Gui_StreamRipStar.this
 					,trans.getString("select"));
 		}
 	}
@@ -967,7 +963,7 @@ public class Gui_StreamRipStar extends JFrame implements WindowListener
 			}
 		}
 		else
-			JOptionPane.showMessageDialog(getMe()
+			JOptionPane.showMessageDialog(Gui_StreamRipStar.this
 					,trans.getString("select"));
 	}
 	
@@ -976,7 +972,7 @@ public class Gui_StreamRipStar extends JFrame implements WindowListener
 		if(!recStream.getStatus()) {
 			Process p = getControlStream().startStreamripper(recStream);
 			if(p == null) {
-				JOptionPane.showMessageDialog(getMe(),trans.getString("exeError"));
+				JOptionPane.showMessageDialog(Gui_StreamRipStar.this,trans.getString("exeError"));
 				System.err.println("Error while exec streamripper");
 			} else {
 				recStream.setProcess(p);
@@ -999,7 +995,7 @@ public class Gui_StreamRipStar extends JFrame implements WindowListener
 				if(!toRec.getStatus()) {
 					Process p = getControlStream().startStreamripper(toRec);
 					if(p == null) {
-						JOptionPane.showMessageDialog(getMe(),trans.getString("exeError"));
+						JOptionPane.showMessageDialog(Gui_StreamRipStar.this,trans.getString("exeError"));
 						System.err.println("Error while exec streamripper");
 					} else {
 						toRec.increaseRippingCount();
@@ -1013,7 +1009,7 @@ public class Gui_StreamRipStar extends JFrame implements WindowListener
 			}
 		}
 		else
-			JOptionPane.showMessageDialog(getMe()
+			JOptionPane.showMessageDialog(Gui_StreamRipStar.this
 					,trans.getString("select"));
 	}
 	
@@ -1022,7 +1018,7 @@ public class Gui_StreamRipStar extends JFrame implements WindowListener
 	}
 	
 	public void openImportGui() {
-		new Gui_Import(getMe(),controlStreams);
+		new Gui_Import(Gui_StreamRipStar.this,controlStreams);
 	}
 	
 	//switch the visibility of the mainwindow
@@ -1062,10 +1058,10 @@ public class Gui_StreamRipStar extends JFrame implements WindowListener
 					controlStreams.startWebBrowser(website);
 				}	
 				else
-					JOptionPane.showMessageDialog(getMe(),trans.getString("setBrowser"));
+					JOptionPane.showMessageDialog(Gui_StreamRipStar.this,trans.getString("setBrowser"));
 			}
 			else
-				JOptionPane.showMessageDialog(getMe()
+				JOptionPane.showMessageDialog(Gui_StreamRipStar.this
 						,trans.getString("select"));
 		}
 	}
@@ -1082,13 +1078,13 @@ public class Gui_StreamRipStar extends JFrame implements WindowListener
 	
 	class PreferencesListener implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
-			new Gui_Settings(getMe());
+			new Gui_Settings(Gui_StreamRipStar.this);
 		}
 	}
 	
 	class AddStreamListener implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
-			new Gui_StreamOptions(null,getMe(),true,true,false);
+			new Gui_StreamOptions(null,Gui_StreamRipStar.this,true,true,false);
 		}
 	}
 	
@@ -1109,11 +1105,11 @@ public class Gui_StreamRipStar extends JFrame implements WindowListener
 			String browser = getControlStream().getFileBrowserPath();
 			String musicpath = getControlStream().getGeneralPath();
 			if(browser == null || browser.trim().equals("")) {
-				JOptionPane.showMessageDialog(getMe(),trans.getString("confiFileBrower"));
+				JOptionPane.showMessageDialog(Gui_StreamRipStar.this,trans.getString("confiFileBrower"));
 			}
 			else {
 				if(musicpath == null || musicpath.trim().equals("")) {
-					JOptionPane.showMessageDialog(getMe(),trans.getString("configGenralPath"));
+					JOptionPane.showMessageDialog(Gui_StreamRipStar.this,trans.getString("configGenralPath"));
 				} else {
 					new Control_RunExternProgram(browser +" "+ musicpath).run();
 				}
@@ -1127,7 +1123,7 @@ public class Gui_StreamRipStar extends JFrame implements WindowListener
 				getTabel().startMusikPlayer();
 			}
 			else
-				JOptionPane.showMessageDialog(getMe()
+				JOptionPane.showMessageDialog(Gui_StreamRipStar.this
 						,trans.getString("select"));
 		}
 	}
@@ -1139,12 +1135,12 @@ public class Gui_StreamRipStar extends JFrame implements WindowListener
 				//get der Stream Object witch is selected
 				Stream stream = table.getSelectedStream();
 				//open infodialog
-				new Gui_Infodialog(getMe(),stream);
+				new Gui_Infodialog(Gui_StreamRipStar.this,stream);
 
 			}
 			else
 				//say, that no cell is selected
-				JOptionPane.showMessageDialog(getMe()
+				JOptionPane.showMessageDialog(Gui_StreamRipStar.this
 						,trans.getString("select"));
 		}
 	}
@@ -1167,13 +1163,13 @@ public class Gui_StreamRipStar extends JFrame implements WindowListener
 	class DeleteListener implements ActionListener {
 		public void actionPerformed(ActionEvent e) {	
 			if(getTabel().isTHSelected()) {
-				int i = JOptionPane.showConfirmDialog(getMe(),
+				int i = JOptionPane.showConfirmDialog(Gui_StreamRipStar.this,
 						trans.getString("realyDelete"),
 						trans.getString("deleteStream"),JOptionPane.YES_NO_OPTION);
 				if (i == 0) {
 					//If stream is ripping-> do not delete
 					if(table.getSelectedStream().getStatus()) {
-						JOptionPane.showMessageDialog(getMe()
+						JOptionPane.showMessageDialog(Gui_StreamRipStar.this
 								,trans.getString("noDeleteRecord"));
 					} else {
 						int id = table.getSelectedStreamID();
@@ -1182,20 +1178,20 @@ public class Gui_StreamRipStar extends JFrame implements WindowListener
 				}
 			}
 			else
-				JOptionPane.showMessageDialog(getMe()
+				JOptionPane.showMessageDialog(Gui_StreamRipStar.this
 						,trans.getString("select"));
 		}
 	}
 	
 	class Edit4AllStreamListener implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
-			new Gui_Stream4AllOptions(getMe());
+			new Gui_Stream4AllOptions(Gui_StreamRipStar.this);
 		}
 	}
 	
 	class EditDefaultStreamListener implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
-			new Gui_StreamOptions(controlStreams.getDefaultStream(), getMe(),false, true, true);
+			new Gui_StreamOptions(controlStreams.getDefaultStream(), Gui_StreamRipStar.this,false, true, true);
 		}
 	}
 	
@@ -1244,7 +1240,7 @@ public class Gui_StreamRipStar extends JFrame implements WindowListener
 	class StreamBrowserListener implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
 			if(streamBrowser == null) {
-				streamBrowser = new Gui_StreamBrowser(getMe());
+				streamBrowser = new Gui_StreamBrowser2(Gui_StreamRipStar.this);
 			} else {
 				streamBrowser.setVisible(true);
 			}
