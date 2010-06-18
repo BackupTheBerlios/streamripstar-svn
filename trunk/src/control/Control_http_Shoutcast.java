@@ -118,7 +118,7 @@ public class Control_http_Shoutcast {
 		streams.trimToSize();
 		try {
 			// for testing
-			URL shoutcast = new URL("http://shoutcast.com/directory.jsp?sgenre="
+			URL shoutcast = new URL("http://shoutcast.com/directory/genreSearchResult.jsp?sgenre="
 					+ genre + "&numresult="+maxResults);
 			readGenresStream = shoutcast.openStream();
 			bw = new BufferedReader(new InputStreamReader(readGenresStream));
@@ -152,31 +152,45 @@ public class Control_http_Shoutcast {
 						if(noHTMLtext.startsWith("Station:")) {
 							if(!firstStationFound) {
 								//name of this stream
-								streamInfo[0] = readNextHtmlLine();
+								String tmp = readNextHtmlLine();
+								streamInfo[0] = tmp.substring(tmp.indexOf("title")+7);
 								
 								//current title
+								readNextHtmlLine();
 								readNextHtmlLine();
 								streamInfo[3] = readNextHtmlLine();
 								
 								//the genre
 								readNextHtmlLine();
 								streamInfo[2] = readNextHtmlLine();
-
+								
 								//the amout of current Listener
 								streamInfo[4] = readNextHtmlLine().replace(",", "");
+
+
+								readNextHtmlLine();
+								readNextHtmlLine();
+								readNextHtmlLine();
+								readNextHtmlLine();
+								
+								//the link to the website
+								streamInfo[1] = text.substring(text.indexOf("href=\"")+6, text.indexOf("target=\"_")-2);
+								           
+								//name of this stream
+								streamInfo[0] = readNextHtmlLine();
+								readNextHtmlLine();
+								
+								//der Link zur Website
+//								streamInfo[1] = text.substring(text.indexOf("href=")+6, text.indexOf("target=\"")-2);
 								
 								//the Bitrate
-								streamInfo[5] = readNextHtmlLine().substring(10).trim();
+								while(!text.startsWith("Bitrate:")){
+									text = readNextHtmlLine().trim();
+								}
+								streamInfo[5] = text.substring(8, text.indexOf("kbps")).trim();
 								
 								//in which format the stream is send
 								streamInfo[6] = readNextHtmlLine().substring(5).trim();
-
-								//name of this stream
-								readNextHtmlLine();
-								streamInfo[0] = readNextHtmlLine();
-								
-								//der Link zur Website
-								streamInfo[1] = text.substring(text.indexOf("href=")+6, text.indexOf("target=\"")-2);
 								
 								//der stream ist damit komplett
 								streams.add(streamInfo);
@@ -188,6 +202,7 @@ public class Control_http_Shoutcast {
 								
 							} else {
 								firstStationFound = true;
+								
 							}
 						}
 					}
