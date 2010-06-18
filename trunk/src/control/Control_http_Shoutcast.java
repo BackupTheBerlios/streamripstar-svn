@@ -140,7 +140,7 @@ public class Control_http_Shoutcast {
 					
 					if(text.contains("onClick=\"holdStationID('")) {
 						streamInfo[7] = text.substring(
-								text.indexOf("onClick")+25,text.indexOf("')"));
+								text.indexOf("onClick")+24,text.indexOf("')"));
 					}
 					
 					
@@ -247,7 +247,7 @@ public class Control_http_Shoutcast {
 	}
 
 	public String getBaseAddress() {
-		String shoutcast = "http://classic.shoutcast.com";
+		String shoutcast = "http://yp.shoutcast.com/sbin/tunein-station.pls?id=";
 		return shoutcast;
 	}
 }

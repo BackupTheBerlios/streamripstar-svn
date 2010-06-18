@@ -567,10 +567,7 @@ public class Gui_StreamBrowser2 extends JFrame implements WindowListener {
 			
 			if(streams != null) {
 				//save main address from site (e.g www.shoutcast.com)
-				String url  = controlHttp.getBaseAddress();
-				
-				//add stream specific url (e.g. /sbin/index.html)
-				url += streams.get(nr)[7];
+				String url  = controlHttp.getBaseAddress()+streams.get(nr)[7];
 				
 				//get address from .pls file
 				address[0] = controlHttp.getfirstStreamFromURL(url);
