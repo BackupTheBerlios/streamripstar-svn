@@ -56,7 +56,7 @@ import javax.xml.stream.XMLStreamReader;
 import javax.xml.stream.events.XMLEvent;
 
 import misc.Stream;
-import thread.Thread_GetStreams;
+import thread.Thread_GetStreams_FromShoutcast;
 import control.Control_GetPath;
 import control.Control_http_Shoutcast;
 import control.Shoutcast2;
@@ -159,7 +159,7 @@ public class Gui_StreamBrowser2 extends JFrame implements WindowListener {
 	// 6 boolean isTypeShown = true;
 	// 7 boolean isWebsiteShown = true;
 	
-	private Thread_GetStreams getStreams = null;
+	private Thread_GetStreams_FromShoutcast getStreams = null;
 	
 	//width of every column
 	private int[] columnWidths = new int[8];
@@ -1078,18 +1078,13 @@ public class Gui_StreamBrowser2 extends JFrame implements WindowListener {
 	public class TreeListener implements MouseListener {
 		public void mouseClicked(MouseEvent e){
 			boolean stop = false;
+			
 			//get selected path and look for last element
 			if(e.getClickCount() == 2 && !disableClick) {
 				if(browseTree.getSelectionPath() != null) {
 					String selectedGenre = browseTree.getSelectionPath()
 						.getLastPathComponent().toString();
-					
-					//replace some genres with right values
-					if(selectedGenre.equals("-=[Top 25 Streams]=-"))
-						selectedGenre = "TopTen";
-					if(selectedGenre.equals("Hip-Hop/Rap"))
-						selectedGenre ="Hip%20Hop";
-					//catch search defaultTreeNode
+
 					if(selectedGenre.equals(trans.getObject("GetGenres.search"))) {
 						selectedGenre =	JOptionPane.showInputDialog(getMe(),
 								trans.getString("Message.search"),
@@ -1102,7 +1097,7 @@ public class Gui_StreamBrowser2 extends JFrame implements WindowListener {
 					}
 			    	//fill table with streams
 			    	if(!stop) {
-			    		getStreams = new Thread_GetStreams(getMe(),selectedGenre,trans);
+			    		getStreams = new Thread_GetStreams_FromShoutcast(getMe(),selectedGenre,trans);
 			    		getStreams.start();
 			    	}
 				}

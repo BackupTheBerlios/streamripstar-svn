@@ -17,14 +17,12 @@ public class Control_http_Shoutcast {
 	private InputStream readGenresStream = null;
 	private InputStream readStream = null;
 	private String text = "";
-	private Vector<Vector<String>> addGenre = new Vector<Vector<String>>(0, 1);
-	private Vector<String> tmpGenres = new Vector<String>(0, 1);
-	// inlcude all streams for a genre
 	private Vector<String[]> streams = new Vector<String[]>(0, 1);
-	private String subpage = ""; // include the mainpage
 	private Boolean stopSearching = false; // stop an action
-	private int numberOfStreams = 1;
-
+	private int currentPage = 0;
+	private int totalPages = 0;
+	private int maxResults = 100;
+	
 	// streaminfo[0] = Name
 	// streaminfo[1] = Website
 	// streaminfo[2] = Genre
@@ -99,96 +97,18 @@ public class Control_http_Shoutcast {
 	}
 
 	/**
-	 * Get all Genres from the website www.shoutcast.com save it into a String
-	 * Vector in this class
-	 */
-	public void getGenresFromWebsite() {
-		//first empty the genres, else you will have it twice or more
-		addGenre.removeAllElements();
-		
-		try {
-			URL shoutcast = new URL("http://classic.shoutcast.com");
-			readGenresStream = shoutcast.openStream();
-			bw = new BufferedReader(new InputStreamReader(readGenresStream));
-			while (!stopSearching && (text = bw.readLine()) != null) {
-				// look in the source for the SearchBox including the genres
-				// if found looks for the genres
-				if (text.trim().startsWith("<td class=\"SearchBox\"")) {
-					while (!stopSearching && (text = bw.readLine()) != null) {
-
-						// form action: look for the page in with
-						// the request must be send
-						if (text.contains("<form action=")) {
-							Scanner f = new Scanner(text)
-									.useDelimiter("\\s*\"\\s*");
-							f.next();
-							subpage = f.next();
-							f.close();
-						}
-
-						// here we look for the genres itself
-						// and extract it into a vector of Strings
-						if (text.contains("<OPTION VALUE=")) {
-							Scanner f = new Scanner(text)
-									.useDelimiter("\\s*\"\\s*");
-							f.next();
-							f.next();
-							String tmp = f.next();
-							if (!tmp.startsWith("> - ")) {
-								// add collected Genres + Subgenres
-								// to one Genre
-								if (tmpGenres.capacity() > 0)
-									addGenre.add(tmpGenres);
-								tmpGenres = new Vector<String>(0, 1);
-								tmpGenres.add(tmp.substring(1));
-							} else {
-								tmpGenres.add(tmp.substring(4));
-							}
-							f.close();
-						}
-
-						// end of SearchBox
-						// stop searching
-						if (text.contains("</SELECT>")) {
-							stopSearching = true;
-						}
-					}
-				}
-			}
-			// add last genre to stream
-			if (tmpGenres.capacity() > 0) {
-				addGenre.add(tmpGenres);
-			}
-			
-			if(addGenre.get(0).get(0).equals("lass=")) {
-				addGenre.remove(0);
-				addGenre.trimToSize();
-			}
-				
-			
-			tmpGenres = new Vector<String>(0, 1);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-
-		finally {
-			stopSearching = false;
-			if (readGenresStream != null) {
-				try {
-					readGenresStream.close();
-				} catch (IOException e) {
-				}
-			}
-		}
-	}
-
-	/**
 	 * Browse the list of stream on shoutcast.com in the given genre and save it
 	 * into an Array of Strings into an vector called streaminfo. streaminfo
-	 * contains following information: streaminfo[0] = Name streaminfo[1] =
-	 * Website streaminfo[2] = Genre streaminfo[3] = now Playing streaminfo[4] =
-	 * Listeners/MaxListeners streaminfo[5] = Bitrate streaminfo[6] = Format
-	 * streaminfo[7] = Link
+	 * contains following information: 
+	 * 
+	 * streaminfo[0] = Name 
+	 * streaminfo[1] = Website 
+	 * streaminfo[2] = Genre 
+	 * streaminfo[3] = now Playing 
+	 * streaminfo[4] = Listeners
+	 * streaminfo[5] = Bitrate 
+	 * streaminfo[6] = Format
+	 * streaminfo[7] = ID
 	 * 
 	 * @param genre
 	 */
@@ -198,184 +118,83 @@ public class Control_http_Shoutcast {
 		streams.trimToSize();
 		try {
 			// for testing
-			URL shoutcast = new URL("http://classic.shoutcast.com" + subpage
-					+ "?sgenre=" + genre + "&numresult=100");
+			URL shoutcast = new URL("http://shoutcast.com/directory.jsp?sgenre="
+					+ genre + "&numresult="+maxResults);
 			readGenresStream = shoutcast.openStream();
 			bw = new BufferedReader(new InputStreamReader(readGenresStream));
 
-			// look for the stream with the number "numberOfStreams"
+			// create a stream to save the info from the website
 			String[] streamInfo = new String[8];
-
+			Boolean firstStationFound = false;
+			
 			while (!stopSearching && (text = bw.readLine()) != null) {
-				if (text.contains("<b>" + numberOfStreams + "</b>")) {
-					// only write in vector, if have the right Data
-					// witch only can happen, if numberOfStreams > 1
-					if (numberOfStreams > 1) {
-						// send a copy in vector
-						streams.add(streamInfo);
-						streamInfo = new String[8];
-					}
-
-					// clear data
-					int x = streamInfo.length;
-					for (int fx = 0; fx < x; fx++) {
-						streamInfo[fx] = "";
-					}
-					numberOfStreams++;
-				}
-
-				// look for the link
 				try {
-					if (text.contains("/sbin/shoutcast-playlist")) {
-						Scanner f = new Scanner(text)
-								.useDelimiter("\\s*href=\"\\s*");
-						f.next();
-						String tmpA = f.next();
-						f = new Scanner(tmpA).useDelimiter("\\s*\"\\s*");
-						streamInfo[7] = f.next();
-						f.close();
-					}
-
-					// look for Genre'
-					if (text.contains("<b>[")) {
-						Scanner f = new Scanner(text)
-								.useDelimiter("\\s*<b>\\s*");
-						f.next();
-						String tmpA = f.next();
-						f = new Scanner(tmpA).useDelimiter("\\s*]\\s*");
-						streamInfo[2] = f.next().substring(1);
-						f.close();
-					}
-
-					// look for the Website and strean name
-					if (text.contains("_scurl\"")) {
-
-						// website
-						Scanner f = new Scanner(text)
-								.useDelimiter("\\s*href=\"\\s*");
-						f.next();
-						String tmpA = f.next();
-						f = new Scanner(tmpA).useDelimiter("\\s*\"\\s*");
-						streamInfo[1] = f.next();
-						f.close();
-
-						// name
-						f = new Scanner(text).useDelimiter("\\s*<a\\s*");
-						f.next();
-						tmpA = f.next();
-						f = new Scanner(tmpA).useDelimiter("\\s*\">\\s*");
-						f.next();
-						tmpA = f.next();
-						f = new Scanner(tmpA).useDelimiter("\\s*</a\\s*");
-						streamInfo[0] = f.next();
-						f.close();
-					}
-
-					// actual title
-					// then reads twice a line and fetching Listeners
-					// then reads twice a line and fetching the bitrate
-					// then reads five times a line and fetching the format
-					if (text.contains("Now Playing")) {
-						// now playing:
-						Scanner f = new Scanner(text)
-								.useDelimiter("\\s*</font>\\s*");
-						f.next();
-						streamInfo[3] = f.next();
-						f.close();
-
-						// listeners/Max listeners
-						bw.readLine();
-						text = bw.readLine();
-						f = new Scanner(text).useDelimiter("\\s*font\\s*");
-						f.next();
-						String tmpB = f.next();
-						f = new Scanner(tmpB).useDelimiter("\\s*\">\\s*");
-						f.next();
-						tmpB = f.next();
-						f = new Scanner(tmpB).useDelimiter("\\s*<\\s*");
-						streamInfo[4] = f.next();
-
-						// bitrate
-						bw.readLine();
-						text = bw.readLine();
-						f = new Scanner(text).useDelimiter("\\s*font\\s*");
-						f.next();
-						tmpB = f.next();
-						f = new Scanner(tmpB).useDelimiter("\\s*\">\\s*");
-						f.next();
-						tmpB = f.next();
-						f = new Scanner(tmpB).useDelimiter("\\s*<\\s*");
-						streamInfo[5] = f.next();
-						f.close();
-
-						// Format
-						// read the fifth line
-						bw.readLine();
-						bw.readLine();
-						bw.readLine();
-						bw.readLine();
-						text = bw.readLine();
-						f = new Scanner(text).useDelimiter("\\s*font\\s*");
-						f.next();
-						tmpB = f.next();
-						f = new Scanner(tmpB).useDelimiter("\\s*\">\\s*");
-						f.next();
-						tmpB = f.next();
-						f = new Scanner(tmpB).useDelimiter("\\s*<\\s*");
-						streamInfo[6] = f.next();
-						f.close();
+					//from here we need all from the source code
+					//Look for the number of results
+					if(text.contains("totalResults=")){
+						int results = Integer.valueOf(text.substring(
+								text.indexOf("totalResults=")+13, text.indexOf(";")));
+						totalPages = results / maxResults;
+						
 					}
 					
-					if(text.trim().equals("</font></td>")) {
-						// listeners/Max listeners
-						bw.readLine();
-						text = bw.readLine();
-						Scanner f = new Scanner(text).useDelimiter("\\s*font\\s*");
-						f.next();
-						String tmpB = f.next();
-						f = new Scanner(tmpB).useDelimiter("\\s*\">\\s*");
-						f.next();
-						tmpB = f.next();
-						f = new Scanner(tmpB).useDelimiter("\\s*<\\s*");
-						streamInfo[4] = f.next();
-
-						// bitrate
-						bw.readLine();
-						text = bw.readLine();
-						f = new Scanner(text).useDelimiter("\\s*font\\s*");
-						f.next();
-						tmpB = f.next();
-						f = new Scanner(tmpB).useDelimiter("\\s*\">\\s*");
-						f.next();
-						tmpB = f.next();
-						f = new Scanner(tmpB).useDelimiter("\\s*<\\s*");
-						streamInfo[5] = f.next().trim();
-						f.close();
-
-						// Format
-						// read the fifth line
-						bw.readLine();
-						bw.readLine();
-						bw.readLine();
-						bw.readLine();
-						text = bw.readLine();
-						f = new Scanner(text).useDelimiter("\\s*font\\s*");
-						f.next();
-						tmpB = f.next();
-						f = new Scanner(tmpB).useDelimiter("\\s*\">\\s*");
-						f.next();
-						tmpB = f.next();
-						f = new Scanner(tmpB).useDelimiter("\\s*<\\s*");
-						streamInfo[6] = f.next();
-						f.close();
+					if(text.contains("onClick=\"holdStationID('")) {
+						streamInfo[7] = text.substring(
+								text.indexOf("onClick")+25,text.indexOf("')"));
 					}
-				} catch (NoSuchElementException f) {
-					System.out.println("Cant find everything the the html");
+					
+					
+					String noHTMLtext = text.toString().replaceAll("\\<.*?>","").trim();
+					
+					if(noHTMLtext.length() > 0) {
+						
+						//here we get the name of this stream
+						if(noHTMLtext.startsWith("Station:")) {
+							if(!firstStationFound) {
+								//name of this stream
+								streamInfo[0] = readNextHtmlLine();
+								
+								//current title
+								readNextHtmlLine();
+								streamInfo[3] = readNextHtmlLine();
+								
+								//the genre
+								readNextHtmlLine();
+								streamInfo[2] = readNextHtmlLine();
+
+								//the amout of current Listener
+								streamInfo[4] = readNextHtmlLine().replace(",", "");
+								
+								//the Bitrate
+								streamInfo[5] = readNextHtmlLine().substring(10).trim();
+								
+								//in which format the stream is send
+								streamInfo[6] = readNextHtmlLine().substring(5).trim();
+
+								//name of this stream
+								readNextHtmlLine();
+								streamInfo[0] = readNextHtmlLine();
+								
+								//der Link zur Website
+								streamInfo[1] = text.substring(text.indexOf("href=")+6, text.indexOf("target=\"")-2);
+								
+								//der stream ist damit komplett
+								streams.add(streamInfo);
+								
+								//erzeuge einen neuen für den nächsten Stream
+								streamInfo = new String[8];
+								
+								firstStationFound = false;
+								
+							} else {
+								firstStationFound = true;
+							}
+						}
+					}
+				} catch (NullPointerException e) {
+					System.err.println("Error while loading from shoutcast website");
 				}
 			}
-
-			// add last stream to vector
-//			streams.add(streamInfo);
 		} catch (Exception e) {
 			System.out.println("HHHIIIIIIIIERRR");
 			if (e.getMessage().startsWith("stream is closed")) {
@@ -385,7 +204,6 @@ public class Control_http_Shoutcast {
 		} finally {
 			// reset for new run
 			stopSearching = false;
-			numberOfStreams = 1;
 
 			if (readGenresStream != null) {
 				try {
@@ -395,17 +213,29 @@ public class Control_http_Shoutcast {
 			}
 		}
 	}
-
+	
 	/**
-	 * This Method return an Vector of Strings witch contains all genres roots
-	 * from site
-	 * 
-	 * @return
+	 * Read as long as the representing no-html String is empty from the 
+	 * incoming streamreader
+	 * @return the text after the empty line
 	 */
-	public Vector<Vector<String>> getAllGenres() {
-		return addGenre;
+	public String readNextHtmlLine() {
+		String next = "";
+		
+		try {
+			while(!stopSearching && (text = bw.readLine()) != null) {
+				
+				String noHTML = text.toString().replaceAll("\\<.*?>","").trim();
+				if(noHTML.length() > 0) {
+					return noHTML;
+				}
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return next;
 	}
-
+	
 	/**
 	 * This Method return an Vector of Strings witch contains all streams from a
 	 * specific genre
