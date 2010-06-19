@@ -1089,14 +1089,18 @@ public class Gui_StreamBrowser2 extends JFrame implements WindowListener {
                                 JOptionPane.PLAIN_MESSAGE);
 						if(selectedGenre == null) {
 							stop = true;
+						} else {
+							getStreams = new Thread_GetStreams_FromShoutcast(getMe(),selectedGenre,trans,true);
+				    		getStreams.start();
 						}
 
+					} else {
+				    	//fill table with streams
+				    	if(!stop) {
+				    		getStreams = new Thread_GetStreams_FromShoutcast(getMe(),selectedGenre,trans, false);
+				    		getStreams.start();
+				    	}
 					}
-			    	//fill table with streams
-			    	if(!stop) {
-			    		getStreams = new Thread_GetStreams_FromShoutcast(getMe(),selectedGenre,trans);
-			    		getStreams.start();
-			    	}
 				}
 			}
 		}

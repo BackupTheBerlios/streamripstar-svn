@@ -41,6 +41,7 @@ public class Gui_Filter extends JPanel {
 	private JLabel maxBitrateCBLabel = new JLabel("max bitrate: ");
 	
 	private JButton filterNowButton = new JButton("Filter Now");
+	private JButton filterAgainButton = new JButton("Search Again");
 	
 	private JPanel bitratePanel = new JPanel();
 	private JPanel typePanel = new JPanel();
@@ -102,6 +103,9 @@ public class Gui_Filter extends JPanel {
 		c.weighty = 0.0;
 		add(filterNowButton,c);
 		c.gridy = 3;
+		c.weighty = 0.0;
+		add(filterAgainButton,c);
+		c.gridy = 4;
 		c.weighty = 1.0;
 		add(new JLabel(),c);
 

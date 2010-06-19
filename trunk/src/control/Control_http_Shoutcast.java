@@ -8,8 +8,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URL;
-import java.util.NoSuchElementException;
-import java.util.Scanner;
 import java.util.Vector;
 
 public class Control_http_Shoutcast {
@@ -32,11 +30,27 @@ public class Control_http_Shoutcast {
 	// streaminfo[6] = Format
 	// streaminfo[7] = Link
 
-	// Constructor
+	/**
+	 * the default construcktor. Here is nothing to do at the moment
+	 */
 	public Control_http_Shoutcast() {
 
 	}
 
+	/**
+	 * Returns the number of pages available with streams if 
+	 * this search. 
+	 * @return [0] returns the current page
+	 * [1] returns the max available pages
+	 */
+	public int[] getPages() {
+		int[] pages = new int[2];
+		pages[0] = currentPage;
+		pages[1] = totalPages;
+		
+		return pages;
+	}
+	
 	/**
 	 * This method look for the stream address + port in a .pls or .m3u file and
 	 * return the first one found. If it found a stream than it returns it. else
@@ -110,16 +124,155 @@ public class Control_http_Shoutcast {
 	 * streaminfo[6] = Format
 	 * streaminfo[7] = ID
 	 * 
-	 * @param genre
+	 * @param genre the keyword (most cases the genre) 
+	 * @param keyword true, if the search should be with keywords 
 	 */
-	public void getStreamsPerGenre(String genre) {
+	public void getStreamsPerGenre(String genre, boolean keyword) {
+		if(keyword) {
+			getStreamsPerKeyword(genre);
+		} else {
+			// make sure, that the Vector of streams is empty
+			streams.removeAllElements();
+			streams.trimToSize();
+			try {
+				// for testing
+				URL shoutcast = new URL("http://shoutcast.com/directory/genreSearchResult.jsp?sgenre="
+						+ genre + "&numresult="+maxResults);
+				readGenresStream = shoutcast.openStream();
+				bw = new BufferedReader(new InputStreamReader(readGenresStream));
+	
+				// create a stream to save the info from the website
+				String[] streamInfo = new String[8];
+				Boolean firstStationFound = false;
+				
+				while (!stopSearching && (text = bw.readLine()) != null) {
+					try {
+						//from here we need all from the source code
+						//Look for the number of results
+						if(text.contains("totalResults=")){
+							int results = Integer.valueOf(text.substring(
+									text.indexOf("totalResults=")+13, text.indexOf(";")));
+							totalPages = results / maxResults;
+							
+						}
+						
+						if(text.contains("onClick=\"holdStationID('")) {
+							streamInfo[7] = text.substring(
+									text.indexOf("onClick")+24,text.indexOf("')"));
+						}
+						
+						
+						String noHTMLtext = text.toString().replaceAll("\\<.*?>","").trim();
+						
+						if(noHTMLtext.length() > 0) {
+							
+							//here we get the name of this stream
+							if(noHTMLtext.startsWith("Station:")) {
+								if(!firstStationFound) {
+									//name of this stream
+									String tmp = readNextHtmlLine();
+									streamInfo[0] = tmp.substring(tmp.indexOf("title")+7);
+									
+									//current title
+									readNextHtmlLine();
+									readNextHtmlLine();
+									streamInfo[3] = readNextHtmlLine();
+									
+									//the genre
+									readNextHtmlLine();
+									streamInfo[2] = readNextHtmlLine();
+									
+									//the amout of current Listener
+									streamInfo[4] = readNextHtmlLine().replace(",", "");
+	
+	
+									readNextHtmlLine();
+									readNextHtmlLine();
+									readNextHtmlLine();
+									readNextHtmlLine();
+									
+									//the link to the website
+									streamInfo[1] = text.substring(text.indexOf("href=\"")+6, text.indexOf("target=\"_")-2);
+									           
+									//name of this stream
+									streamInfo[0] = readNextHtmlLine();
+									readNextHtmlLine();
+									
+									//der Link zur Website
+	//								streamInfo[1] = text.substring(text.indexOf("href=")+6, text.indexOf("target=\"")-2);
+									
+									//the Bitrate
+									while(!text.startsWith("Bitrate:")){
+										text = readNextHtmlLine().trim();
+									}
+									streamInfo[5] = text.substring(8, text.indexOf("kbps")).trim();
+									
+									//in which format the stream is send
+									streamInfo[6] = readNextHtmlLine().substring(5).trim();
+									
+									//der stream ist damit komplett
+									streams.add(streamInfo);
+									
+									//erzeuge einen neuen für den nächsten Stream
+									streamInfo = new String[8];
+									
+									firstStationFound = false;
+									
+								} else {
+									firstStationFound = true;
+									
+								}
+							}
+						}
+					} catch (NullPointerException e) {
+						System.err.println("Error while loading from shoutcast website");
+					}
+				}
+			} catch (Exception e) {
+				System.out.println("HHHIIIIIIIIERRR");
+				if (e.getMessage().startsWith("stream is closed")) {
+					stopSearching = true;
+				} else
+					e.printStackTrace();
+			} finally {
+				// reset for new run
+				stopSearching = false;
+	
+				if (readGenresStream != null) {
+					try {
+						readGenresStream.close();
+					} catch (IOException e) {
+					}
+				}
+			}
+		}
+	}
+	
+	/**
+	 * Browse the list of stream on shoutcast.com in the given genre and save it
+	 * into an Array of Strings into an vector called streaminfo. streaminfo
+	 * contains following information: 
+	 * 
+	 * streaminfo[0] = Name 
+	 * streaminfo[1] = Website 
+	 * streaminfo[2] = Genre 
+	 * streaminfo[3] = now Playing 
+	 * streaminfo[4] = Listeners
+	 * streaminfo[5] = Bitrate 
+	 * streaminfo[6] = Format
+	 * streaminfo[7] = ID
+	 * 
+	 * @param genre the keyword for searching
+	 * @param keyword true, if the search should be with keywords 
+	 */
+	public void getStreamsPerKeyword(String keyword) {
 		// make sure, that the Vector of streams is empty
 		streams.removeAllElements();
 		streams.trimToSize();
 		try {
 			// for testing
-			URL shoutcast = new URL("http://shoutcast.com/directory/genreSearchResult.jsp?sgenre="
-					+ genre + "&numresult="+maxResults);
+			URL shoutcast = new URL("http://shoutcast.com/directory/searchKeyword.jsp?s="
+					+ keyword + "&numresult="+maxResults);
 			readGenresStream = shoutcast.openStream();
 			bw = new BufferedReader(new InputStreamReader(readGenresStream));
 
@@ -151,12 +304,13 @@ public class Control_http_Shoutcast {
 						//here we get the name of this stream
 						if(noHTMLtext.startsWith("Station:")) {
 							if(!firstStationFound) {
+//								//name of this stream
+//								String tmp = readNextHtmlLine();
+//								streamInfo[0] = tmp.substring(tmp.indexOf("title")+7);
 								//name of this stream
-								String tmp = readNextHtmlLine();
-								streamInfo[0] = tmp.substring(tmp.indexOf("title")+7);
+								streamInfo[0] = readNextHtmlLine();
 								
 								//current title
-								readNextHtmlLine();
 								readNextHtmlLine();
 								streamInfo[3] = readNextHtmlLine();
 								
@@ -167,31 +321,21 @@ public class Control_http_Shoutcast {
 								//the amout of current Listener
 								streamInfo[4] = readNextHtmlLine().replace(",", "");
 
-
-								readNextHtmlLine();
-								readNextHtmlLine();
-								readNextHtmlLine();
-								readNextHtmlLine();
-								
-								//the link to the website
-								streamInfo[1] = text.substring(text.indexOf("href=\"")+6, text.indexOf("target=\"_")-2);
-								           
-								//name of this stream
-								streamInfo[0] = readNextHtmlLine();
-								readNextHtmlLine();
-								
-								//der Link zur Website
-//								streamInfo[1] = text.substring(text.indexOf("href=")+6, text.indexOf("target=\"")-2);
-								
 								//the Bitrate
-								while(!text.startsWith("Bitrate:")){
-									text = readNextHtmlLine().trim();
-								}
-								streamInfo[5] = text.substring(8, text.indexOf("kbps")).trim();
+								readNextHtmlLine();
+								streamInfo[5] = readNextHtmlLine();
 								
-								//in which format the stream is send
-								streamInfo[6] = readNextHtmlLine().substring(5).trim();
+								//Typ : Mp3 or a++
+								readNextHtmlLine();
+								streamInfo[6] = readNextHtmlLine();
 								
+								//name of this stream
+								readNextHtmlLine();
+								bw.readLine();
+								text = bw.readLine();
+								streamInfo[1] = text.substring(text.indexOf("href=\"")+6, text.indexOf("target=\"_")-2);
+								streamInfo[0] = readNextHtmlLine();
+
 								//der stream ist damit komplett
 								streams.add(streamInfo);
 								
