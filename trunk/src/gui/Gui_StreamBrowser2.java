@@ -184,6 +184,7 @@ public class Gui_StreamBrowser2 extends JFrame implements WindowListener {
 	
 	//the genre we loaded at last
 	private String selectedGenre = "";
+	private boolean isKeyword = false;
 	
 	public Gui_StreamBrowser2(Gui_StreamRipStar StreamRipStar) {
 		super("StreamBrowser");
@@ -1140,7 +1141,7 @@ public class Gui_StreamBrowser2 extends JFrame implements WindowListener {
 				System.out.println("Can load the previous page, because the current page is the first one");
 				setStatusText("Can load the previous page, because the current page is the first one");
 			} else {
-				getStreams = new Thread_GetStreams_FromShoutcast(getMe(),selectedGenre,trans,true,false,true);
+				getStreams = new Thread_GetStreams_FromShoutcast(getMe(),selectedGenre,trans,isKeyword,false,true);
 	    		getStreams.start();
 			}
 		}
@@ -1159,7 +1160,7 @@ public class Gui_StreamBrowser2 extends JFrame implements WindowListener {
 				System.out.println("Can load the next page, because the current page is the last one");
 				setStatusText("Can load the next page, because the current page is the last one");
 			} else {
-				getStreams = new Thread_GetStreams_FromShoutcast(getMe(),selectedGenre,trans,true,true,false);
+				getStreams = new Thread_GetStreams_FromShoutcast(getMe(),selectedGenre,trans,isKeyword,true,false);
 	    		getStreams.start();
 			}
 		}
@@ -1188,14 +1189,16 @@ public class Gui_StreamBrowser2 extends JFrame implements WindowListener {
 						if(selectedGenre == null) {
 							stop = true;
 						} else {
-							getStreams = new Thread_GetStreams_FromShoutcast(getMe(),selectedGenre,trans,true,false,false);
+							isKeyword = true;
+							getStreams = new Thread_GetStreams_FromShoutcast(getMe(),selectedGenre,trans,isKeyword,false,false);
 				    		getStreams.start();
 						}
 
 					} else {
 				    	//fill table with streams
 				    	if(!stop) {
-				    		getStreams = new Thread_GetStreams_FromShoutcast(getMe(),selectedGenre,trans, false,false,false);
+				    		isKeyword = false;
+				    		getStreams = new Thread_GetStreams_FromShoutcast(getMe(),selectedGenre,trans, isKeyword,false,false);
 				    		getStreams.start();
 				    	}
 					}

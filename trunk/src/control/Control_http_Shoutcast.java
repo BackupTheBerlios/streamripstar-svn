@@ -42,6 +42,7 @@ public class Control_http_Shoutcast {
 	 */
 	public void resetPages() {
 		currentPage=0;
+		totalPages=0;
 	}
 	
 	/**
@@ -78,7 +79,7 @@ public class Control_http_Shoutcast {
 	 * @return All pages as an integer
 	 */
 	public int getTotalPages() {
-		return totalPages;
+		return totalPages+1;
 	}
 	
 	/**
@@ -196,7 +197,7 @@ public class Control_http_Shoutcast {
 						if(text.contains("totalResults=")){
 							int results = Integer.valueOf(text.substring(
 									text.indexOf("totalResults=")+13, text.indexOf(";")));
-							totalPages = results / maxResults;
+							totalPages = (results / maxResults);
 							
 						}
 						
@@ -334,7 +335,7 @@ public class Control_http_Shoutcast {
 					if(text.contains("totalResults=")){
 						int results = Integer.valueOf(text.substring(
 								text.indexOf("totalResults=")+13, text.indexOf(";")));
-						totalPages = results / maxResults;
+						totalPages = (results / maxResults);
 						
 					}
 					
