@@ -49,9 +49,9 @@ public class Gui_AboutStreamRipStar extends JDialog
 	private JLabel license = new JLabel("License :");
 	private JTextField licenceName = new JTextField("GPLV3");
 	private JLabel version = new JLabel("Version :");
-	private JTextField versionName = new JTextField("StreamRipStar 0.5.8 Beta1");
+	private JTextField versionName = new JTextField("StreamRipStar 0.5.9");
 	private JLabel revision = new JLabel("Revision :");
-	private JTextField revisionnumber = new JTextField("29");
+	private JTextField revisionnumber = new JTextField("41");
 	private JLabel streamRipStarSourceforgeSite = new JLabel("StreamRipStars Projektpage :");
 	private JTextField streamRipStarSourceforgeAddress = new JTextField("http://developer.berlios.de/projects/streamripstar/");
 	private JLabel streamRipStarHomepage = new JLabel("StreamRipStars Wiki :");

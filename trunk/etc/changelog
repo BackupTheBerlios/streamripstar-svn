@@ -176,3 +176,9 @@
  0.5.7 -> 0.5.8
  - fix: Streambrowser finds no streams anymore
  - add: Streambrowser can now access more pages per result
+ 
+ ----------------------------
+ 
+ 0.5.8 -> 0.5.9
+ 
+ - fix: found no updates
