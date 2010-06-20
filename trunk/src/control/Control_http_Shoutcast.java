@@ -225,7 +225,10 @@ public class Control_http_Shoutcast {
 							}
 						}
 					} catch (NullPointerException e) {
-						System.err.println("Error while loading from shoutcast website");
+						System.out.println("Error while loading from shoutcast website");
+					} catch (StringIndexOutOfBoundsException e) {
+						System.out.println("Error while loading from shoutcast website");
+						firstStationFound = false;
 					}
 				}
 			} catch (Exception e) {
