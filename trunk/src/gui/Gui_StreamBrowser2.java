@@ -15,7 +15,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.io.FileInputStream;
@@ -183,6 +182,9 @@ public class Gui_StreamBrowser2 extends JFrame implements WindowListener {
 	//the table models
 	private boolean disableClick = false;
 	
+	//the genre we loaded at last
+	private String selectedGenre = "";
+	
 	public Gui_StreamBrowser2(Gui_StreamRipStar StreamRipStar) {
 		super("StreamBrowser");
 		this.StreamRipStar = StreamRipStar;
@@ -328,7 +330,6 @@ public class Gui_StreamBrowser2 extends JFrame implements WindowListener {
 		setVisible(true);
 		
 		//Listeners
-
 		browseTable.addMouseListener( new BrowseMouseListener() );
 		browseTable.getTableHeader().setComponentPopupMenu(selShowPopup);
 		listenToButton.addActionListener( new playMusikListener() );
@@ -336,6 +337,9 @@ public class Gui_StreamBrowser2 extends JFrame implements WindowListener {
 		abortButton.addActionListener(new AbortThreadsListener());
 		addAndRecButton.addActionListener(new AddAndStartRecordListener());
 		filterButton.addActionListener(new FilterListener());
+		nextPageButton.addActionListener(new NextPageListener());
+		lastPageButton.addActionListener(new LastPageListener());
+		
 		addWindowListener(this);
 		
 		//no extra space for the genretable
@@ -532,6 +536,7 @@ public class Gui_StreamBrowser2 extends JFrame implements WindowListener {
 		startRecordMenuItem.addActionListener(new AddAndStartRecordListener());
 		saveMenuItem.addActionListener( new AddToStreamRipStarListener() );
 		hearMenuItem.addActionListener( new playMusikListener() );
+		
 		
 		showGenreColumn.setSelected(isColumnShow[1]);
 		showDescriptionColumn.setSelected(isColumnShow[2]);
@@ -1117,27 +1122,35 @@ public class Gui_StreamBrowser2 extends JFrame implements WindowListener {
 	/**
 	 * Loads the last page from the website for this results
 	 */
-	public class LastPageListener extends MouseAdapter {
-		public void mouseClicked(MouseEvent e){
+	public class LastPageListener implements ActionListener {
+		@Override
+		public void actionPerformed(ActionEvent arg0) {
 			//if the last page is shown, do not load the next last page
 			if(controlHttp.getCurrentPage() <= 1) {
 				System.out.println("Can load the previous page, because the current page is the first one");
 				setStatusText("Can load the previous page, because the current page is the first one");
 			} else {
-				
+				getStreams = new Thread_GetStreams_FromShoutcast(getMe(),selectedGenre,trans,true,false,true);
+	    		getStreams.start();
 			}
 		}
 	}
 	
-	public class NextPageListener extends MouseAdapter {
-		public void mouseClicked(MouseEvent e){
+	/**
+	 * loads the next page for this results from the website
+	 * 
+	 */
+	public class NextPageListener implements ActionListener {
+		@Override
+		public void actionPerformed(ActionEvent e){
 			
 			//if the last page is shown, do not load the next page
 			if(controlHttp.getCurrentPage() >= controlHttp.getTotalPages()) {
 				System.out.println("Can load the next page, because the current page is the last one");
 				setStatusText("Can load the next page, because the current page is the last one");
 			} else {
-				
+				getStreams = new Thread_GetStreams_FromShoutcast(getMe(),selectedGenre,trans,true,true,false);
+	    		getStreams.start();
 			}
 		}
 	}
@@ -1154,7 +1167,7 @@ public class Gui_StreamBrowser2 extends JFrame implements WindowListener {
 			//get selected path and look for last element
 			if(e.getClickCount() == 2 && !disableClick) {
 				if(browseTree.getSelectionPath() != null) {
-					String selectedGenre = browseTree.getSelectionPath()
+					selectedGenre = browseTree.getSelectionPath()
 						.getLastPathComponent().toString();
 
 					if(selectedGenre.equals(trans.getObject("GetGenres.search"))) {
@@ -1165,14 +1178,14 @@ public class Gui_StreamBrowser2 extends JFrame implements WindowListener {
 						if(selectedGenre == null) {
 							stop = true;
 						} else {
-							getStreams = new Thread_GetStreams_FromShoutcast(getMe(),selectedGenre,trans,true);
+							getStreams = new Thread_GetStreams_FromShoutcast(getMe(),selectedGenre,trans,true,false,false);
 				    		getStreams.start();
 						}
 
 					} else {
 				    	//fill table with streams
 				    	if(!stop) {
-				    		getStreams = new Thread_GetStreams_FromShoutcast(getMe(),selectedGenre,trans, false);
+				    		getStreams = new Thread_GetStreams_FromShoutcast(getMe(),selectedGenre,trans, false,false,false);
 				    		getStreams.start();
 				    	}
 					}

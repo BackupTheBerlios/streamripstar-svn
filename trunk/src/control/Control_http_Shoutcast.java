@@ -38,6 +38,33 @@ public class Control_http_Shoutcast {
 	}
 	
 	/**
+	 * set the to laod page of the first one
+	 */
+	public void resetPages() {
+		currentPage=0;
+	}
+	
+	/**
+	 * Increases the to load page by one. This will only happen
+	 * if the current page is not the last one
+	 */
+	public void nextPage() {
+		if(totalPages > currentPage) {
+			currentPage++;
+		}
+	}
+	
+	/**
+	 * decreases the to load page by one. This will only happen
+	 * if the current page is not the first
+	 */
+	public void prevoiousPage() {
+		if( currentPage >= 1) {
+			currentPage--;
+		}
+	}
+	
+	/**
 	 * gives the current page back, which is loaded from shoutcast
 	 * @return the current page for the current loaded search
 	 */
@@ -153,8 +180,8 @@ public class Control_http_Shoutcast {
 			streams.trimToSize();
 			try {
 				// for testing
-				URL shoutcast = new URL("http://shoutcast.com/directory/genreSearchResult.jsp?sgenre="
-						+ genre + "&numresult="+maxResults);
+				URL shoutcast = new URL("http://shoutcast.com/directory/genreSearchResult.jsp?startIndex="+((currentPage*maxResults)+1)+
+						"&sgenre="+ genre + "&numresult="+maxResults);
 				readGenresStream = shoutcast.openStream();
 				bw = new BufferedReader(new InputStreamReader(readGenresStream));
 	
@@ -291,8 +318,8 @@ public class Control_http_Shoutcast {
 		streams.trimToSize();
 		try {
 			// for testing
-			URL shoutcast = new URL("http://shoutcast.com/directory/searchKeyword.jsp?s="
-					+ keyword + "&numresult="+maxResults);
+			URL shoutcast = new URL("http://shoutcast.com/directory/searchKeyword.jsp?startIndex="+((currentPage*maxResults)+1)+
+					"&s=" + keyword + "&numresult="+maxResults);
 			readGenresStream = shoutcast.openStream();
 			bw = new BufferedReader(new InputStreamReader(readGenresStream));
 
@@ -372,6 +399,9 @@ public class Control_http_Shoutcast {
 					}
 				} catch (NullPointerException e) {
 					System.err.println("Error while loading from shoutcast website");
+				} catch (StringIndexOutOfBoundsException e) {
+					System.out.println("Error while loading from shoutcast website");
+					firstStationFound = false;
 				}
 			}
 		} catch (Exception e) {

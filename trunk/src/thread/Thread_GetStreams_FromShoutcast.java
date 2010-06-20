@@ -17,16 +17,21 @@ public class Thread_GetStreams_FromShoutcast extends Thread
 {
 	private boolean killMe = false;	//if true; ignore all other
 	private boolean isKeyword = false;
+	private boolean nextPage = false;
+	private boolean lastPage = false;
 	private Gui_StreamBrowser2 streamBrowser = null;
 	private String genre = "";
 	private Vector<String[]> streamsPG = null;
 	private Vector<String[]> streamTmp = null;
 	private ResourceBundle trans = null;
 	
-	public Thread_GetStreams_FromShoutcast(Gui_StreamBrowser2 streamBrowser,String genre,ResourceBundle trans, boolean isKeyword) {
+	public Thread_GetStreams_FromShoutcast(Gui_StreamBrowser2 streamBrowser,
+			String genre,ResourceBundle trans, boolean isKeyword, boolean nextPage, boolean lastPage) {
 		this.streamBrowser = streamBrowser;
 		this.genre = genre;
 		this.trans = trans;
+		this.nextPage = nextPage;
+		this.lastPage = lastPage;
 		this.isKeyword = isKeyword;
 	}
 	
@@ -44,6 +49,21 @@ public class Thread_GetStreams_FromShoutcast extends Thread
 		
 		//disable clicking on the genre
 		streamBrowser.disableModelClick(true);
+	
+		//should we load the next page?
+		if(!killMe && nextPage) {
+			streamBrowser.getControlHttp().nextPage();
+		}
+		
+		//should we reset the counter for the pages?
+		if(!killMe && lastPage && nextPage) {
+			streamBrowser.getControlHttp().resetPages();
+		}
+		
+		//should we load the last page?
+		if(!killMe && lastPage) {
+			streamBrowser.getControlHttp().prevoiousPage();
+		}
 		
 		//receive streams from site in Vector...
 		if(!killMe) {
