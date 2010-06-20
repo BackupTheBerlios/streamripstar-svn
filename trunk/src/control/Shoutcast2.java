@@ -13,7 +13,7 @@ public class Shoutcast2 {
 	 * starts with the genre. All other are the subgenres for this genre
 	 */
 	public String[][] getGenres() {
-		String[][] genres = new String[12][];
+		String[][] genres = new String[24][];
 		
 		String[] tmpGenres = new String[23];
 		
@@ -235,7 +235,184 @@ public class Shoutcast2 {
 		tmpGenres[17] = "Tropicalia";
 
 		genres[11] = tmpGenres;
+		tmpGenres = new String[11];
 		
+		tmpGenres[0] = "Metal";
+		tmpGenres[1] = "Black Metal";
+		tmpGenres[2] = "Classic Metal";
+		tmpGenres[3] = "Extreme Metal";
+		tmpGenres[4] = "Grindcore";
+		tmpGenres[5] = "Hair Metal";
+		tmpGenres[6] = "Heavy Metal";
+		tmpGenres[7] = "Metalcore";
+		tmpGenres[8] = "Power Metal";
+		tmpGenres[9] = "Progressive Metal";
+		tmpGenres[10] = "Rap Metal";
+		
+		genres[12] = tmpGenres;
+		tmpGenres = new String[6];
+		
+		tmpGenres[0] = "New Age";
+		tmpGenres[1] = "Environmental";
+		tmpGenres[2] = "Ethnic Fusion";
+		tmpGenres[3] = "Healing";
+		tmpGenres[4] = "Meditation";
+		tmpGenres[5] = "Spiritual";
+
+		genres[13] = tmpGenres;
+		tmpGenres = new String[11];
+		
+		tmpGenres[0] = "Pop";
+		tmpGenres[1] = "Adult Contemporary";
+		tmpGenres[2] = "Barbershop";
+		tmpGenres[3] = "Bubblegum Pop";
+		tmpGenres[4] = "Dance Pop";
+		tmpGenres[5] = "IdolsJPOP";
+		tmpGenres[6] = "Oldies";
+		tmpGenres[7] = "Soft Rock";
+		tmpGenres[8] = "Teen Pop";
+		tmpGenres[9] = "Top 40";
+		tmpGenres[10] = "World Pop";
+	
+		genres[14] = tmpGenres;
+		tmpGenres = new String[5];
+		
+		tmpGenres[0] = "Public Radio";
+		tmpGenres[1] = "College";
+		tmpGenres[2] = "News";
+		tmpGenres[3] = "Sports";
+		tmpGenres[4] = "Talk";
+		
+		genres[15] = tmpGenres;
+		tmpGenres = new String[10];
+		
+		tmpGenres[0] = "R&B/Urban";
+		tmpGenres[1] = "Classic R&B";
+		tmpGenres[2] = "Contemporary R&B";
+		tmpGenres[3] = "Doo Wop";
+		tmpGenres[4] = "Funk";
+		tmpGenres[5] = "Motown";
+		tmpGenres[6] = "Neo-Soul";
+		tmpGenres[7] = "Quiet Storm";
+		tmpGenres[8] = "Soul";
+		tmpGenres[9] = "Urban Contemporary";
+
+		genres[16] = tmpGenres;
+		tmpGenres = new String[12];
+		
+		tmpGenres[0] = "Rap";
+		tmpGenres[1] = "Alternative Rap";
+		tmpGenres[2] = "Dirty South";
+		tmpGenres[3] = "East Coast Rap";
+		tmpGenres[4] = "Freestyle";
+		tmpGenres[5] = "Gangsta Rap";
+		tmpGenres[6] = "Hip Hop";
+		tmpGenres[7] = "Mixtapes";
+		tmpGenres[8] = "Old School";
+		tmpGenres[9] = "Turntablism";
+		tmpGenres[10] = "Underground Hip-Hop";
+		tmpGenres[11] = "West Coast Rap";
+		
+		genres[17] = tmpGenres;
+		tmpGenres = new String[8];
+		
+		tmpGenres[0] = "Reggae";
+		tmpGenres[1] = "Contemporary Reggae";
+		tmpGenres[2] = "Dancehall";
+		tmpGenres[3] = "Dub";
+		tmpGenres[4] = "Pop-Reggae";
+		tmpGenres[5] = "Ragga";
+		tmpGenres[6] = "Reggae Roots";
+		tmpGenres[7] = "Rock Steady";
+		
+		genres[18] = tmpGenres;
+		tmpGenres = new String[14];
+
+		tmpGenres[0] = "Rock";
+		tmpGenres[1] = "Adult Album Alternative";
+		tmpGenres[2] = "British Invasion";
+		tmpGenres[3] = "Classic Rock";
+		tmpGenres[4] = "Garage Rock";
+		tmpGenres[5] = "Glam";
+		tmpGenres[6] = "Hard Rock";
+		tmpGenres[7] = "Jam Bands";
+		tmpGenres[8] = "Piano Rock";
+		tmpGenres[9] = "Prog Rock";
+		tmpGenres[10] = "Psychedelic";
+		tmpGenres[11] = "Rock & Roll";
+		tmpGenres[12] = "Rockabilly";
+		tmpGenres[13] = "Singer/SongwriterSurf";
+		
+		genres[19] = tmpGenres;
+		tmpGenres = new String[11];
+		
+		tmpGenres[0] = "Seasonal/Holiday";
+		tmpGenres[1] = "Anniversary";
+		tmpGenres[2] = "Birthday";
+		tmpGenres[3] = "Christmas";
+		tmpGenres[4] = "Halloween";
+		tmpGenres[5] = "Hanukkah";
+		tmpGenres[6] = "Honeymoon";
+		tmpGenres[7] = "Kwanzaa";
+		tmpGenres[8] = "Valentine";
+		tmpGenres[9] = "Wedding";
+		tmpGenres[10] = "Winter";
+		
+		genres[20] = tmpGenres;
+		tmpGenres = new String[6];
+		
+		tmpGenres[0] = "Soundtracks";
+		tmpGenres[1] = "Anime";
+		tmpGenres[2] = "Kids";
+		tmpGenres[3] = "Original Score";
+		tmpGenres[4] = "Showtunes";
+		tmpGenres[5] = "Video Game Music";
+		
+		genres[21] = tmpGenres;
+		tmpGenres = new String[15];
+		
+		tmpGenres[0] = "Talk";
+		tmpGenres[1] = "Blog";
+		tmpGenres[2] = "Talk";
+		tmpGenres[3] = "Comedy";
+		tmpGenres[4] = "Community";
+		tmpGenres[5] = "Educational";
+		tmpGenres[6] = "Government";
+		tmpGenres[7] = "News";
+		tmpGenres[8] = "Old Time Radio";
+		tmpGenres[9] = "Other Talk";
+		tmpGenres[10] = "Political";
+		tmpGenres[11] = "Scanner";
+		tmpGenres[12] = "Spoken Word";
+		tmpGenres[13] = "Sports";
+		tmpGenres[14] = "Technology";
+
+		genres[22] = tmpGenres;
+		tmpGenres = new String[21];
+		
+		tmpGenres[0] = "Themes";
+		tmpGenres[1] = "Adult";
+		tmpGenres[2] = "Best Of";
+		tmpGenres[3] = "Chill";
+		tmpGenres[4] = "Eclectic";
+		tmpGenres[5] = "Experimental";
+		tmpGenres[6] = "Female";
+		tmpGenres[7] = "Heartache";
+		tmpGenres[8] = "Instrumental";
+		tmpGenres[9] = "LGBT";
+		tmpGenres[10] = "Love/Romance";
+		tmpGenres[11] = "Party Mix";
+		tmpGenres[12] = "Patriotic";
+		tmpGenres[13] = "Rainy Day Mix";
+		tmpGenres[14] = "Reality";
+		tmpGenres[15] = "Sexy";
+		tmpGenres[16] = "Shuffle";
+		tmpGenres[17] = "Travel Mix";
+		tmpGenres[18] = "Tribute";
+		tmpGenres[19] = "Trippy";
+		tmpGenres[20] = "Work Mix";
+
+		genres[23] = tmpGenres;
 		return genres;
 		
 		

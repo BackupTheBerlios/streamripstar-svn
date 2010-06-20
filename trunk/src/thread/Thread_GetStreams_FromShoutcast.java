@@ -56,7 +56,7 @@ public class Thread_GetStreams_FromShoutcast extends Thread
 		}
 		
 		//should we reset the counter for the pages?
-		if(!killMe && lastPage && nextPage) {
+		if(!killMe && !lastPage && !nextPage) {
 			streamBrowser.getControlHttp().resetPages();
 		}
 		
