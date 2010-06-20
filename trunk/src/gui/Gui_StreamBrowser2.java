@@ -233,6 +233,8 @@ public class Gui_StreamBrowser2 extends JFrame implements WindowListener {
 		addAndRecButton.setToolTipText(toolTips.getString("StreamBrowser.addAndRecord"));
 		abortButton.setToolTipText(toolTips.getString("StreamBrowser.abort"));
 		filterButton.setToolTipText(toolTips.getString("StreamBrowser.filter"));
+		lastPageButton.setToolTipText(toolTips.getString("StreamBrowser.lastPage"));
+		nextPageButton.setToolTipText(toolTips.getString("StreamBrowser.nextPage"));
 	}
 	
 	
@@ -249,6 +251,8 @@ public class Gui_StreamBrowser2 extends JFrame implements WindowListener {
 			addAndRecButton.setText(trans.getString("iconPanel.addAndRecButton"));
 			abortButton.setText(trans.getString("iconPanel.abortButton"));
 			filterButton.setText(trans.getString("iconPanel.filterButton"));
+			lastPageButton.setText(trans.getString("iconPanel.lastPage"));
+			nextPageButton.setText(trans.getString("iconPanel.nextPage"));
 			
 			if (newFont != null) {
 				listenToButton.setFont(newFont);
@@ -349,6 +353,9 @@ public class Gui_StreamBrowser2 extends JFrame implements WindowListener {
 		
 		//
 		browseTree.addMouseListener(new TreeListener());
+		
+		//update the Page x of x accessible
+		this.updatePageBar();
 	}
 	
 	private void setLanguage() {
@@ -359,6 +366,9 @@ public class Gui_StreamBrowser2 extends JFrame implements WindowListener {
 			addAndRecButton.setText(trans.getString("iconPanel.addAndRecButton"));
 			abortButton.setText(trans.getString("iconPanel.abortButton"));
 			filterButton.setText(trans.getString("iconPanel.filterButton"));
+			nextPageButton.setText(trans.getString("iconPanel.nextPage"));
+			lastPageButton.setText(trans.getString("iconPanel.lastPage"));
+			pagesLabel.setText(trans.getString("iconPanel.page")+" 0 "+trans.getString("iconPanel.of")+ " 0");
 			
 			//popup - ColumControl
 			showGenreColumn.setText(trans.getString("ColumControl.showGenreColumn"));
@@ -1102,8 +1112,8 @@ public class Gui_StreamBrowser2 extends JFrame implements WindowListener {
 	 */
 	public void updatePageBar() {
 		//update the amount of pages
-		pagesLabel.setText("Page "+controlHttp.getCurrentPage()+
-				" of "+controlHttp.getTotalPages());
+		pagesLabel.setText(trans.getString("iconPanel.page")+ " " +controlHttp.getCurrentPage()+ " " 
+				+trans.getString("iconPanel.of")+ " " + controlHttp.getTotalPages());
 		
 		//activate the correct one
 		if(controlHttp.getCurrentPage() <= 1) {
