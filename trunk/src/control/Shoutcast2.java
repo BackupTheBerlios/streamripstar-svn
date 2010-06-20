@@ -1,7 +1,5 @@
 package control;
 
-import java.util.Vector;
-
 /* This program is licensed under the terms of the GPLV3 or newer*/
 /* Written by Johannes Putzke*/
 /* eMail: die_eule@gmx.net*/ 

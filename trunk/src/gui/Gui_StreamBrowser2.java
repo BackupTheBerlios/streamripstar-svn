@@ -119,6 +119,8 @@ public class Gui_StreamBrowser2 extends JFrame implements WindowListener {
 	private ImageIcon saveIconForPopUp = new ImageIcon((URL)getClass().getResource("/Icons/save_small.png"));
 	private ImageIcon leafIcon = new ImageIcon((URL)getClass().getResource("/Icons/streambrowser/leaf-24.png"));
 	private ImageIcon openIcon = new ImageIcon((URL)getClass().getResource("/Icons/streambrowser/root.png"));
+	private ImageIcon nextPageIcon = new ImageIcon((URL)getClass().getResource("/Icons/streambrowser/nextPage.png"));
+	private ImageIcon previousIcon = new ImageIcon((URL)getClass().getResource("/Icons/streambrowser/previousPage.png"));
 	
 	//buttons for Iconbars
 	private JButton addToStreamRipStarButton = new JButton("Add to StreamRipStar",saveIcon);	
@@ -126,6 +128,10 @@ public class Gui_StreamBrowser2 extends JFrame implements WindowListener {
 	private JButton abortButton = new JButton("Abort",abortIcon);
 	private JButton addAndRecButton = new JButton("Add and Record", addAndRecordIcon);
 	private JButton filterButton = new JButton("Filter", filterIcon );
+	private JButton nextPageButton = new JButton("Next Page", nextPageIcon );
+	private JButton lastPageButton = new JButton("Previous Page", previousIcon );
+	
+	private JLabel pagesLabel = new JLabel("Page 0 of 0");
 	
 	//label for status
 	private JLabel stautsLabel = new JLabel("Do nothing");
@@ -248,6 +254,8 @@ public class Gui_StreamBrowser2 extends JFrame implements WindowListener {
 				addAndRecButton.setFont(newFont);
 				abortButton.setFont(newFont);
 				filterButton.setFont(newFont);
+				lastPageButton.setFont(newFont);
+				nextPageButton.setFont(newFont);
 			}
 		} else {
 			listenToButton.setText(null);
@@ -255,6 +263,8 @@ public class Gui_StreamBrowser2 extends JFrame implements WindowListener {
 			addAndRecButton.setText(null);
 			abortButton.setText(null);
 			filterButton.setText(null);
+			lastPageButton.setText(null);
+			nextPageButton.setText(null);
 		}
 	}
 	
@@ -448,6 +458,8 @@ public class Gui_StreamBrowser2 extends JFrame implements WindowListener {
 	
 	public void setAbortButtonEnable(boolean enable) {
 		abortButton.setEnabled(enable);
+		nextPageButton.setEnabled(!enable);
+		lastPageButton.setEnabled(!enable);
 	}
 	
 	
@@ -471,14 +483,26 @@ public class Gui_StreamBrowser2 extends JFrame implements WindowListener {
 		filterButton.setHorizontalTextPosition(SwingConstants.CENTER);
 		filterButton.setVerticalTextPosition(SwingConstants.BOTTOM);
 		filterButton.setBorderPainted(false);
+		nextPageButton.setHorizontalTextPosition(SwingConstants.CENTER);
+		nextPageButton.setVerticalTextPosition(SwingConstants.BOTTOM);
+		nextPageButton.setBorderPainted(false);
+		lastPageButton.setHorizontalTextPosition(SwingConstants.CENTER);
+		lastPageButton.setVerticalTextPosition(SwingConstants.BOTTOM);
+		lastPageButton.setBorderPainted(false);
 		
 		//add Buttons to CommIconBar
 		commonIconBar.add(addToStreamRipStarButton);
 		commonIconBar.add(addAndRecButton);
+		commonIconBar.addSeparator();
 		commonIconBar.add(listenToButton);
 		commonIconBar.add(abortButton);
 		commonIconBar.add(filterButton);
-
+		commonIconBar.addSeparator();
+		commonIconBar.add(lastPageButton);
+		commonIconBar.add(nextPageButton);	
+		commonIconBar.add(pagesLabel);
+		commonIconBar.addSeparator();
+		
 		//set the color of all button the backgroundcolor
 		//from the iconbar and disable der Border
 		commonIconBar.setBackground(new Color(238,238,238,255));
@@ -1068,11 +1092,62 @@ public class Gui_StreamBrowser2 extends JFrame implements WindowListener {
 	}
 	
 	/**
+	 * activate/deactivate and updates the information for the pages
+	 * in the status par
+	 */
+	public void updatePageBar() {
+		//update the amount of pages
+		pagesLabel.setText("Page "+controlHttp.getCurrentPage()+
+				" of "+controlHttp.getTotalPages());
+		
+		//activate the correct one
+		if(controlHttp.getCurrentPage() <= 1) {
+			lastPageButton.setEnabled(false);
+		} else {
+			lastPageButton.setEnabled(true);
+		}
+		
+		if(controlHttp.getCurrentPage() >= controlHttp.getTotalPages()) {
+			nextPageButton.setEnabled(false);
+		} else {
+			nextPageButton.setEnabled(true);
+		}
+	}
+	
+	/**
+	 * Loads the last page from the website for this results
+	 */
+	public class LastPageListener extends MouseAdapter {
+		public void mouseClicked(MouseEvent e){
+			//if the last page is shown, do not load the next last page
+			if(controlHttp.getCurrentPage() <= 1) {
+				System.out.println("Can load the previous page, because the current page is the first one");
+				setStatusText("Can load the previous page, because the current page is the first one");
+			} else {
+				
+			}
+		}
+	}
+	
+	public class NextPageListener extends MouseAdapter {
+		public void mouseClicked(MouseEvent e){
+			
+			//if the last page is shown, do not load the next page
+			if(controlHttp.getCurrentPage() >= controlHttp.getTotalPages()) {
+				System.out.println("Can load the next page, because the current page is the last one");
+				setStatusText("Can load the next page, because the current page is the last one");
+			} else {
+				
+			}
+		}
+	}
+	
+	/**
 	 * This Listener looks for a click an the JTree
 	 * and execute the command to fill the table
 	 * streams
 	 */
-	public class TreeListener implements MouseListener {
+	public class TreeListener extends MouseAdapter {
 		public void mouseClicked(MouseEvent e){
 			boolean stop = false;
 			
@@ -1104,10 +1179,6 @@ public class Gui_StreamBrowser2 extends JFrame implements WindowListener {
 				}
 			}
 		}
-		public void mousePressed(MouseEvent e){}
-		public void mouseReleased(MouseEvent e){}
-		public void mouseEntered(MouseEvent e) {}
-		public void mouseExited(MouseEvent e) {}
 	}
 
 

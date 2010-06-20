@@ -31,12 +31,29 @@ public class Control_http_Shoutcast {
 	// streaminfo[7] = Link
 
 	/**
-	 * the default construcktor. Here is nothing to do at the moment
+	 * the default constructor. Here is nothing to do at the moment
 	 */
 	public Control_http_Shoutcast() {
 
 	}
-
+	
+	/**
+	 * gives the current page back, which is loaded from shoutcast
+	 * @return the current page for the current loaded search
+	 */
+	public int getCurrentPage() {
+		return currentPage+1;
+	}
+	
+	/**
+	 * gives the total amount of pages back, which represents this
+	 * search which all results
+	 * @return All pages as an integer
+	 */
+	public int getTotalPages() {
+		return totalPages;
+	}
+	
 	/**
 	 * Returns the number of pages available with streams if 
 	 * this search. 

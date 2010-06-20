@@ -123,12 +123,15 @@ public class Thread_GetStreams_FromShoutcast extends Thread
 			//set the filtered vector as streamVector for later use
 			streamBrowser.getFilterGui().setFilterdStreamVector(streamsPG);
 		}
-		
+				
 		//set the abort button disable
 		streamBrowser.setAbortButtonEnable(false);
 		
 		//enable clicking on the genre
 		streamBrowser.disableModelClick(false);
+		
+		//update the page information for the user
+		streamBrowser.updatePageBar();
 		
 		//set new status
 		if(killMe == true)
