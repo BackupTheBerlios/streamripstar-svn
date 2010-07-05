@@ -2,6 +2,9 @@ package thread;
 
 import java.net.URI;
 import java.net.URISyntaxException;
+
+import misc.Stream;
+
 import org.gstreamer.*;
 import org.gstreamer.elements.PlayBin2;
 
@@ -14,22 +17,21 @@ import gui.Gui_StreamRipStar;
  */
 public class AudioPlayer extends Thread{
 
-	private String uri;
+	private Stream stream;
 	private Gui_StreamRipStar mainGui;
-	private  PlayBin2 playbin;
+	private PlayBin2 playbin;
 	
-	public AudioPlayer(String uri, Gui_StreamRipStar mainGui ) {
-		this.uri = uri;
+	public AudioPlayer(Stream stream, Gui_StreamRipStar mainGui ) {
+		this.stream = stream;
 		this.mainGui = mainGui;
 	}
 	
 	public void run() {
-		
 		String[] args = {};
 		Gst.init("AudioPlayer", args);
         playbin = new PlayBin2("AudioPlayer");
         try {
-			playbin.setURI(new URI(uri));
+			playbin.setURI(new URI(stream.address));
 		} catch (URISyntaxException e) {
 			e.printStackTrace();
 		}
@@ -39,7 +41,7 @@ public class AudioPlayer extends Thread{
             public void tagsFound(GstObject source, TagList tagList) {
                 for (String tagName : tagList.getTagNames()) {
                     for (Object tagData : tagList.getValues(tagName)) {
-                    	mainGui.setTitle(tagData.toString());
+                    	mainGui.setTitle(stream.name + " : " + tagData.toString());
                     }
                 }
             }

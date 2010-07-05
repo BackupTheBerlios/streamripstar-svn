@@ -347,10 +347,8 @@ public class Gui_TablePanel extends JPanel
 	
 	public void startInternalAudioPlayer() {
 		Stream stream = getSelectedStream();
-		if(player != null) {
-			player.stopPlaying();
-		}
-		player = new AudioPlayer(stream.address, mainGui);
+		stopInternalAudioPlayer();
+		player = new AudioPlayer(stream, mainGui);
 		player.start();
 	}
 	

@@ -164,7 +164,7 @@ public class Gui_StreamRipStar extends JFrame implements WindowListener
 	
 	private Font textUnderIconsFont = new Font("Dialog", Font.PLAIN, 10);
 	
-	private JLabel currentTitleLabel = new JLabel("Actual Title: ");
+	private JLabel currentTitleLabel = new JLabel("");
 	
 	//sys tray icon
 	private TrayIcon trayIcon = null;
@@ -871,7 +871,8 @@ public class Gui_StreamRipStar extends JFrame implements WindowListener
 	 * Set the title of the current song in the status field
 	 */
 	public void setTitle(String title) {
-		currentTitleLabel.setText("Current Tile: "+title);
+		if(title != null)
+			currentTitleLabel.setText(title);
 	}
 	
 	/**
