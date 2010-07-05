@@ -35,6 +35,7 @@ import javax.swing.table.DefaultTableModel;
 
 import misc.Stream;
 
+import thread.AudioPlayer;
 
 import control.Control_Stream;
 
@@ -59,6 +60,7 @@ public class Gui_TablePanel extends JPanel
 	private ImageIcon recordIcon = new ImageIcon((URL)getClass().getResource("/Icons/record_middle.png"));
 	
 	private JPopupMenu popup;
+	private AudioPlayer player;
 	
 	public Gui_TablePanel(Control_Stream controlStreams,Gui_StreamRipStar mainGui) {
 		this.controlStreams = controlStreams;
@@ -339,6 +341,25 @@ public class Gui_TablePanel extends JPanel
 			
 		} else {
 			System.err.println("error while fetching adress");
+		}
+	}
+	
+	
+	public void startInternalAudioPlayer() {
+		Stream stream = getSelectedStream();
+		if(player != null) {
+			player.stopPlaying();
+		}
+		player = new AudioPlayer(stream.address, mainGui);
+		player.start();
+	}
+	
+	/**
+	 * Stops the Thread with the internal audioplayer, if there is one
+	 */
+	public void stopInternalAudioPlayer() {
+		if(player != null) {
+			player.stopPlaying();
 		}
 	}
 	

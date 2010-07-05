@@ -33,6 +33,7 @@ import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
@@ -91,6 +92,7 @@ public class Gui_StreamRipStar extends JFrame implements WindowListener
 	private ImageIcon deleteIcon = new ImageIcon((URL)getClass().getResource("/Icons/del.png"));
 	private ImageIcon addIcon = new ImageIcon((URL)getClass().getResource("/Icons/add.png"));
 	private ImageIcon hearMusicIcon = new ImageIcon((URL)getClass().getResource("/Icons/player.png"));
+	private ImageIcon stopHearMusicIcon = new ImageIcon((URL)getClass().getResource("/Icons/stop.png"));
 	private ImageIcon openMusicFolderIcon = new ImageIcon((URL)getClass().getResource("/Icons/m_open.png"));
 	private ImageIcon exitIcon = new ImageIcon((URL)getClass().getResource("/Icons/exit.png"));
 	private ImageIcon configIcon = new ImageIcon((URL)getClass().getResource("/Icons/config.png"));
@@ -118,6 +120,7 @@ public class Gui_StreamRipStar extends JFrame implements WindowListener
 	private JButton editButton = new JButton("Edit",editIcon);
 	private JButton addButton = new JButton("Add",addIcon);
 	private JButton hearMusicButton = new JButton("Hear",hearMusicIcon);
+	private JButton stopHearMusicButton = new JButton("Hear",stopHearMusicIcon);
 	private JButton openMusicFolderButton = new JButton("Musicfolder",openMusicFolderIcon);
 	private JButton exitButton = new JButton("Exit",exitIcon);
 	private JButton configButton = new JButton("Preferences",configIcon);
@@ -161,6 +164,8 @@ public class Gui_StreamRipStar extends JFrame implements WindowListener
 	
 	private Font textUnderIconsFont = new Font("Dialog", Font.PLAIN, 10);
 	
+	private JLabel currentTitleLabel = new JLabel("Actual Title: ");
+	
 	//sys tray icon
 	private TrayIcon trayIcon = null;
 	private SystemTray sysTray = null;
@@ -182,7 +187,7 @@ public class Gui_StreamRipStar extends JFrame implements WindowListener
        
 		contPane.add(iconBar,BorderLayout.PAGE_START);
         contPane.add(table, BorderLayout.CENTER);	//Add that shows all streams
-
+        contPane.add(currentTitleLabel, BorderLayout.SOUTH);
         
         buildMenuBar();
         buildIconBar();
@@ -300,6 +305,9 @@ public class Gui_StreamRipStar extends JFrame implements WindowListener
 		hearMusicButton.setHorizontalTextPosition(SwingConstants.CENTER);
 		hearMusicButton.setVerticalTextPosition(SwingConstants.BOTTOM);
 		hearMusicButton.setBorderPainted(false);
+		stopHearMusicButton.setHorizontalTextPosition(SwingConstants.CENTER);
+		stopHearMusicButton.setVerticalTextPosition(SwingConstants.BOTTOM);
+		stopHearMusicButton.setBorderPainted(false);
 		scheduleButton.setHorizontalTextPosition(SwingConstants.CENTER);
 		scheduleButton.setVerticalTextPosition(SwingConstants.BOTTOM);
 		scheduleButton.setBorderPainted(false);;
@@ -333,6 +341,7 @@ public class Gui_StreamRipStar extends JFrame implements WindowListener
 		iconBar.add(stopRecordButton);
 		iconBar.addSeparator();
 		iconBar.add(hearMusicButton);
+		iconBar.add(stopHearMusicButton);
 		iconBar.addSeparator();
 		iconBar.add(scheduleButton);
 		iconBar.add(infoButton);
@@ -374,6 +383,7 @@ public class Gui_StreamRipStar extends JFrame implements WindowListener
 		deleteButton.addActionListener(new DeleteListener());
 		editButton.addActionListener(new EditStreamListener());
 		hearMusicButton.addActionListener(new playMusikListener());
+		stopHearMusicButton.addActionListener(new StopPlayMusikListener());
 		openMusicFolderButton.addActionListener(new OpenMusikFolder());
 		scheduleButton.addActionListener(new ScheduleListener());
 		infoButton.addActionListener(new ShowStatsListener());
@@ -387,6 +397,7 @@ public class Gui_StreamRipStar extends JFrame implements WindowListener
 		editButton.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED));
 		addButton.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED));
 		hearMusicButton.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED));
+		stopHearMusicButton.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED));
 		openMusicFolderButton.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED));
 		exitButton.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED));
 		configButton.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED));
@@ -496,6 +507,7 @@ public class Gui_StreamRipStar extends JFrame implements WindowListener
 			startRecordButton.setText(null);
 			stopRecordButton.setText(null);
 			hearMusicButton.setText(null);
+			stopHearMusicButton.setText(null);
 			scheduleButton.setText(null);
 			infoButton.setText(null);
 			deleteButton.setText(null);
@@ -533,6 +545,7 @@ public class Gui_StreamRipStar extends JFrame implements WindowListener
 			editButton.setFont(textUnderIconsFont);
 			addButton.setFont(textUnderIconsFont);
 			hearMusicButton.setFont(textUnderIconsFont);
+			stopHearMusicButton.setFont(textUnderIconsFont);
 			openMusicFolderButton.setFont(textUnderIconsFont);
 			exitButton.setFont(textUnderIconsFont);
 			configButton.setFont(textUnderIconsFont);
@@ -855,6 +868,13 @@ public class Gui_StreamRipStar extends JFrame implements WindowListener
 	}
 	
 	/**
+	 * Set the title of the current song in the status field
+	 */
+	public void setTitle(String title) {
+		currentTitleLabel.setText("Current Tile: "+title);
+	}
+	
+	/**
 	 * 
 	 * @param actionNumber
 	 * @return the selected index from the box in settings
@@ -1117,16 +1137,34 @@ public class Gui_StreamRipStar extends JFrame implements WindowListener
 		}
 	}
 	
+	/**
+	 * Is called, when you like to hear musik 
+	 * @author eule	
+	 *
+	 */
 	class playMusikListener implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
 			if(getTabel().isTHSelected()) {
-				getTabel().startMusikPlayer();
+				getTabel().startInternalAudioPlayer();
+//				getTabel().startMusikPlayer();
 			}
 			else
 				JOptionPane.showMessageDialog(Gui_StreamRipStar.this
 						,trans.getString("select"));
 		}
 	}
+	
+	/**
+	 * Stop the internal music player
+	 * @author eule	
+	 *
+	 */
+	class StopPlayMusikListener implements ActionListener {
+		public void actionPerformed(ActionEvent e) {
+			getTabel().stopInternalAudioPlayer();
+		}
+	}
+	
 	
 	class ShowStatsListener implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
