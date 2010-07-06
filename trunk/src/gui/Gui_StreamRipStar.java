@@ -92,7 +92,7 @@ public class Gui_StreamRipStar extends JFrame implements WindowListener
 	private ImageIcon deleteIcon = new ImageIcon((URL)getClass().getResource("/Icons/del.png"));
 	private ImageIcon addIcon = new ImageIcon((URL)getClass().getResource("/Icons/add.png"));
 	private ImageIcon hearMusicIcon = new ImageIcon((URL)getClass().getResource("/Icons/player.png"));
-	private ImageIcon stopHearMusicIcon = new ImageIcon((URL)getClass().getResource("/Icons/stop.png"));
+	private ImageIcon stopHearMusicIcon = new ImageIcon((URL)getClass().getResource("/Icons/stop-audio.png"));
 	private ImageIcon openMusicFolderIcon = new ImageIcon((URL)getClass().getResource("/Icons/m_open.png"));
 	private ImageIcon exitIcon = new ImageIcon((URL)getClass().getResource("/Icons/exit.png"));
 	private ImageIcon configIcon = new ImageIcon((URL)getClass().getResource("/Icons/config.png"));
