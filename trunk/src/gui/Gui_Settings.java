@@ -111,6 +111,7 @@ public class Gui_Settings extends JDialog
 	
 	private JCheckBox activeTrayIcon = new JCheckBox("Show Systemtray (requires restart)");
 	private JCheckBox showTextCheckBox = new JCheckBox("Show Text under Icons");
+	private JCheckBox useInternalAudioPlayerCB = new JCheckBox("Use internal check box (Requires gstreamer installed");
 	private JCheckBox useAnotherLnfBox = new JCheckBox("Use another Look and Feel");
 
 	private UIManager.LookAndFeelInfo[] lookAndFeelInfos;
@@ -304,6 +305,10 @@ public class Gui_Settings extends JDialog
 		c.gridy = 4;
 		c.gridx = 0;
 		commonPanel.add(showTextCheckBox,c);
+	//5.Line: Shall we use the internal audio Player ?
+		c.gridy = 5;
+		c.gridx = 0;
+		commonPanel.add(useInternalAudioPlayerCB,c);
 
 //BUTTONPANEL
 		c.insets = new Insets( 5, 5,5 ,5 );
@@ -390,11 +395,12 @@ public class Gui_Settings extends JDialog
 			settingsPane.setTitleAt(0, trans.getString("tab.general"));
 			settingsPane.setTitleAt(1, trans.getString("tab.path"));
 			settingsPane.setTitleAt(2, trans.getString("tab.action"));
-			settingsPane.setTitleAt(3, trans.getString("tab.language"));
+			settingsPane.setTitleAt(3, trans.getString("tab.languages")+ " - language");
 
 			//general panel
 			activeTrayIcon.setText(trans.getString("showSysTray"));
 			showTextCheckBox.setText(trans.getString("showTextUnderIcons"));
+			useInternalAudioPlayerCB.setText(trans.getString("settings.useInternalAudioPlayer"));
 			windowClosing.setText(trans.getString("actionX"));
 			windowActionBox.removeAllItems();
 			windowActionBox.addItem(trans.getString("X.doNothing"));
@@ -549,6 +555,7 @@ public class Gui_Settings extends JDialog
 			XMLEvent activeIconCB_S = eventFactory.createAttribute( "activeTrayIcon",  String.valueOf( activeTrayIcon.isSelected()));
 			XMLEvent lookAndFeelCB_S = eventFactory.createAttribute( "useAnotherLnfBox",  String.valueOf( useAnotherLnfBox.isSelected()));
 			XMLEvent showTextCB_S = eventFactory.createAttribute( "showTextCB", String.valueOf( showTextCheckBox.isSelected()) );
+			XMLEvent useInternalAudioPlayerCB_S = eventFactory.createAttribute( "useInternalAudioPlayerCB", String.valueOf( useInternalAudioPlayerCB.isSelected()) );
 			XMLEvent ripperPathTF_S = eventFactory.createAttribute( "ripperPathTF", ripperPathField.getText()); 
 			XMLEvent shoutcastTF_S = eventFactory.createAttribute( "shoutcastTF", shoutcastPlayer.getText()); 
 			XMLEvent generellPathTF_S = eventFactory.createAttribute( "generellPathTF", generellPathField.getText()); 
@@ -575,6 +582,7 @@ public class Gui_Settings extends JDialog
 			writer.add( activeIconCB_S ); 
 			writer.add( lookAndFeelCB_S ); 
 			writer.add( showTextCB_S ); 
+			writer.add( useInternalAudioPlayerCB_S ); 
 			writer.add( ripperPathTF_S ); 
 			writer.add( shoutcastTF_S ); 
 			writer.add( generellPathTF_S ); 
@@ -615,7 +623,7 @@ public class Gui_Settings extends JDialog
 		actions[3] = windowActionBox.getSelectedIndex();
 		
 		mainGui.setNewRuntimePrefs(actions,showTextCheckBox.isSelected(),activeTrayIcon.isSelected(),
-				newlnfClassName);
+				newlnfClassName,useInternalAudioPlayerCB.isSelected());
 		mainGui.getControlStream().setPaths(path);
 	}
 	
@@ -648,6 +656,9 @@ public class Gui_Settings extends JDialog
 				    		}
 				    		else if (parser.getAttributeLocalName( i ).equals("showTextCB")) {
 				    			showTextCheckBox.setSelected(Boolean.valueOf(parser.getAttributeValue(i)));
+				    		}
+				    		else if (parser.getAttributeLocalName( i ).equals("useInternalAudioPlayerCB")) {
+				    			useInternalAudioPlayerCB.setSelected(Boolean.valueOf(parser.getAttributeValue(i)));
 				    		}
 				    		else if (parser.getAttributeLocalName( i ).equals("ripperPathTF")) {
 				    			ripperPathField.setText(parser.getAttributeValue(i));

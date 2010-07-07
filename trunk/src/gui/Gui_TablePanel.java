@@ -327,35 +327,81 @@ public class Gui_TablePanel extends JPanel
 		return 0;
 	}
 	
-	public void startMusikPlayer() {
+	/**
+	 * Looks for the selected stream in the stream table and
+	 * start playing it with the correct player. This can either 
+	 * be the internal or the external, which is defined in the 
+	 * settings.
+	 */
+	public synchronized void startMusikPlayerWithSelectedStream() {
+		//get the selected Stream
 		Stream stream = getSelectedStream();
-		//Test if a relay stream is running and connect to them
-		//else will connect to stream address directly 
-		if(stream.getStatus() && stream.connectToRelayCB) {
-			System.out.println("Debug: Running relay stream found. Connecting to...: \"http://127.0.0.1:"+stream.relayServerPortTF);
-			controlStreams.startMp3Player("http://127.0.0.1:"+stream.relayServerPortTF);
-			
-		} else if(stream.address != null  && !stream.address.equals("")) {
-			System.out.println("Debug: No relaystream found. Connecting to Internet");
-			controlStreams.startMp3Player(stream.address);
-			
+		
+		//Test, which player we have to use
+		if(!mainGui.useInternalAudioPlayer()) {
+		
+			//Test if a relay stream is running and connect to them
+			//else will connect to stream address directly 
+			if(stream.getStatus() && stream.connectToRelayCB) {
+				System.out.println("Debug: Running relay stream found. Connecting to...: \"http://127.0.0.1:"+stream.relayServerPortTF);
+				controlStreams.startMp3Player("http://127.0.0.1:"+stream.relayServerPortTF);
+				
+			} else if(stream.address != null  && !stream.address.equals("")) {
+				System.out.println("Debug: No relaystream found. Connecting to Internet");
+				controlStreams.startMp3Player(stream.address);
+				
+			} else {
+				System.err.println("error while fetching adress");
+			}
 		} else {
-			System.err.println("error while fetching adress");
+			stopInternalAudioPlayer();
+			player = new AudioPlayer(stream, mainGui);
+			player.start();
 		}
-	}
-	
-	
-	public void startInternalAudioPlayer() {
-		Stream stream = getSelectedStream();
-		stopInternalAudioPlayer();
-		player = new AudioPlayer(stream, mainGui);
-		player.start();
+			
 	}
 	
 	/**
+	 * Start the music player with an given url. This function looks
+	 * to use the correct player. This can either be the internal or
+	 *  the external, which is defined in the settings.
+	 *  
+	 * @param url: The url to the stream
+	 * @param name: The name of the stream: the name is shown in front of the current title
+	 */
+	public synchronized  void startMusikPlayerWithUrl(String url, String name) {
+		//get the selected Stream
+		Stream stream = new Stream(name,0);
+		stream.address = url;
+		
+		//Test, which player we have to use
+		if(!mainGui.useInternalAudioPlayer()) {
+		
+			//Test if a relay stream is running and connect to them
+			//else will connect to stream address directly 
+			if(stream.getStatus() && stream.connectToRelayCB) {
+				System.out.println("Debug: Running relay stream found. Connecting to...: \"http://127.0.0.1:"+stream.relayServerPortTF);
+				controlStreams.startMp3Player("http://127.0.0.1:"+stream.relayServerPortTF);
+				
+			} else if(stream.address != null  && !stream.address.equals("")) {
+				System.out.println("Debug: No relaystream found. Connecting to Internet");
+				controlStreams.startMp3Player(stream.address);
+				
+			} else {
+				System.err.println("error while fetching adress");
+			}
+		} else {
+			stopInternalAudioPlayer();
+			player = new AudioPlayer(stream, mainGui);
+			player.start();
+		}
+			
+	}
+
+	/**
 	 * Stops the Thread with the internal audioplayer, if there is one
 	 */
-	public void stopInternalAudioPlayer() {
+	public synchronized void stopInternalAudioPlayer() {
 		if(player != null) {
 			player.stopPlaying();
 		}
@@ -426,7 +472,7 @@ public class Gui_TablePanel extends JPanel
 				
 				//action = 5: play stream in media player
 				if (action == 4) {
-					startMusikPlayer();
+					startMusikPlayerWithSelectedStream();
 				}
 			}
 			else

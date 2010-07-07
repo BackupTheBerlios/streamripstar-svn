@@ -80,6 +80,7 @@ public class Gui_StreamRipStar extends JFrame implements WindowListener
 	//for runtime
 	private Boolean tray = false;				// false = hide tray icon
 	private Boolean showText = false; 			//false = don't show text under Icons
+	private Boolean useInternalPlayer = true;	//true, if we use the internal player
 	private int winAction = 1;					//1= close window
 	private int action0 = -1;
 	private int action1 = -1;
@@ -369,6 +370,7 @@ public class Gui_StreamRipStar extends JFrame implements WindowListener
 		editButton.setToolTipText("Edit stream");
 		addButton.setToolTipText("Add stream");
 		hearMusicButton.setToolTipText("Hear stream");
+		stopHearMusicButton.setToolTipText("Stop playing music with the internal player");
 		exitButton.setToolTipText("Exit");
 		configButton.setToolTipText("Preferences");
 		openMusicFolderButton.setToolTipText("Open musicfolder");
@@ -594,6 +596,7 @@ public class Gui_StreamRipStar extends JFrame implements WindowListener
 			deleteButton.setToolTipText(trans.getString("toolTip.deleteButton"));
 			addButton.setToolTipText(trans.getString("toolTip.addButton"));
 			hearMusicButton.setToolTipText(trans.getString("toolTip.hearMusicButton"));
+			stopHearMusicButton.setToolTipText(trans.getString("toolTip.stopHearMusicButton"));
 			exitButton.setToolTipText(trans.getString("toolTip.exitButton"));
 			configButton.setToolTipText(trans.getString("toolTip.configButton"));
 			openMusicFolderButton.setToolTipText(trans.getString("toolTip.openMusicFolderButton"));
@@ -640,6 +643,16 @@ public class Gui_StreamRipStar extends JFrame implements WindowListener
 	 */
 	public Boolean showTextUnderIcons() {
 		return showText;
+	}
+	
+	
+	/**
+	 * Gives the variable back, which indicates, if you should use the internal
+	 * audio player or should we use an extern?
+	 * @return true, if we should use an internal audio player
+	 */
+	public Boolean useInternalAudioPlayer() {
+		return useInternalPlayer;
 	}
 	
 	/**
@@ -727,6 +740,9 @@ public class Gui_StreamRipStar extends JFrame implements WindowListener
 				    		}
 				    		else if (parser.getAttributeLocalName( i ).equals("showTextCB")) {
 				    			showText = Boolean.valueOf(parser.getAttributeValue(i));
+				    		}
+				    		else if (parser.getAttributeLocalName( i ).equals("useInternalAudioPlayerCB")) {
+				    			useInternalPlayer = Boolean.valueOf(parser.getAttributeValue(i));
 				    		}
 				    		else if (parser.getAttributeLocalName( i ).equals("ripperPathTF")) {
 				    			path[0] = parser.getAttributeValue(i);
@@ -870,9 +886,24 @@ public class Gui_StreamRipStar extends JFrame implements WindowListener
 	/**
 	 * Set the title of the current song in the status field
 	 */
-	public void setTitle(String title) {
-		if(title != null)
+	public void setTitleForAudioPlayer(String title) {
+		if(title != null) {
 			currentTitleLabel.setText(title);
+			currentTitleLabel.setBackground(Color.WHITE);
+		}
+	}
+	
+	/**
+	 * Shows an error message in the label in buttom of the main window.
+	 * The backgroundcolor is set to red
+	 * @param errorMessage: The message you want to set 
+	 */
+	public void setErrorMesageForAudioPlayer(String errorMessage) {
+		if(errorMessage != null) {
+			currentTitleLabel.setBackground(Color.RED);
+			currentTitleLabel.setText(errorMessage);
+			
+		}
 	}
 	
 	/**
@@ -893,18 +924,20 @@ public class Gui_StreamRipStar extends JFrame implements WindowListener
 	
 	/**
 	 * Set the variables for the activation on some actions
-	 * @param actions
-	 * @param newShowText
-	 * @param newTray
+	 * @param actions: What should happen, if you click on a cell in the table
+	 * @param newShowText: Should we show the text under icons?
+	 * @param newTray: Is the systemtray active?
+	 * @param useInternalPlayer: Shall we listen to an stream, with the internal audio player?
 	 */
 	public void setNewRuntimePrefs(int[] actions, Boolean newShowText, Boolean newTray,
-			String newlnfClassName) {
+			String newlnfClassName, boolean useInternalPlayer) {
 		action0 = actions[0];
 		action1 = actions[1];
 		action2 = actions[2];
 		winAction = actions[3];
 		
 		showText = newShowText;
+		this.useInternalPlayer = useInternalPlayer;
 		tray = newTray;
 		
 		//enable / disable systray icon
@@ -1139,15 +1172,14 @@ public class Gui_StreamRipStar extends JFrame implements WindowListener
 	}
 	
 	/**
-	 * Is called, when you like to hear musik 
+	 * Is called, when you like to hear music 
 	 * @author eule	
 	 *
 	 */
 	class playMusikListener implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
 			if(getTabel().isTHSelected()) {
-				getTabel().startInternalAudioPlayer();
-//				getTabel().startMusikPlayer();
+				getTabel().startMusikPlayerWithSelectedStream();
 			}
 			else
 				JOptionPane.showMessageDialog(Gui_StreamRipStar.this

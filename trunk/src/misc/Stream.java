@@ -92,10 +92,8 @@ public class Stream
 	private Thread_UpdateName updateName = null;
 	private String[] metaData = {"-","-","-","-"};
 
-
-	
 	/**
-	 * Creates an objekt stream, inlcuding the name and the id.
+	 * Creates an object stream, including the name and the id.
 	 * Over the id all options can be accessed. 
 	 * 
 	 * @param streamName: The name of this stream (shown in table)

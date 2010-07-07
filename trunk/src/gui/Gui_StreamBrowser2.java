@@ -109,7 +109,8 @@ public class Gui_StreamBrowser2 extends JFrame implements WindowListener {
 	//Icons for Iconbars
 	//Icons are from oxygen project for kde4. Licenced under gpl 
 	private ImageIcon saveIcon = new ImageIcon((URL)getClass().getResource("/Icons/streambrowser/save.png"));
-	private ImageIcon hearMusicIcon = new ImageIcon((URL)getClass().getResource("/Icons/streambrowser/play2.png"));
+	private ImageIcon hearMusicIcon = new ImageIcon((URL)getClass().getResource("/Icons/streambrowser/player_start.png"));
+	private ImageIcon stopHearMusicIcon = new ImageIcon((URL)getClass().getResource("/Icons/streambrowser/player_stop.png"));
 	private ImageIcon abortIcon = new ImageIcon((URL)getClass().getResource("/Icons/streambrowser/cancel.png"));
 	private ImageIcon addAndRecordIcon = new ImageIcon((URL)getClass().getResource("/Icons/streambrowser/save_quick2.png"));
 	private ImageIcon filterIcon = new ImageIcon((URL)getClass().getResource("/Icons/streambrowser/filter.png"));
@@ -124,6 +125,7 @@ public class Gui_StreamBrowser2 extends JFrame implements WindowListener {
 	//buttons for Iconbars
 	private JButton addToStreamRipStarButton = new JButton("Add to StreamRipStar",saveIcon);	
 	private JButton listenToButton = new JButton ("Hear it",hearMusicIcon);
+	private JButton stopListeningToButton = new JButton ("Stop playing",stopHearMusicIcon);
 	private JButton abortButton = new JButton("Abort",abortIcon);
 	private JButton addAndRecButton = new JButton("Add and Record", addAndRecordIcon);
 	private JButton filterButton = new JButton("Filter", filterIcon );
@@ -227,9 +229,12 @@ public class Gui_StreamBrowser2 extends JFrame implements WindowListener {
 	}
 	
 	
-	//set tooltips to the buttons
+	/**
+	 * set tooltips to the buttons
+	 */
 	public void setToolTips() {
 		listenToButton.setToolTipText(toolTips.getString("StreamBrowser.listen"));
+		stopListeningToButton.setToolTipText(toolTips.getString("StreamBrowser.stopListening"));
 		addToStreamRipStarButton.setToolTipText(toolTips.getString("StreamBrowser.addToStreamRipStar"));
 		addAndRecButton.setToolTipText(toolTips.getString("StreamBrowser.addAndRecord"));
 		abortButton.setToolTipText(toolTips.getString("StreamBrowser.abort"));
@@ -248,6 +253,7 @@ public class Gui_StreamBrowser2 extends JFrame implements WindowListener {
 		//if the text is shown
 		if(visibility) {
 			listenToButton.setText(trans.getString("iconPanel.listenToButton"));
+			stopListeningToButton.setText(trans.getString("iconPanel.stopListeningToButton"));
 			addToStreamRipStarButton.setText(trans.getString("iconPanel.addToStreamRipStarButton"));
 			addAndRecButton.setText(trans.getString("iconPanel.addAndRecButton"));
 			abortButton.setText(trans.getString("iconPanel.abortButton"));
@@ -257,6 +263,7 @@ public class Gui_StreamBrowser2 extends JFrame implements WindowListener {
 			
 			if (newFont != null) {
 				listenToButton.setFont(newFont);
+				stopListeningToButton.setFont(newFont);
 				addToStreamRipStarButton.setFont(newFont);
 				addAndRecButton.setFont(newFont);
 				abortButton.setFont(newFont);
@@ -266,6 +273,7 @@ public class Gui_StreamBrowser2 extends JFrame implements WindowListener {
 			}
 		} else {
 			listenToButton.setText(null);
+			stopListeningToButton.setText(null);
 			addToStreamRipStarButton.setText(null);
 			addAndRecButton.setText(null);
 			abortButton.setText(null);
@@ -337,7 +345,8 @@ public class Gui_StreamBrowser2 extends JFrame implements WindowListener {
 		//Listeners
 		browseTable.addMouseListener( new BrowseMouseListener() );
 		browseTable.getTableHeader().setComponentPopupMenu(selShowPopup);
-		listenToButton.addActionListener( new playMusikListener() );
+		listenToButton.addActionListener( new PlayMusikListener() );
+		stopListeningToButton.addActionListener( new StopPlayingMusikListener() );
 		addToStreamRipStarButton.addActionListener( new AddToStreamRipStarListener() );
 		abortButton.addActionListener(new AbortThreadsListener());
 		addAndRecButton.addActionListener(new AddAndStartRecordListener());
@@ -363,6 +372,7 @@ public class Gui_StreamBrowser2 extends JFrame implements WindowListener {
 		try {
 			//iconPanel
 			listenToButton.setText(trans.getString("iconPanel.listenToButton"));
+			stopListeningToButton.setText(trans.getString("iconPanel.stopListeningToButton"));
 			addToStreamRipStarButton.setText(trans.getString("iconPanel.addToStreamRipStarButton"));
 			addAndRecButton.setText(trans.getString("iconPanel.addAndRecButton"));
 			abortButton.setText(trans.getString("iconPanel.abortButton"));
@@ -486,6 +496,9 @@ public class Gui_StreamBrowser2 extends JFrame implements WindowListener {
 		listenToButton.setHorizontalTextPosition(SwingConstants.CENTER);
 		listenToButton.setVerticalTextPosition(SwingConstants.BOTTOM);
 		listenToButton.setBorderPainted(false);
+		stopListeningToButton.setHorizontalTextPosition(SwingConstants.CENTER);
+		stopListeningToButton.setVerticalTextPosition(SwingConstants.BOTTOM);
+		stopListeningToButton.setBorderPainted(false);
 		addToStreamRipStarButton.setHorizontalTextPosition(SwingConstants.CENTER);
 		addToStreamRipStarButton.setVerticalTextPosition(SwingConstants.BOTTOM);
 		addToStreamRipStarButton.setBorderPainted(false);
@@ -510,6 +523,8 @@ public class Gui_StreamBrowser2 extends JFrame implements WindowListener {
 		commonIconBar.add(addAndRecButton);
 		commonIconBar.addSeparator();
 		commonIconBar.add(listenToButton);
+		commonIconBar.add(stopListeningToButton);
+		commonIconBar.addSeparator();
 		commonIconBar.add(abortButton);
 		commonIconBar.add(filterButton);
 		commonIconBar.addSeparator();
@@ -546,7 +561,7 @@ public class Gui_StreamBrowser2 extends JFrame implements WindowListener {
 		
 		startRecordMenuItem.addActionListener(new AddAndStartRecordListener());
 		saveMenuItem.addActionListener( new AddToStreamRipStarListener() );
-		hearMenuItem.addActionListener( new playMusikListener() );
+		hearMenuItem.addActionListener( new PlayMusikListener() );
 		
 		
 		showGenreColumn.setSelected(isColumnShow[1]);
@@ -629,15 +644,15 @@ public class Gui_StreamBrowser2 extends JFrame implements WindowListener {
 		if(browseTable.getSelectedRow() >= 0) {
 			//get url
 			String url = getStreamInfo()[0];
+			String name = getStreamInfo()[1];
 			
 			//if url = "" it fails
 			if(url == null || url.equals("")) {
 				JOptionPane.showMessageDialog(getMe()
 						,StreamRipStar.getTrans().getString("Message.emptyString"));
 				System.err.println(StreamRipStar.getTrans().getString("Message.emptyString"));
-			}
-			else {
-				StreamRipStar.getControlStream().startMp3Player(url);
+			} else {
+				StreamRipStar.getTabel().startMusikPlayerWithUrl(url, name);
 				System.out.println(url);
 			}
 		} else
@@ -961,9 +976,19 @@ public class Gui_StreamBrowser2 extends JFrame implements WindowListener {
 	/**
 	 * Play selected stream in media player
 	 */
-	class playMusikListener implements ActionListener {
+	class PlayMusikListener implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
 			playStream();
+		}
+	}
+	
+	
+	/**
+	 * Stop the internal player playing music
+	 */
+	class StopPlayingMusikListener implements ActionListener {
+		public void actionPerformed(ActionEvent e) {
+			StreamRipStar.getTabel().stopInternalAudioPlayer();
 		}
 	}
 	

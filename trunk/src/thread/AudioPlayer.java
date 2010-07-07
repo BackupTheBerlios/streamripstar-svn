@@ -2,6 +2,7 @@ package thread;
 
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.ResourceBundle;
 
 import misc.Stream;
 
@@ -16,7 +17,8 @@ import gui.Gui_StreamRipStar;
  *
  */
 public class AudioPlayer extends Thread{
-
+	
+	private ResourceBundle trans = ResourceBundle.getBundle("translations.StreamRipStar");
 	private Stream stream;
 	private Gui_StreamRipStar mainGui;
 	private PlayBin2 playbin;
@@ -36,16 +38,31 @@ public class AudioPlayer extends Thread{
 			e.printStackTrace();
 		}
 		
+		//try to catch the AUDIO - TAGS from the stream
 		playbin.getBus().connect(new Bus.TAG() {
 
             public void tagsFound(GstObject source, TagList tagList) {
                 for (String tagName : tagList.getTagNames()) {
                     for (Object tagData : tagList.getValues(tagName)) {
-                    	mainGui.setTitle(stream.name + " : " + tagData.toString());
+                    	mainGui.setTitleForAudioPlayer(stream.name + " : " + tagData.toString());
                     }
                 }
             }
         });
+		
+		playbin.getBus().connect(new Bus.ERROR() {
+			@Override
+			public void errorMessage(GstObject source, int errorCode, String errorMessage) {
+				//Cannot resolve hostname - no connection to the stream
+				if(errorCode == 3) {
+					mainGui.setTitleForAudioPlayer(trans.getString("audioplayer.noConnectionTo"));
+				}
+				
+				System.out.println("The Errorcode was:"+errorCode);
+				System.out.println("The Errormessage was:"+errorMessage);
+			}
+		});
+		
         playbin.setState(org.gstreamer.State.PLAYING);
         Gst.main();
         playbin.setState(org.gstreamer.State.NULL);
@@ -54,6 +71,7 @@ public class AudioPlayer extends Thread{
 	
 	public void stopPlaying() {
 		playbin.setState(org.gstreamer.State.NULL);
-		mainGui.setTitle(" NOT PLAYING");
+		mainGui.setTitleForAudioPlayer(" NOT PLAYING");
 	}
+	
 }

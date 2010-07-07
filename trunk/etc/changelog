@@ -180,5 +180,10 @@
  ----------------------------
  
  0.5.8 -> 0.5.9
- 
  - fix: found no updates
+ 
+ ----------------------------
+ 
+ 0.5.9 -> 0.6.0
+ - fix: some language issues
+ - add: internal audio player (needs gstreamer installed)
