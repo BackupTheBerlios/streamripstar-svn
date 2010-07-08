@@ -362,6 +362,17 @@ public class Gui_TablePanel extends JPanel
 	}
 	
 	/**
+	 * Set the Thread with the audio player a new valume for the 
+	 * audio
+	 * @param percentage: a value in a range of 0 up to 100
+	 */
+	public synchronized void setAudioVolume(int percentage) {
+		if(player != null  && percentage >= 0 && percentage <= 100) {
+			player.setAudioVolum(percentage);
+		}
+	}
+	
+	/**
 	 * Start the music player with an given url. This function looks
 	 * to use the correct player. This can either be the internal or
 	 *  the external, which is defined in the settings.
@@ -505,5 +516,6 @@ public class Gui_TablePanel extends JPanel
 	public void setTTablePopup(JPopupMenu popup) {
 		this.popup = popup;
 	}
+
 }
 

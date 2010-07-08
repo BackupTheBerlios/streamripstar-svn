@@ -39,6 +39,7 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPopupMenu;
+import javax.swing.JSlider;
 import javax.swing.JToolBar;
 import javax.swing.KeyStroke;
 import javax.swing.SwingConstants;
@@ -46,6 +47,8 @@ import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.border.EtchedBorder;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 import javax.xml.stream.XMLEventFactory;
 import javax.xml.stream.XMLEventWriter;
 import javax.xml.stream.XMLInputFactory;
@@ -162,6 +165,7 @@ public class Gui_StreamRipStar extends JFrame implements WindowListener
 	private JMenuItem optionPopupIcon = new JMenuItem("Optionen");
 	
 	private JPopupMenu tablePopup = new JPopupMenu();
+	private JSlider audioSlider = new JSlider();
 	
 	private Font textUnderIconsFont = new Font("Dialog", Font.PLAIN, 10);
 	
@@ -296,6 +300,22 @@ public class Gui_StreamRipStar extends JFrame implements WindowListener
 	
 //  add all JButton with icons
 	public void  buildIconBar() {	
+		//configure the slider for the voluemcontrol
+		audioSlider.setMinimum(0);
+		audioSlider.setMaximum(100);
+		//set default Value
+		audioSlider.setValue(80);
+		//set jump intervall : on every click 10 percent
+		audioSlider.setMinorTickSpacing(10);
+		//in how many spaces should the text shown?
+		audioSlider.setMajorTickSpacing(50);
+	 
+		//The Orientation
+		audioSlider.setOrientation(JSlider.HORIZONTAL);
+		audioSlider.setPaintTicks(true);    //Striche werden angezeigt
+		audioSlider.setPaintLabels(true);  //Zahlen werden nicht angezeigt
+		audioSlider.setPaintTrack(true);
+		
 		//place Text under the icons
 		startRecordButton.setHorizontalTextPosition(SwingConstants.CENTER);
 		startRecordButton.setVerticalTextPosition(SwingConstants.BOTTOM);
@@ -343,6 +363,7 @@ public class Gui_StreamRipStar extends JFrame implements WindowListener
 		iconBar.addSeparator();
 		iconBar.add(hearMusicButton);
 		iconBar.add(stopHearMusicButton);
+		iconBar.add(audioSlider);
 		iconBar.addSeparator();
 		iconBar.add(scheduleButton);
 		iconBar.add(infoButton);
@@ -390,6 +411,7 @@ public class Gui_StreamRipStar extends JFrame implements WindowListener
 		scheduleButton.addActionListener(new ScheduleListener());
 		infoButton.addActionListener(new ShowStatsListener());
 		browseGenreButton.addActionListener(new StreamBrowserListener());
+		audioSlider.addChangeListener(new ValueumChangeListener());
 
 		//set new Border 
 		startRecordButton.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED));
@@ -408,6 +430,19 @@ public class Gui_StreamRipStar extends JFrame implements WindowListener
 		
 	}
 
+	/**
+	 * Is called, when the value is changened from the intern audio player
+	 *
+	 */
+	public class ValueumChangeListener implements ChangeListener {
+
+		@Override
+		public void stateChanged(ChangeEvent arg0) {
+			getTabel().setAudioVolume(audioSlider.getValue());
+			
+		} 
+	}
+	
 //	Build menu structure
 	public void buildMenuBar() {
 		setJMenuBar(menu);

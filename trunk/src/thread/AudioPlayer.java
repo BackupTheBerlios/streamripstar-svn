@@ -69,9 +69,19 @@ public class AudioPlayer extends Thread{
 
 	}
 	
+	/**
+	 * Stop the playback of the thread with the player. It set the new 
+	 * status message
+	 */
 	public void stopPlaying() {
 		playbin.setState(org.gstreamer.State.NULL);
-		mainGui.setTitleForAudioPlayer(" NOT PLAYING");
+		mainGui.setTitleForAudioPlayer("");
 	}
 	
+	/**
+	 * Set a now volume for the audio player
+	 */
+	public void setAudioVolum(int volumePercent) {
+		playbin.setVolumePercent(volumePercent);
+	}
 }
