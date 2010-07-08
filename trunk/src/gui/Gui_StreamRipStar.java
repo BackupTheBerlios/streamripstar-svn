@@ -306,10 +306,14 @@ public class Gui_StreamRipStar extends JFrame implements WindowListener
 		//set default Value
 		audioSlider.setValue(80);
 		//set jump intervall : on every click 10 percent
-		audioSlider.setMinorTickSpacing(10);
+		audioSlider.setMinorTickSpacing(25);
 		//in how many spaces should the text shown?
 		audioSlider.setMajorTickSpacing(50);
-	 
+		audioSlider.setMaximumSize(new Dimension(100,40));
+		audioSlider.setMinimumSize(new Dimension(100,40));
+		audioSlider.setPreferredSize(new Dimension(100,40));
+		audioSlider.setFont(textUnderIconsFont);
+		
 		//The Orientation
 		audioSlider.setOrientation(JSlider.HORIZONTAL);
 		audioSlider.setPaintTicks(true);    //Striche werden angezeigt
@@ -589,6 +593,7 @@ public class Gui_StreamRipStar extends JFrame implements WindowListener
 			configButton.setFont(textUnderIconsFont);
 			infoButton.setFont(textUnderIconsFont);
 			browseGenreButton.setFont(textUnderIconsFont);
+
 		}
 	}
 	
