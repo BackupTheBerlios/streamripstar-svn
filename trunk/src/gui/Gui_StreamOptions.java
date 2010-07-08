@@ -1394,6 +1394,9 @@ public class Gui_StreamOptions extends JFrame implements WindowListener {
 	public class SaveListener implements ActionListener{
 		public void actionPerformed(ActionEvent e){
 			save();
+			//if you have press save() on a new stream, it is not 
+			//new anymore -> tell it 
+			createNewStream = false;
 			if(!dontExit) {
 				mainGui.getControlStream().saveStreamVector();
 			}

@@ -55,7 +55,7 @@ public class AudioPlayer extends Thread{
 			public void errorMessage(GstObject source, int errorCode, String errorMessage) {
 				//Cannot resolve hostname - no connection to the stream
 				if(errorCode == 3) {
-					mainGui.setTitleForAudioPlayer(trans.getString("audioplayer.noConnectionTo"));
+					mainGui.setErrorMesageForAudioPlayer(trans.getString("audioplayer.noConnectionTo"));
 				}
 				
 				System.out.println("The Errorcode was:"+errorCode);

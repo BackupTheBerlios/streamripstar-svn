@@ -277,11 +277,11 @@ public class Control_http_Shoutcast {
 					}
 				}
 			} catch (Exception e) {
-				System.out.println("HHHIIIIIIIIERRR");
 				if (e.getMessage().startsWith("stream is closed")) {
 					stopSearching = true;
-				} else
+				} else {
 					e.printStackTrace();
+				}
 			} finally {
 				// reset for new run
 				stopSearching = false;

@@ -530,6 +530,7 @@ public class Gui_StreamRipStar extends JFrame implements WindowListener
 				editButton.setText(trans.getString("mainWin.editButton"));
 				addButton.setText(trans.getString("mainWin.addButton"));
 				hearMusicButton.setText(trans.getString("mainWin.hearMusicButton"));
+				stopHearMusicButton.setText(trans.getString("mainWin.stopHearMusicButton"));
 				openMusicFolderButton.setText(trans.getString("mainWin.openMusicFolderButton"));
 				exitButton.setText(trans.getString("mainWin.exitButton"));
 				configButton.setText(trans.getString("mainWin.configButton"));
@@ -889,7 +890,7 @@ public class Gui_StreamRipStar extends JFrame implements WindowListener
 	public void setTitleForAudioPlayer(String title) {
 		if(title != null) {
 			currentTitleLabel.setText(title);
-			currentTitleLabel.setBackground(Color.WHITE);
+			currentTitleLabel.setForeground(Color.BLACK);
 		}
 	}
 	
@@ -900,9 +901,8 @@ public class Gui_StreamRipStar extends JFrame implements WindowListener
 	 */
 	public void setErrorMesageForAudioPlayer(String errorMessage) {
 		if(errorMessage != null) {
-			currentTitleLabel.setBackground(Color.RED);
 			currentTitleLabel.setText(errorMessage);
-			
+			currentTitleLabel.setForeground(Color.RED);	
 		}
 	}
 	
@@ -1160,8 +1160,7 @@ public class Gui_StreamRipStar extends JFrame implements WindowListener
 			String musicpath = getControlStream().getGeneralPath();
 			if(browser == null || browser.trim().equals("")) {
 				JOptionPane.showMessageDialog(Gui_StreamRipStar.this,trans.getString("confiFileBrower"));
-			}
-			else {
+			} else {
 				if(musicpath == null || musicpath.trim().equals("")) {
 					JOptionPane.showMessageDialog(Gui_StreamRipStar.this,trans.getString("configGenralPath"));
 				} else {
@@ -1180,10 +1179,10 @@ public class Gui_StreamRipStar extends JFrame implements WindowListener
 		public void actionPerformed(ActionEvent e) {
 			if(getTabel().isTHSelected()) {
 				getTabel().startMusikPlayerWithSelectedStream();
-			}
-			else
+			} else {
 				JOptionPane.showMessageDialog(Gui_StreamRipStar.this
 						,trans.getString("select"));
+			}
 		}
 	}
 	
@@ -1208,11 +1207,11 @@ public class Gui_StreamRipStar extends JFrame implements WindowListener
 				//open infodialog
 				new Gui_Infodialog(Gui_StreamRipStar.this,stream);
 
-			}
-			else
+			} else {
 				//say, that no cell is selected
 				JOptionPane.showMessageDialog(Gui_StreamRipStar.this
 						,trans.getString("select"));
+			}
 		}
 	}
 	

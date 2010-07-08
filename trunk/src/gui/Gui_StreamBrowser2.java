@@ -1204,7 +1204,7 @@ public class Gui_StreamBrowser2 extends JFrame implements WindowListener {
 			if(e.getClickCount() == 2 && !disableClick) {
 				if(browseTree.getSelectionPath() != null) {
 					selectedGenre = browseTree.getSelectionPath()
-						.getLastPathComponent().toString();
+						.getLastPathComponent().toString().replace(" ", "%20");
 
 					if(selectedGenre.equals(trans.getObject("GetGenres.search"))) {
 						selectedGenre =	JOptionPane.showInputDialog(getMe(),
