@@ -891,6 +891,11 @@ public class Gui_StreamRipStar extends JFrame implements WindowListener
 		if(title != null) {
 			currentTitleLabel.setText(title);
 			currentTitleLabel.setForeground(Color.BLACK);
+			
+			//show title messages in the streamrbowser, too
+			if(streamBrowser != null) {
+				streamBrowser.setStatusText(title);
+			}
 		}
 	}
 	
@@ -903,6 +908,11 @@ public class Gui_StreamRipStar extends JFrame implements WindowListener
 		if(errorMessage != null) {
 			currentTitleLabel.setText(errorMessage);
 			currentTitleLabel.setForeground(Color.RED);	
+			
+			//show error messages in the streamrbowser, too
+			if(streamBrowser != null) {
+				streamBrowser.setErrorMessage(errorMessage);
+			}
 		}
 	}
 	

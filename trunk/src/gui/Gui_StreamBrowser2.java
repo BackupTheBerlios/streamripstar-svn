@@ -460,8 +460,22 @@ public class Gui_StreamBrowser2 extends JFrame implements WindowListener {
 		return controlHttp;
 	}
 	
+	/**
+	 * Show messages to the use
+	 * @param statusText
+	 */
 	public void setStatusText(String statusText) {
+		stautsLabel.setForeground(Color.BLACK);
 		stautsLabel.setText(statusText);
+	}
+	
+	/**
+	 * 
+	 * @param statusText
+	 */
+	public void setErrorMessage(String errorMessage) {
+		stautsLabel.setForeground(Color.RED);
+		stautsLabel.setText(errorMessage);
 	}
 	
 	public synchronized void updateUITree() {
