@@ -35,11 +35,14 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
+import javax.swing.JSlider;
 import javax.swing.JSplitPane;
 import javax.swing.JTable;
 import javax.swing.JToolBar;
 import javax.swing.JTree;
 import javax.swing.SwingConstants;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
 import javax.swing.tree.DefaultMutableTreeNode;
@@ -164,6 +167,7 @@ public class Gui_StreamBrowser2 extends JFrame implements WindowListener {
 	// 5 boolean isTypeShown = true;
 	// 6 boolean isWebsiteShown = true;
 	
+	private JSlider audioSlider = new JSlider();
 	private Thread_GetStreams_FromShoutcast getStreams = null;
 	
 	//width of every column
@@ -345,6 +349,7 @@ public class Gui_StreamBrowser2 extends JFrame implements WindowListener {
 		browseTable.getTableHeader().setComponentPopupMenu(selShowPopup);
 		listenToButton.addActionListener( new PlayMusikListener() );
 		stopListeningToButton.addActionListener( new StopPlayingMusikListener() );
+		audioSlider.addChangeListener(new ValueumChangeListener());
 		addToStreamRipStarButton.addActionListener( new AddToStreamRipStarListener() );
 		abortButton.addActionListener(new AbortThreadsListener());
 		addAndRecButton.addActionListener(new AddAndStartRecordListener());
@@ -502,6 +507,25 @@ public class Gui_StreamBrowser2 extends JFrame implements WindowListener {
 	 * Build Iconbars and add a simple look
 	 */
 	public void buildIconBars() {
+		//configure the slider for the voluemcontrol
+		audioSlider.setMinimum(0);
+		audioSlider.setMaximum(100);
+		//set default Value
+		audioSlider.setValue(80);
+		//set jump intervall : on every click 10 percent
+		audioSlider.setMinorTickSpacing(25);
+		//in how many spaces should the text shown?
+		audioSlider.setMajorTickSpacing(50);
+		audioSlider.setMaximumSize(new Dimension(100,40));
+		audioSlider.setMinimumSize(new Dimension(100,40));
+		audioSlider.setPreferredSize(new Dimension(100,40));
+		
+		//The Orientation
+		audioSlider.setOrientation(JSlider.HORIZONTAL);
+		audioSlider.setPaintTicks(true);  
+		audioSlider.setPaintLabels(true); 
+		audioSlider.setPaintTrack(true);
+		
 		//set a simple look
 		listenToButton.setHorizontalTextPosition(SwingConstants.CENTER);
 		listenToButton.setVerticalTextPosition(SwingConstants.BOTTOM);
@@ -534,6 +558,7 @@ public class Gui_StreamBrowser2 extends JFrame implements WindowListener {
 		commonIconBar.addSeparator();
 		commonIconBar.add(listenToButton);
 		commonIconBar.add(stopListeningToButton);
+		commonIconBar.add(audioSlider);
 		commonIconBar.addSeparator();
 		commonIconBar.add(abortButton);
 		commonIconBar.add(filterButton);
@@ -1208,6 +1233,13 @@ public class Gui_StreamBrowser2 extends JFrame implements WindowListener {
 	}
 	
 	/**
+	 * get the volum control from the streambrowser
+	 */
+	public JSlider getAudioSlider() {
+		return audioSlider;
+	}
+	
+	/**
 	 * This Listener looks for a click an the JTree
 	 * and execute the command to fill the table
 	 * streams
@@ -1247,7 +1279,18 @@ public class Gui_StreamBrowser2 extends JFrame implements WindowListener {
 			}
 		}
 	}
+	
+	/**
+	 * Is called, when the value is changened from the intern audio player
+	 *
+	 */
+	public class ValueumChangeListener implements ChangeListener {
 
+		@Override
+		public void stateChanged(ChangeEvent arg0) {
+			StreamRipStar.setVolume(audioSlider.getValue());
+		} 
+	}
 
 	public void windowActivated(WindowEvent e) {}
 	public void windowClosed(WindowEvent e) {}

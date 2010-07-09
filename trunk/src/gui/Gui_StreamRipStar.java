@@ -316,8 +316,8 @@ public class Gui_StreamRipStar extends JFrame implements WindowListener
 		
 		//The Orientation
 		audioSlider.setOrientation(JSlider.HORIZONTAL);
-		audioSlider.setPaintTicks(true);    //Striche werden angezeigt
-		audioSlider.setPaintLabels(true);  //Zahlen werden nicht angezeigt
+		audioSlider.setPaintTicks(true);  
+		audioSlider.setPaintLabels(true); 
 		audioSlider.setPaintTrack(true);
 		
 		//place Text under the icons
@@ -443,8 +443,7 @@ public class Gui_StreamRipStar extends JFrame implements WindowListener
 
 		@Override
 		public void stateChanged(ChangeEvent arg0) {
-			getTabel().setAudioVolume(audioSlider.getValue());
-			
+			setVolume(audioSlider.getValue());
 		} 
 	}
 	
@@ -678,6 +677,21 @@ public class Gui_StreamRipStar extends JFrame implements WindowListener
 		JOptionPane.showMessageDialog(Gui_StreamRipStar.this,
 				errorMessage, trans.getString("error"),
 				JOptionPane.ERROR_MESSAGE, null);
+	}
+	
+	/**
+	 * Sets a new Volume to the audioSlider (the volume Control)
+	 * @param newVolume the volume in percent from 0 up to 100
+	 */
+	public void setVolume(int newVolume) {
+		if(audioSlider.getValue() != newVolume) {
+			audioSlider.setValue(newVolume);
+		}
+		
+		if(streamBrowser.getAudioSlider().getValue() != newVolume) {
+			streamBrowser.getAudioSlider().setValue(newVolume);
+		}
+		getTabel().setAudioVolume(audioSlider.getValue());
 	}
 	
 	/**
