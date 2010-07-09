@@ -11,8 +11,8 @@ import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
+import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 import java.net.URL;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
@@ -24,6 +24,7 @@ import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.KeyStroke;
 
@@ -45,7 +46,7 @@ public class Gui_AboutStreamRipStar extends JDialog
 	private JLabel programming = new JLabel("Programming :");
 	private JTextField programmerName = new JTextField("Johannes Putzke"); 
 	private JLabel IconsAndGrap = new JLabel("Icons and Graphics :");
-	private JTextField iconAndGrapName = new JTextField("Christian Putzke (EdMolf)");
+	private JTextArea iconAndGrapName = new JTextArea("Christian Putzke (Edmolf) - Icons Mainwindow, Logo and other graphics\nOxygen Icon Projekt - Streambrowser, Updatedialog");
 	private JLabel license = new JLabel("License :");
 	private JTextField licenceName = new JTextField("GPLV3");
 	private JLabel version = new JLabel("Version :");
@@ -60,6 +61,8 @@ public class Gui_AboutStreamRipStar extends JDialog
 	private JTextField edmolfHomepageAddress = new JTextField("http://www.edmolf.net");
 	private JLabel streamripperHomepage = new JLabel("Streamrippers Homepage");
 	private JTextField streamripperHomepageAddress = new JTextField("http://developer.berlios.de/projects/streamripstar/");
+	private JLabel externPrograms = new JLabel("Extern Programms");
+	private JTextArea externProgramsTA = new JTextArea("gstreamer-java (GPL)");
 	
 	private JLabel copyRight = new JLabel("Copyright @ Johannes Putzke");
 	
@@ -142,16 +145,23 @@ public class Gui_AboutStreamRipStar extends JDialog
 		panel.add(edmolfHomepage,c);
 		c.gridx = 1;
 		panel.add(edmolfHomepageAddress,c);
-		c.gridwidth = 2;
 		c.gridy = 11;
 		c.gridx = 0;
-		panel.add(copyRight,c);	
+		panel.add(externPrograms,c);
+		c.gridx = 1;
+		c.gridwidth = 1;
+		panel.add(externProgramsTA,c);
 		c.gridy = 12;
+		c.gridx = 1;
+		c.gridwidth = 2;
+		panel.add(copyRight,c);	
+		c.gridx = 0;
+		c.gridy = 13;
 		c.weighty = 0.5;
 		panel.add(new JLabel(""),c);
 		c.insets = new Insets( 10, 10, 10, 10);
 		c.weighty = 0.0;
-		c.gridy = 13;
+		c.gridy = 14;
 		panel.add(OKButton,c);
 		this.setResizable(false);
 		
@@ -167,6 +177,8 @@ public class Gui_AboutStreamRipStar extends JDialog
 		edmolfHomepageAddress.addMouseListener(new OpenWebSiteListener());
 		streamripperHomepageAddress.addMouseListener(new OpenWebSiteListener());
 		
+    	setLanguage();
+    	
         //set size of window
     	pack();
     	Dimension frameDim = getSize();
@@ -180,7 +192,6 @@ public class Gui_AboutStreamRipStar extends JDialog
         //set location
         
         setLocation(x, y);
-    	setLanguage();
     	makeEditable(false);
     	setVisible(true);
 	}
@@ -190,8 +201,7 @@ public class Gui_AboutStreamRipStar extends JDialog
 	 * 
 	 * @param edit
 	 */
-	public void makeEditable(Boolean edit)
-	{
+	public void makeEditable(Boolean edit) {
 		programmerName.setEditable(edit);
 		iconAndGrapName.setEditable(edit);
 		licenceName.setEditable(edit);
@@ -201,13 +211,12 @@ public class Gui_AboutStreamRipStar extends JDialog
 		streamRipStarHomepageAddress.setEditable(edit);
 		edmolfHomepageAddress.setEditable(edit);
 		streamripperHomepageAddress.setEditable(edit);
+		externProgramsTA.setEditable(edit);
 	}
 	
 	
-	public void setLanguage()
-	{
-		try
-    	{
+	public void setLanguage() {
+		try {
     		setTitle(trans.getString("about"));
     		programming.setText(trans.getString("programming"));
     		IconsAndGrap.setText(trans.getString("IconsAndGrap"));
@@ -216,9 +225,9 @@ public class Gui_AboutStreamRipStar extends JDialog
     		version.setText(trans.getString("version"));
     		streamRipStarSourceforgeSite.setText(trans.getString("streamRipStarSourceforgeSite"));
     		streamRipStarHomepage.setText(trans.getString("streamRipStarHomepage"));
+    		externPrograms.setText(trans.getString("about.externPrograms"));
     	}
-		catch ( MissingResourceException e )
-		{ 
+		catch ( MissingResourceException e ) { 
 		      System.err.println( e ); 
 	    }
 	}
@@ -227,7 +236,6 @@ public class Gui_AboutStreamRipStar extends JDialog
 	/**
 	 * 
 	 * @author Johannes Putzke
-	 *
 	 */
     public class OKListener implements ActionListener {
         public void actionPerformed(ActionEvent e) {
@@ -235,16 +243,12 @@ public class Gui_AboutStreamRipStar extends JDialog
         }
     }
     
-	public class OpenWebSiteListener implements MouseListener {
-		
+    /**
+     * Opens the website, when someone clicked in the website 
+     */
+	public class OpenWebSiteListener extends MouseAdapter{
 		public void mouseClicked(MouseEvent e) {
-			
-				controlStreams.startWebBrowser(((JTextField)e.getSource()).getText());
+			controlStreams.startWebBrowser(((JTextField)e.getSource()).getText());
 		}
-		
-		public void mousePressed(MouseEvent e){}
-		public void mouseReleased(MouseEvent e){}
-		public void mouseEntered(MouseEvent e) {}
-		public void mouseExited(MouseEvent e) {}
 	}
 }
