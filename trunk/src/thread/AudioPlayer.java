@@ -73,6 +73,8 @@ public class AudioPlayer extends Thread{
 			mainGui.showErrorMessageInPopUp(trans.getString("audioplayer.noGstreamerInstalled"));
 		} catch (IllegalArgumentException e) {
 			mainGui.showErrorMessageInPopUp(trans.getString("audioplayer.noGstreamerInstalled"));
+		} catch (NoClassDefFoundError e) {
+			mainGui.showErrorMessageInPopUp(trans.getString("audioplayer.noGstreamerInstalled"));
 		}
 	}
 	
