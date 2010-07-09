@@ -259,23 +259,23 @@ public class Gui_Filter extends JPanel {
 				
 				//add stream recursive
 				for(int i=0 ; i < streamsPG.capacity(); i++) {
-					Object[] tmp = new Object[8];
+					
+					Object[] tmp = new Object[7];
 					
 					tmp[0] = i;						//nr
-					tmp[1] = streamsPG.get(i)[2];	//genre
-					tmp[2] = streamsPG.get(i)[0];	//description
-					tmp[3] = streamsPG.get(i)[3];	//now Playing
+					tmp[1] = streamsPG.get(i)[0];	//description
+					tmp[2] = streamsPG.get(i)[2];	//now Playing
 					try {
-						tmp[4] = Integer.valueOf(streamsPG.get(i)[4]);//Listeners
-					} catch (NumberFormatException f) {
-						tmp[4] = -1;
-					}
-					try{
-						tmp[5] = Integer.valueOf(streamsPG.get(i)[5]);	//Bitrate
+						tmp[3] = Integer.valueOf(streamsPG.get(i)[3]);	//listeners
 					} catch (NumberFormatException f) { 
-						tmp[5] = -1; }
-					tmp[6] = streamsPG.get(i)[6];	//Type
-					tmp[7] = streamsPG.get(i)[1];	//Website
+						tmp[3] = -1;
+					}
+					
+					try{
+						tmp[4] = Integer.valueOf(streamsPG.get(i)[4]);	//Bitrate
+					} catch (NumberFormatException f) { tmp[6] = -1; }
+					tmp[5] = streamsPG.get(i)[5];	//Type
+					tmp[6] = streamsPG.get(i)[1];	//Website
 						
 					//add to model
 					streamBrowser.getBrowseModel().addRow(tmp);
@@ -333,7 +333,7 @@ public class Gui_Filter extends JPanel {
 				for(int i=0; i < oldStreams.capacity(); i++) {
 					try {
 						//bitrate of an Stream
-						streamBitrate = Integer.valueOf(oldStreams.get(i)[5]);
+						streamBitrate = Integer.valueOf(oldStreams.get(i)[4]);
 					} catch(NumberFormatException e) {
 						if(DEBUG) {
 							System.out.println("Wrong Bitrate in Stream");
@@ -375,13 +375,13 @@ public class Gui_Filter extends JPanel {
 			for(int i=0; i < oldStreams.capacity(); i++) {
 				
 				//add mp3 streams
-				if(showMP3Streams.isSelected() && oldStreams.get(i)[6].startsWith("MP3")) {
+				if(showMP3Streams.isSelected() && oldStreams.get(i)[5].toLowerCase().startsWith("mp3")) {
 					newStreams.add(oldStreams.get(i));
 				//add AAC+ streams
-				} else if(showAACStreams.isSelected() && oldStreams.get(i)[6].startsWith("AAC+")) {
+				} else if(showAACStreams.isSelected() && oldStreams.get(i)[5].startsWith("AAC+")) {
 					newStreams.add(oldStreams.get(i));
 				//the rest of streams
-				} else if(showUnknownStreams.isSelected() && oldStreams.get(i)[6].trim().equals("")){
+				} else if(showUnknownStreams.isSelected() && oldStreams.get(i)[5].trim().equals("")){
 					newStreams.add(oldStreams.get(i));
 				}
 			}

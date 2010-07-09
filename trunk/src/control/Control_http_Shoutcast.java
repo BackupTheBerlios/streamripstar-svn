@@ -162,12 +162,11 @@ public class Control_http_Shoutcast {
 	 * 
 	 * streamInfo[0] = Name 
 	 * streamInfo[1] = Website 
-	 * streamInfo[2] = Genre 
-	 * streamInfo[3] = now Playing 
-	 * streamInfo[4] = Listeners
-	 * streamInfo[5] = Bitrate 
-	 * streamInfo[6] = Format
-	 * streamInfo[7] = ID
+	 * streamInfo[2] = now Playing 
+	 * streamInfo[3] = Listeners
+	 * streamInfo[4] = Bitrate 
+	 * streamInfo[5] = Format
+	 * streamInfo[6] = ID
 	 * 
 	 * @param genre the keyword (most cases the genre) 
 	 * @param keyword true, if the search should be with keywords 
@@ -207,7 +206,7 @@ public class Control_http_Shoutcast {
 							text = bw.readLine();
 					
 							//now find the ID for the stream
-							streamInfo[7] = text.substring(text.indexOf("\" id=\"")+6, text.indexOf("\" href=\""));
+							streamInfo[6] = text.substring(text.indexOf("\" id=\"")+6, text.indexOf("\" href=\""));
 							
 							text = bw.readLine();
 							
@@ -220,22 +219,22 @@ public class Control_http_Shoutcast {
 							text = bw.readLine();
 							
 							//look for the current title
-							streamInfo[3] = text.substring(text.indexOf("title=\"")+7,text.lastIndexOf("\">"));
+							streamInfo[2] = text.substring(text.indexOf("title=\"")+7,text.lastIndexOf("\">"));
 							
 							//look for the amount of listeners to the stream
-							streamInfo[4] = readNextHtmlLine().trim();
+							streamInfo[3] = readNextHtmlLine().trim();
 							
 							//now have a look at the bitrate
-							streamInfo[5] = readNextHtmlLine().trim();
+							streamInfo[4] = readNextHtmlLine().trim();
 							
 							//which Format do we use?
-							streamInfo[6] = readNextHtmlLine().trim();
+							streamInfo[5] = readNextHtmlLine().trim();
 							
 							//This stream has all information
 							streams.add(streamInfo);
 							
 							//create an new for the next one
-							streamInfo = new String[8];					
+							streamInfo = new String[7];					
 						}
 
 					} catch (NullPointerException e) {
@@ -274,12 +273,11 @@ public class Control_http_Shoutcast {
 	 * 
 	 * streaminfo[0] = Name 
 	 * streaminfo[1] = Website 
-	 * streaminfo[2] = Genre 
-	 * streaminfo[3] = now Playing 
-	 * streaminfo[4] = Listeners
-	 * streaminfo[5] = Bitrate 
-	 * streaminfo[6] = Format
-	 * streaminfo[7] = ID
+	 * streaminfo[2] = now Playing 
+	 * streaminfo[3] = Listeners
+	 * streaminfo[4] = Bitrate 
+	 * streaminfo[5] = Format
+	 * streaminfo[6] = ID
 	 * 
 	 * @param genre the keyword for searching
 	 * @param keyword true, if the search should be with keywords 
@@ -296,7 +294,7 @@ public class Control_http_Shoutcast {
 			bw = new BufferedReader(new InputStreamReader(readGenresStream));
 
 			// create a stream to save the info from the website
-			String[] streamInfo = new String[8];
+			String[] streamInfo = new String[7];
 			Boolean firstStationFound = false;
 			
 			while (!stopSearching && (text = bw.readLine()) != null) {
@@ -311,7 +309,7 @@ public class Control_http_Shoutcast {
 					}
 					
 					if(text.contains("onClick=\"holdStationID('")) {
-						streamInfo[7] = text.substring(
+						streamInfo[6] = text.substring(
 								text.indexOf("onClick")+24,text.indexOf("')"));
 					}
 					
@@ -331,7 +329,7 @@ public class Control_http_Shoutcast {
 								
 								//current title
 								readNextHtmlLine();
-								streamInfo[3] = readNextHtmlLine();
+								streamInfo[2] = readNextHtmlLine();
 								
 								//the genre
 								readNextHtmlLine();
