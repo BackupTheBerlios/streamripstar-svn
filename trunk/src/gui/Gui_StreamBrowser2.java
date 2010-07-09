@@ -237,6 +237,7 @@ public class Gui_StreamBrowser2 extends JFrame implements WindowListener {
 	public void setToolTips() {
 		listenToButton.setToolTipText(toolTips.getString("StreamBrowser.listen"));
 		stopListeningToButton.setToolTipText(toolTips.getString("StreamBrowser.stopListening"));
+		audioSlider.setToolTipText(toolTips.getString("StreamBrowser.audioSlider"));
 		addToStreamRipStarButton.setToolTipText(toolTips.getString("StreamBrowser.addToStreamRipStar"));
 		addAndRecButton.setToolTipText(toolTips.getString("StreamBrowser.addAndRecord"));
 		abortButton.setToolTipText(toolTips.getString("StreamBrowser.abort"));
