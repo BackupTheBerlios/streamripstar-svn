@@ -58,6 +58,11 @@ public class AudioPlayer extends Thread{
 						mainGui.setErrorMesageForAudioPlayer(trans.getString("audioplayer.noConnectionTo"));
 					}
 					
+					//Cannot resolve hostname - no connection to the stream
+					if(errorCode == 6 || errorCode == 12) {
+						mainGui.setErrorMesageForAudioPlayer(errorMessage);
+					}
+					
 					System.out.println("The Errorcode was:"+errorCode);
 					System.out.println("The Errormessage was:"+errorMessage);
 				}
