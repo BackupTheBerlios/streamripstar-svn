@@ -187,7 +187,7 @@ public class Control_http_Shoutcast {
 				bw = new BufferedReader(new InputStreamReader(readGenresStream));
 	
 				// create a stream to save the info from the website
-				String[] streamInfo = new String[8];
+				String[] streamInfo = new String[7];
 				
 				while (!stopSearching && (text = bw.readLine()) != null) {
 					try {
@@ -220,7 +220,7 @@ public class Control_http_Shoutcast {
 							
 							//look for the current title
 							streamInfo[2] = text.substring(text.indexOf("title=\"")+7,text.lastIndexOf("\">"));
-							
+
 							//look for the amount of listeners to the stream
 							streamInfo[3] = readNextHtmlLine().trim();
 							
@@ -266,6 +266,7 @@ public class Control_http_Shoutcast {
 		}
 	}
 	
+
 	/**
 	 * Browse the list of stream on shoutcast.com in the given genre and save it
 	 * into an Array of Strings into an vector called streaminfo. streaminfo
@@ -287,91 +288,75 @@ public class Control_http_Shoutcast {
 		streams.removeAllElements();
 		streams.trimToSize();
 		try {
-			// for testing
-			URL shoutcast = new URL("http://shoutcast.com/directory/searchKeyword.jsp?startIndex="+((currentPage*maxResults)+1)+
-					"&s=" + keyword + "&numresult="+maxResults);
+
+			URL shoutcast = new URL("http://www.shoutcast.com/search-ajax/"+keyword+"?strIndex="+(currentPage*maxResults)+
+					"&count="+maxResults+"&ajax=true");
+			
 			readGenresStream = shoutcast.openStream();
+			
 			bw = new BufferedReader(new InputStreamReader(readGenresStream));
 
 			// create a stream to save the info from the website
 			String[] streamInfo = new String[7];
-			Boolean firstStationFound = false;
 			
 			while (!stopSearching && (text = bw.readLine()) != null) {
 				try {
 					//from here we need all from the source code
 					//Look for the number of results
-					if(text.contains("totalResults=")){
+					if(text.contains("	<input type=\"hidden\" class=\"numfound\" ")){
 						int results = Integer.valueOf(text.substring(
-								text.indexOf("totalResults=")+13, text.indexOf(";")));
+								text.indexOf("value=")+7, text.lastIndexOf("\"")));
 						totalPages = (results / maxResults);
 						
 					}
 					
-					if(text.contains("onClick=\"holdStationID('")) {
-						streamInfo[6] = text.substring(
-								text.indexOf("onClick")+24,text.indexOf("')"));
-					}
-					
-					
-					String noHTMLtext = text.toString().replaceAll("\\<.*?>","").trim();
-					
-					if(noHTMLtext.length() > 0) {
+					//here starts a stream
+					if(text.contains("class=\"stationcol\"")) {
+						//next line starts a stream
+						text = bw.readLine();
+				
+						//now find the ID for the stream
+						streamInfo[6] = text.substring(text.indexOf("\" id=\"")+6, text.indexOf("\" href=\""));
 						
-						//here we get the name of this stream
-						if(noHTMLtext.startsWith("Station:")) {
-							if(!firstStationFound) {
-//								//name of this stream
-//								String tmp = readNextHtmlLine();
-//								streamInfo[0] = tmp.substring(tmp.indexOf("title")+7);
-								//name of this stream
-								streamInfo[0] = readNextHtmlLine();
-								
-								//current title
-								readNextHtmlLine();
-								streamInfo[2] = readNextHtmlLine();
-								
-								//the genre
-								readNextHtmlLine();
-								streamInfo[2] = readNextHtmlLine();
-								
-								//the amout of current Listener
-								streamInfo[4] = readNextHtmlLine().replace(",", "");
-
-								//the Bitrate
-								readNextHtmlLine();
-								streamInfo[5] = readNextHtmlLine();
-								
-								//Typ : Mp3 or a++
-								readNextHtmlLine();
-								streamInfo[6] = readNextHtmlLine();
-								
-								//name of this stream
-								readNextHtmlLine();
-								bw.readLine();
-								text = bw.readLine();
-								streamInfo[1] = text.substring(text.indexOf("href=\"")+6, text.indexOf("target=\"_")-2);
-								streamInfo[0] = readNextHtmlLine();
-
-								//der stream ist damit komplett
-								streams.add(streamInfo);
-								
-								//erzeuge einen neuen für den nächsten Stream
-								streamInfo = new String[8];
-								
-								firstStationFound = false;
-								
-							} else {
-								firstStationFound = true;
-								
-							}
-						}
+						text = bw.readLine();
+						
+						//first. Read the name
+						streamInfo[0] = text.substring(text.indexOf("title=\"")+7,text.indexOf("\" target=\"_blank\" href="));
+						
+						//new look for the link to the website
+						streamInfo[1] = text.substring(text.indexOf("_blank\" href=\"")+14,text.lastIndexOf("\">"));
+						
+						text = bw.readLine();
+						
+						//look for the current title
+						streamInfo[2] = text.substring(text.indexOf("title=\"")+7,text.lastIndexOf("\">"));
+						
+						//the genre witch is only on keyword search available
+						streamInfo[0] += (" - " + readNextHtmlLine().trim());	
+						
+						//look for the amount of listeners to the stream
+						streamInfo[3] = readNextHtmlLine().trim();
+						
+						//now have a look at the bitrate
+						streamInfo[4] = readNextHtmlLine().trim();
+						
+						//which Format do we use?
+						streamInfo[5] = readNextHtmlLine().trim();
+						
+						//This stream has all information
+						streams.add(streamInfo);
+						
+						//create an new for the next one
+						streamInfo = new String[7];					
 					}
+
 				} catch (NullPointerException e) {
-					System.err.println("Error while loading from shoutcast website");
+					System.out.println("Error while loading from shoutcast website");
 				} catch (StringIndexOutOfBoundsException e) {
 					System.out.println("Error while loading from shoutcast website");
-					firstStationFound = false;
+				} catch (NumberFormatException e) {
+					System.err.println("Controled Crash in StreamBrowser");
+					e.printStackTrace();
 				}
 			}
 		} catch (Exception e) {
