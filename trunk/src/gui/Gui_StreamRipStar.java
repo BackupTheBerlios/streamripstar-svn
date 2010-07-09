@@ -396,6 +396,7 @@ public class Gui_StreamRipStar extends JFrame implements WindowListener
 		addButton.setToolTipText("Add stream");
 		hearMusicButton.setToolTipText("Hear stream");
 		stopHearMusicButton.setToolTipText("Stop playing music with the internal player");
+		audioSlider.setToolTipText("Volume control");
 		exitButton.setToolTipText("Exit");
 		configButton.setToolTipText("Preferences");
 		openMusicFolderButton.setToolTipText("Open musicfolder");
@@ -638,6 +639,7 @@ public class Gui_StreamRipStar extends JFrame implements WindowListener
 			addButton.setToolTipText(trans.getString("toolTip.addButton"));
 			hearMusicButton.setToolTipText(trans.getString("toolTip.hearMusicButton"));
 			stopHearMusicButton.setToolTipText(trans.getString("toolTip.stopHearMusicButton"));
+			audioSlider.setToolTipText(trans.getString("toolTip.audioSlider"));
 			exitButton.setToolTipText(trans.getString("toolTip.exitButton"));
 			configButton.setToolTipText(trans.getString("toolTip.configButton"));
 			openMusicFolderButton.setToolTipText(trans.getString("toolTip.openMusicFolderButton"));
@@ -667,6 +669,15 @@ public class Gui_StreamRipStar extends JFrame implements WindowListener
 		} catch ( MissingResourceException e ) { 
 			System.err.println( e ); 
 		}
+	}
+	
+	/**
+	 * Shows an error message in a popup in the mainwindow
+	 */
+	public void showErrorMessageInPopUp(String errorMessage) {
+		JOptionPane.showMessageDialog(Gui_StreamRipStar.this,
+				errorMessage, trans.getString("error"),
+				JOptionPane.ERROR_MESSAGE, null);
 	}
 	
 	/**

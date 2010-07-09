@@ -1180,7 +1180,7 @@ public class Gui_StreamBrowser2 extends JFrame implements WindowListener {
 				System.out.println("Can load the previous page, because the current page is the first one");
 				setStatusText("Can load the previous page, because the current page is the first one");
 			} else {
-				getStreams = new Thread_GetStreams_FromShoutcast(getMe(),selectedGenre,trans,isKeyword,false,true);
+				getStreams = new Thread_GetStreams_FromShoutcast(getMe(),selectedGenre.replace(" ", "%20"),trans,isKeyword,false,true);
 	    		getStreams.start();
 			}
 		}
@@ -1199,7 +1199,7 @@ public class Gui_StreamBrowser2 extends JFrame implements WindowListener {
 				System.out.println("Can load the next page, because the current page is the last one");
 				setStatusText("Can load the next page, because the current page is the last one");
 			} else {
-				getStreams = new Thread_GetStreams_FromShoutcast(getMe(),selectedGenre,trans,isKeyword,true,false);
+				getStreams = new Thread_GetStreams_FromShoutcast(getMe(),selectedGenre.replace(" ", "%20"),trans,isKeyword,true,false);
 	    		getStreams.start();
 			}
 		}
@@ -1218,7 +1218,7 @@ public class Gui_StreamBrowser2 extends JFrame implements WindowListener {
 			if(e.getClickCount() == 2 && !disableClick) {
 				if(browseTree.getSelectionPath() != null) {
 					selectedGenre = browseTree.getSelectionPath()
-						.getLastPathComponent().toString().replace(" ", "%20");
+						.getLastPathComponent().toString();
 
 					if(selectedGenre.equals(trans.getObject("GetGenres.search"))) {
 						selectedGenre =	JOptionPane.showInputDialog(getMe(),
@@ -1229,7 +1229,7 @@ public class Gui_StreamBrowser2 extends JFrame implements WindowListener {
 							stop = true;
 						} else {
 							isKeyword = true;
-							getStreams = new Thread_GetStreams_FromShoutcast(getMe(),selectedGenre,trans,isKeyword,false,false);
+							getStreams = new Thread_GetStreams_FromShoutcast(getMe(),selectedGenre.replace(" ", "%20"),trans,isKeyword,false,false);
 				    		getStreams.start();
 						}
 
@@ -1237,7 +1237,7 @@ public class Gui_StreamBrowser2 extends JFrame implements WindowListener {
 				    	//fill table with streams
 				    	if(!stop) {
 				    		isKeyword = false;
-				    		getStreams = new Thread_GetStreams_FromShoutcast(getMe(),selectedGenre,trans, isKeyword,false,false);
+				    		getStreams = new Thread_GetStreams_FromShoutcast(getMe(),selectedGenre.replace(" ", "%20"),trans, isKeyword,false,false);
 				    		getStreams.start();
 				    	}
 					}

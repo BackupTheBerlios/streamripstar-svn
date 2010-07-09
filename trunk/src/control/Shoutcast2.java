@@ -156,10 +156,6 @@ public class Shoutcast2 {
 		tmpGenres[9] = "Sermons/Services";
 		tmpGenres[10] = "Southern Gospel";
 		tmpGenres[11] = "Traditional Gospel";
-		tmpGenres[12] = "";
-		tmpGenres[13] = "";
-		tmpGenres[14] = "";
-		tmpGenres[15] = "";
 		
 		genres[8] = tmpGenres;
 		tmpGenres = new String[29];

@@ -29,44 +29,51 @@ public class AudioPlayer extends Thread{
 	}
 	
 	public void run() {
-		String[] args = {};
-		Gst.init("AudioPlayer", args);
-        playbin = new PlayBin2("AudioPlayer");
-        try {
-			playbin.setURI(new URI(stream.address));
-		} catch (URISyntaxException e) {
-			e.printStackTrace();
-		}
-		
-		//try to catch the AUDIO - TAGS from the stream
-		playbin.getBus().connect(new Bus.TAG() {
-
-            public void tagsFound(GstObject source, TagList tagList) {
-                for (String tagName : tagList.getTagNames()) {
-                    for (Object tagData : tagList.getValues(tagName)) {
-                    	mainGui.setTitleForAudioPlayer(stream.name + " : " + tagData.toString());
-                    }
-                }
-            }
-        });
-		
-		playbin.getBus().connect(new Bus.ERROR() {
-			@Override
-			public void errorMessage(GstObject source, int errorCode, String errorMessage) {
-				//Cannot resolve hostname - no connection to the stream
-				if(errorCode == 3) {
-					mainGui.setErrorMesageForAudioPlayer(trans.getString("audioplayer.noConnectionTo"));
-				}
-				
-				System.out.println("The Errorcode was:"+errorCode);
-				System.out.println("The Errormessage was:"+errorMessage);
+		try {
+			Gst.init();
+	        playbin = new PlayBin2("AudioPlayer");
+	        try {
+				playbin.setURI(new URI(stream.address));
+			} catch (URISyntaxException e) {
+				e.printStackTrace();
 			}
-		});
-		
-        playbin.setState(org.gstreamer.State.PLAYING);
-        Gst.main();
-        playbin.setState(org.gstreamer.State.NULL);
+			
+			//try to catch the AUDIO - TAGS from the stream
+			playbin.getBus().connect(new Bus.TAG() {
+	
+	            public void tagsFound(GstObject source, TagList tagList) {
+	                for (String tagName : tagList.getTagNames()) {
+	                    for (Object tagData : tagList.getValues(tagName)) {
+	                    	mainGui.setTitleForAudioPlayer(stream.name + " : " + tagData.toString());
+	                    }
+	                }
+	            }
+	        });
+			
+			playbin.getBus().connect(new Bus.ERROR() {
+				@Override
+				public void errorMessage(GstObject source, int errorCode, String errorMessage) {
+					//Cannot resolve hostname - no connection to the stream
+					if(errorCode == 3) {
+						mainGui.setErrorMesageForAudioPlayer(trans.getString("audioplayer.noConnectionTo"));
+					}
+					
+					System.out.println("The Errorcode was:"+errorCode);
+					System.out.println("The Errormessage was:"+errorMessage);
+				}
+			});
+			
+	        playbin.setState(org.gstreamer.State.PLAYING);
+	        Gst.main();
+	        playbin.setState(org.gstreamer.State.NULL);
 
+		} catch (java.lang.UnsatisfiedLinkError e) {
+			mainGui.showErrorMessageInPopUp(trans.getString("audioplayer.noGstreamerInstalled"));
+		} catch (ExceptionInInitializerError e) {
+			mainGui.showErrorMessageInPopUp(trans.getString("audioplayer.noGstreamerInstalled"));
+		} catch (IllegalArgumentException e) {
+			mainGui.showErrorMessageInPopUp(trans.getString("audioplayer.noGstreamerInstalled"));
+		}
 	}
 	
 	/**
