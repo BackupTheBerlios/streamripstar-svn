@@ -138,7 +138,7 @@ public class Gui_StreamBrowser2 extends JFrame implements WindowListener {
 	private JLabel pagesLabel = new JLabel("Page 0 of 0");
 	
 	//label for status
-	private JLabel stautsLabel = new JLabel("Do nothing");
+	private JLabel stautsLabel = new JLabel("");
 	
 	//popup menu
 	private JPopupMenu selShowPopup = new JPopupMenu();

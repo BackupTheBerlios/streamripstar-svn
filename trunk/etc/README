@@ -7,3 +7,4 @@ System requirements:
  - java6 (best with latest updates)
  - streamripper in console version
  - gstreamer + gstreamer-good-plugins (for intern Player) (optional)
+ 	(http://code.google.com/p/ossbuild/downloads/detail?name=GStreamer-WinBuilds-GPL-x86.msi) (by ossbuild)
