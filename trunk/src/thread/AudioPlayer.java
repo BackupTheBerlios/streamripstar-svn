@@ -29,6 +29,12 @@ public class AudioPlayer extends Thread{
 	}
 	
 	public void run() {
+		
+		//say, we are loading the stream
+		if (mainGui != null) {
+			mainGui.setTitleForAudioPlayer(trans.getString("audioplayer.loadingStream"));
+		}
+		
 		try {
 			Gst.init();
 	        playbin = new PlayBin2("AudioPlayer");
@@ -54,12 +60,12 @@ public class AudioPlayer extends Thread{
 				@Override
 				public void errorMessage(GstObject source, int errorCode, String errorMessage) {
 					//Cannot resolve hostname - no connection to the stream
-					if(errorCode == 3) {
+					if(errorCode == 3 || errorCode == 4) {
 						mainGui.setErrorMesageForAudioPlayer(trans.getString("audioplayer.noConnectionTo"));
 					}
 					
 					//Cannot resolve hostname - no connection to the stream
-					if(errorCode == 6 || errorCode == 12) {
+					else if(errorCode == 6 || errorCode == 12) {
 						mainGui.setErrorMesageForAudioPlayer(errorMessage);
 					}
 					
