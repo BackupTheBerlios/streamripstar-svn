@@ -63,6 +63,11 @@ public class AudioPlayer extends Thread{
 						mainGui.setErrorMesageForAudioPlayer(errorMessage);
 					}
 					
+					//show all other error messages in the tray
+					else {
+						mainGui.setErrorMesageForAudioPlayer(errorMessage);
+					}
+					
 					System.out.println("The Errorcode was:"+errorCode);
 					System.out.println("The Errormessage was:"+errorMessage);
 				}
