@@ -191,3 +191,9 @@
  - fix: can find streams from shoutcast anymore
  - add: internal audio player (needs gstreamer installed)
  
+ 
+ ----------------------------
+ 
+ 0.5.10 -> 0.5.11
+ - fix: Volumeslider can't control the valume, until you start the streambrowser
+ 

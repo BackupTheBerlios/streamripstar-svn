@@ -7,4 +7,18 @@ System requirements:
  - java6 (best with latest updates)
  - streamripper in console version
  - gstreamer + gstreamer-good-plugins (for intern Player) (optional)
- 	(http://code.google.com/p/ossbuild/downloads/detail?name=GStreamer-WinBuilds-GPL-x86.msi) (by ossbuild)
+ 	(http://code.google.com/p/ossbuild/downloads/detail?name=GStreamer-WinBuilds-GPL-x86.msi) 
+	(by ossbuild)
+
+
+==============================================================
+
+to compile from source you have to extract the streamripstar.*.tar.gz file
+and go into the first folder, where the build.xml file is. There you simply
+have to make ant
+
+ant
+
+to build StreamRipStar from source. For this you must have apache-ant installed.
+If you have finished it, there will be a new directory "dist" where the ready-
+to-use streamripstar.jar file is. You can start it with "java -jar streamripstar"
