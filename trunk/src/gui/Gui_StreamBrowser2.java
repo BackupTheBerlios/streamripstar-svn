@@ -365,11 +365,16 @@ public class Gui_StreamBrowser2 extends JFrame implements WindowListener {
 		//set space for the genrepane
 		splitView.setDividerLocation(dividerLocation);
 		
-		//
+		//add a listener to the streamslist on the left side
 		browseTree.addMouseListener(new TreeListener());
+		
+		//at the beginning, the browser is not loading
+		setAbortButtonEnable(false);
 		
 		//update the Page x of x accessible
 		this.updatePageBar();
+		
+		
 	}
 	
 	private void setLanguage() {
