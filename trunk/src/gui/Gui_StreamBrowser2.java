@@ -690,7 +690,7 @@ public class Gui_StreamBrowser2 extends JFrame implements WindowListener {
 						,StreamRipStar.getTrans().getString("Message.emptyString"));
 				System.err.println(StreamRipStar.getTrans().getString("Message.emptyString"));
 			} else {
-				StreamRipStar.getTabel().startMusikPlayerWithUrl(url, name);
+				StreamRipStar.getTabel().startMusicPlayerWithUrl(url, name);
 				System.out.println(url);
 			}
 		} else

@@ -333,33 +333,35 @@ public class Gui_TablePanel extends JPanel
 	 * be the internal or the external, which is defined in the 
 	 * settings.
 	 */
-	public synchronized void startMusikPlayerWithSelectedStream() {
+	public synchronized void startMusicPlayerWithSelectedStream() {
 		//get the selected Stream
 		Stream stream = getSelectedStream();
-		
-		//Test, which player we have to use
-		if(!mainGui.useInternalAudioPlayer()) {
-		
-			//Test if a relay stream is running and connect to them
-			//else will connect to stream address directly 
-			if(stream.getStatus() && stream.connectToRelayCB) {
-				System.out.println("Debug: Running relay stream found. Connecting to...: \"http://127.0.0.1:"+stream.relayServerPortTF);
-				controlStreams.startMp3Player("http://127.0.0.1:"+stream.relayServerPortTF);
-				
-			} else if(stream.address != null  && !stream.address.equals("")) {
-				System.out.println("Debug: No relaystream found. Connecting to Internet");
-				controlStreams.startMp3Player(stream.address);
-				
+
+		//Test if a relay stream is running and connect to them
+		//else will connect to stream address directly 
+		if(stream.getStatus() && stream.connectToRelayCB) {
+			if(mainGui.useInternalAudioPlayer()) {
+				stopInternalAudioPlayer();
+				player = new AudioPlayer(stream, mainGui);
+				player.start();
 			} else {
-				System.err.println("error while fetching adress");
+				controlStreams.startMp3Player("http://127.0.0.1:"+stream.relayServerPortTF);
 			}
-		} else {
-			stopInternalAudioPlayer();
-			player = new AudioPlayer(stream, mainGui);
-			player.start();
-		}
 			
+		} else if(stream.address != null  && !stream.address.equals("")) {
+			if(mainGui.useInternalAudioPlayer()) {
+				stopInternalAudioPlayer();
+				player = new AudioPlayer(stream, mainGui);
+				player.start();
+			} else {
+				controlStreams.startMp3Player(stream.address);
+			}
+			
+		} else {
+			System.err.println("error while fetching adress");
+		}	
 	}
+	
 	
 	/**
 	 * Set the Thread with the audio player a new valume for the 
@@ -380,35 +382,37 @@ public class Gui_TablePanel extends JPanel
 	 * @param url: The url to the stream
 	 * @param name: The name of the stream: the name is shown in front of the current title
 	 */
-	public synchronized  void startMusikPlayerWithUrl(String url, String name) {
+	public synchronized  void startMusicPlayerWithUrl(String url, String name) {
 		//get the selected Stream
 		Stream stream = new Stream(name,0);
 		stream.address = url;
 		
-		//Test, which player we have to use
-		if(!mainGui.useInternalAudioPlayer()) {
-		
-			//Test if a relay stream is running and connect to them
-			//else will connect to stream address directly 
-			if(stream.getStatus() && stream.connectToRelayCB) {
-				System.out.println("Debug: Running relay stream found. Connecting to...: \"http://127.0.0.1:"+stream.relayServerPortTF);
-				controlStreams.startMp3Player("http://127.0.0.1:"+stream.relayServerPortTF);
-				
-			} else if(stream.address != null  && !stream.address.equals("")) {
-				System.out.println("Debug: No relaystream found. Connecting to Internet");
-				controlStreams.startMp3Player(stream.address);
-				
+		//Test if a relay stream is running and connect to them
+		//else will connect to stream address directly 
+		if(stream.getStatus() && stream.connectToRelayCB) {
+			if(mainGui.useInternalAudioPlayer()) {
+				stopInternalAudioPlayer();
+				player = new AudioPlayer(stream, mainGui);
+				player.start();
 			} else {
-				System.err.println("error while fetching adress");
+				controlStreams.startMp3Player("http://127.0.0.1:"+stream.relayServerPortTF);
 			}
-		} else {
-			stopInternalAudioPlayer();
-			player = new AudioPlayer(stream, mainGui);
-			player.start();
-		}
 			
+		} else if(stream.address != null  && !stream.address.equals("")) {
+			if(mainGui.useInternalAudioPlayer()) {
+				stopInternalAudioPlayer();
+				player = new AudioPlayer(stream, mainGui);
+				player.start();
+			} else {
+				controlStreams.startMp3Player(stream.address);
+			}
+			
+		} else {
+			System.err.println("error while fetching adress");
+		}		
 	}
 
+	
 	/**
 	 * Stops the Thread with the internal audioplayer, if there is one
 	 */
@@ -483,7 +487,7 @@ public class Gui_TablePanel extends JPanel
 				
 				//action = 5: play stream in media player
 				if (action == 4) {
-					startMusikPlayerWithSelectedStream();
+					startMusicPlayerWithSelectedStream();
 				}
 			}
 			else

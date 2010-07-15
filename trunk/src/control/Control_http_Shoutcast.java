@@ -207,19 +207,12 @@ public class Control_http_Shoutcast {
 					
 							//now find the ID for the stream
 							streamInfo[6] = text.substring(text.indexOf("\" id=\"")+6, text.indexOf("\" href=\""));
-							
-							text = bw.readLine();
-							
-							//first. Read the name
-							streamInfo[0] = text.substring(text.indexOf("title=\"")+7,text.indexOf("\" target=\"_blank\" href="));
-							
-							//new look for the link to the website
-							streamInfo[1] = text.substring(text.indexOf("_blank\" href=\"")+14,text.lastIndexOf("\">"));
-							
-							text = bw.readLine();
-							
+
+							//the name
+							streamInfo[0] = readNextHtmlLine().trim();
+
 							//look for the current title
-							streamInfo[2] = text.substring(text.indexOf("title=\"")+7,text.lastIndexOf("\">"));
+							streamInfo[2] = readNextHtmlLine().trim().substring(16).trim();
 
 							//look for the amount of listeners to the stream
 							streamInfo[3] = readNextHtmlLine().trim();
@@ -238,9 +231,10 @@ public class Control_http_Shoutcast {
 						}
 
 					} catch (NullPointerException e) {
-						System.out.println("Error while loading from shoutcast website");
+						System.out.println("Error while loading from shoutcast website 1");
 					} catch (StringIndexOutOfBoundsException e) {
-						System.out.println("Error while loading from shoutcast website");
+						System.out.println("Error while loading from shoutcast website 2");
+						e.printStackTrace();
 					} catch (NumberFormatException e) {
 						System.err.println("Controled Crash in StreamBrowser");
 						e.printStackTrace();
@@ -317,20 +311,13 @@ public class Control_http_Shoutcast {
 				
 						//now find the ID for the stream
 						streamInfo[6] = text.substring(text.indexOf("\" id=\"")+6, text.indexOf("\" href=\""));
-						
-						text = bw.readLine();
-						
-						//first. Read the name
-						streamInfo[0] = text.substring(text.indexOf("title=\"")+7,text.indexOf("\" target=\"_blank\" href="));
-						
-						//new look for the link to the website
-						streamInfo[1] = text.substring(text.indexOf("_blank\" href=\"")+14,text.lastIndexOf("\">"));
-						
-						text = bw.readLine();
-						
+
+						//the name
+						streamInfo[0] = readNextHtmlLine().trim();
+
 						//look for the current title
-						streamInfo[2] = text.substring(text.indexOf("title=\"")+7,text.lastIndexOf("\">"));
-						
+						streamInfo[2] = readNextHtmlLine().trim().substring(16).trim();
+
 						//the genre witch is only on keyword search available
 						streamInfo[0] += (" - " + readNextHtmlLine().trim());	
 						
@@ -351,9 +338,9 @@ public class Control_http_Shoutcast {
 					}
 
 				} catch (NullPointerException e) {
-					System.out.println("Error while loading from shoutcast website");
+					System.out.println("Error while loading from shoutcast website 1");
 				} catch (StringIndexOutOfBoundsException e) {
-					System.out.println("Error while loading from shoutcast website");
+					System.out.println("Error while loading from shoutcast website 2");
 				} catch (NumberFormatException e) {
 					System.err.println("Controled Crash in StreamBrowser");
 					e.printStackTrace();
@@ -388,14 +375,18 @@ public class Control_http_Shoutcast {
 		
 		try {
 			while(!stopSearching && (text = bw.readLine()) != null) {
-				
-				String noHTML = text.toString().replaceAll("\\<.*?>","").trim();
+				while(!stopSearching  && !text.trim().endsWith(">")) {
+					text += bw.readLine();
+				}
+				String noHTML = text.replaceAll("\\<.*?>","").trim();
 				if(noHTML.length() > 0) {
 					return noHTML;
 				}
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
+		} catch (NullPointerException e) {
+			return "";
 		}
 		return next;
 	}

@@ -1254,7 +1254,7 @@ public class Gui_StreamRipStar extends JFrame implements WindowListener
 	class playMusikListener implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
 			if(getTabel().isTHSelected()) {
-				getTabel().startMusikPlayerWithSelectedStream();
+				getTabel().startMusicPlayerWithSelectedStream();
 			} else {
 				JOptionPane.showMessageDialog(Gui_StreamRipStar.this
 						,trans.getString("select"));

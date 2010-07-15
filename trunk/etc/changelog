@@ -197,5 +197,6 @@
  0.5.10 -> 0.5.11
  - fix: Volumeslider can't control the valume, until you start the streambrowser
  - fix: show all other error messages from the intern Player in the system tray
+ - fix: regognice now an running stream an connect to them, if you want it
  - other small fixes
  
