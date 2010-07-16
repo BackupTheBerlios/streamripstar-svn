@@ -359,7 +359,7 @@ public class Gui_Settings extends JDialog
 			}
 		}
 		
-		
+		repaintCommon();
 		
 		//set size of window
 		//pack together

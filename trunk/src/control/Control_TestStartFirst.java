@@ -43,7 +43,7 @@ public class Control_TestStartFirst {
 		String[][] programNames = {
 /*[0]*/		{"thunar","konqueror","nautilus","dolphin"},
 /*[1]*/		{"firefox","firefox-bin","iceweasel","opera","epiphany","galeon"},
-/*[2]*/		{"audacious","xmms","beep-media-player","amarok","mplayer"},
+/*[2]*/		{"audacious","qmmp","beep-media-player","xmms","amarok","mplayer"},
 /*[3]*/		{"streamripper"}};
 		String[] binPath = getPathBinLinux();
 		
