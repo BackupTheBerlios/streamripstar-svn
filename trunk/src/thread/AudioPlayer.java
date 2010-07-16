@@ -39,7 +39,12 @@ public class AudioPlayer extends Thread{
 			Gst.init();
 	        playbin = new PlayBin2("AudioPlayer");
 	        try {
-				playbin.setURI(new URI(stream.address));
+	        	//test if we shoul connet to the realy stream or to the internet
+	        	if(stream.connectToRelayCB) {
+	        		playbin.setURI(new URI("http://127.0.0.1:"+stream.relayServerPortTF));
+	        	} else {
+	        		playbin.setURI(new URI(stream.address));
+	        	}
 			} catch (URISyntaxException e) {
 				e.printStackTrace();
 			}
