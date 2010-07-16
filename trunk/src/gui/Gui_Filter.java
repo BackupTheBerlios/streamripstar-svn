@@ -332,7 +332,7 @@ public class Gui_Filter extends JPanel {
 				for(int i=0; i < oldStreams.capacity(); i++) {
 					try {
 						//bitrate of an Stream
-						streamBitrate = Integer.valueOf(oldStreams.get(i)[4]);
+						streamBitrate = Integer.valueOf(oldStreams.get(i)[3]);
 					} catch(NumberFormatException e) {
 						if(DEBUG) {
 							System.out.println("Wrong Bitrate in Stream");
@@ -374,13 +374,13 @@ public class Gui_Filter extends JPanel {
 			for(int i=0; i < oldStreams.capacity(); i++) {
 				
 				//add mp3 streams
-				if(showMP3Streams.isSelected() && oldStreams.get(i)[5].toLowerCase().startsWith("mp3")) {
+				if(showMP3Streams.isSelected() && oldStreams.get(i)[4].toLowerCase().startsWith("mp3")) {
 					newStreams.add(oldStreams.get(i));
 				//add AAC+ streams
-				} else if(showAACStreams.isSelected() && oldStreams.get(i)[5].startsWith("AAC+")) {
+				} else if(showAACStreams.isSelected() && oldStreams.get(i)[4].startsWith("AAC+")) {
 					newStreams.add(oldStreams.get(i));
 				//the rest of streams
-				} else if(showUnknownStreams.isSelected() && oldStreams.get(i)[5].trim().equals("")){
+				} else if(showUnknownStreams.isSelected() && oldStreams.get(i)[4].trim().equals("")){
 					newStreams.add(oldStreams.get(i));
 				}
 			}

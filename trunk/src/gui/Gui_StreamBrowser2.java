@@ -625,12 +625,11 @@ public class Gui_StreamBrowser2 extends JFrame implements WindowListener {
 	 * look for:
 	 * 	[0] = address
 	 * 	[1] = name
-	 * 	[2] = website
 	 * from the selected stream and return this String
 	 * @return
 	 */
 	public String[] getStreamInfo() {
-		String[] address = new String[3];
+		String[] address = new String[2];
 		
 		//get selectet Streams
 		if(browseTable.getSelectedRow() >= 0) {	
@@ -653,12 +652,11 @@ public class Gui_StreamBrowser2 extends JFrame implements WindowListener {
 			
 			if(streams != null) {
 				//save main address from site (e.g www.shoutcast.com)
-				String url  = controlHttp.getBaseAddress()+streams.get(nr)[6];
+				String url  = controlHttp.getBaseAddress()+streams.get(nr)[5];
 				
 				//get address from .pls file
 				address[0] = controlHttp.getfirstStreamFromURL(url);
 				address[1] = streams.get(nr)[0];
-				address[2] = streams.get(nr)[1];
 			} else {
 				System.err.println("Gets an empty FILTERED stream vector: can't get info");
 			}
@@ -750,6 +748,7 @@ public class Gui_StreamBrowser2 extends JFrame implements WindowListener {
 			XMLEvent s3 = eventFactory.createAttribute( "s3",  String.valueOf( strOptions[3] ));
 			XMLEvent s4 = eventFactory.createAttribute( "s4",  String.valueOf( strOptions[4] ));
 			XMLEvent s5 = eventFactory.createAttribute( "s5",  String.valueOf( strOptions[5] ));
+			XMLEvent s6 = eventFactory.createAttribute( "s6",  String.valueOf( strOptions[6] ));
 			
 			XMLEvent b0 = eventFactory.createAttribute( "b0",  String.valueOf( isColumnShow[0] ));
 			XMLEvent b1 = eventFactory.createAttribute( "b1",  String.valueOf( isColumnShow[1] ));
@@ -785,7 +784,8 @@ public class Gui_StreamBrowser2 extends JFrame implements WindowListener {
 			writer.add( s2); 
 			writer.add( s3 ); 
 			writer.add( s4 ); 
-			writer.add( s5 ); 
+			writer.add( s5 );
+			writer.add( s6 ); 
 			writer.add( b0 ); 
 			writer.add( b1 ); 
 			writer.add( b2 ); 
@@ -861,6 +861,8 @@ public class Gui_StreamBrowser2 extends JFrame implements WindowListener {
 				    			strOptions[4] = parser.getAttributeValue(i);
 				    		} else if (parser.getAttributeLocalName( i ).equals("s5")) {
 				    			strOptions[5] = parser.getAttributeValue(i);
+				    		} else if (parser.getAttributeLocalName( i ).equals("s6")) {
+				    			strOptions[6] = parser.getAttributeValue(i);
 				    		} else if (parser.getAttributeLocalName( i ).equals("b0")) {
 				    			isColumnShow[0] = Boolean.valueOf(parser.getAttributeValue(i));
 				    		} else if (parser.getAttributeLocalName( i ).equals("b1")) {
@@ -890,7 +892,7 @@ public class Gui_StreamBrowser2 extends JFrame implements WindowListener {
 			if(e.getMessage().startsWith("Message: Premature end of file.")) {
 				System.err.println("Error: Streambrowser: XML file had an unexpected end");
 			} else {
-				e.printStackTrace();
+				System.err.println("Error while reading the streambrowser settings");
 			}
 		}
 	}

@@ -858,7 +858,6 @@ public class Gui_StreamOptions extends JFrame implements WindowListener {
 	public void setBasics(String[] basics) {
 		streamNameTF.setText(basics[1]);
 		streamURLTF.setText(basics[0]);
-		streamWebsiteTF.setText(basics[2]);
 	}
 	
 	private void setLanguage() {
