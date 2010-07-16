@@ -72,7 +72,7 @@ public class Gui_StreamBrowser2 extends JFrame implements WindowListener {
 	
 	private Control_http_Shoutcast controlHttp = new Control_http_Shoutcast();
 	private Object[] browseHeader = {"ID","Name", "Playing Now",
-			"Listeners","Bitrate","Type","Website"};
+			"Listeners","Bitrate","Type"};
 	
 	private String[][] allData = {};
 	
@@ -150,7 +150,6 @@ public class Gui_StreamBrowser2 extends JFrame implements WindowListener {
 	private JCheckBoxMenuItem showListenersColumn = new JCheckBoxMenuItem("Show Listener Column");
 	private JCheckBoxMenuItem showBitrateColumn = new JCheckBoxMenuItem("Show Bitrate Column");
 	private JCheckBoxMenuItem showTypeColumn = new JCheckBoxMenuItem("Show Type Column");
-	private JCheckBoxMenuItem showWebsitewColumn = new JCheckBoxMenuItem("Show Website Column");
 	
 	//for controling the popup in the table with the streams
 	private JMenuItem startRecordMenuItem = new JMenuItem("Start Recording (Save And Start)",startRecordIcon);
@@ -158,20 +157,19 @@ public class Gui_StreamBrowser2 extends JFrame implements WindowListener {
 	private JMenuItem hearMenuItem = new JMenuItem("Hear Stream In Media Player",hearMusicIconForPopUp);
 	
 	//is Column shown?
-	private boolean[] isColumnShow = new boolean[7];
+	private boolean[] isColumnShow = new boolean[6];
 	// 0 boolean isIDShown = true 	MUST EVER BE TRUE
 	// 1 boolean isNameShown = true;
 	// 2 boolean isPlayNowShown = true;
 	// 3 boolean isListenerShown = true;
 	// 4 boolean isBitrateShown = true;
 	// 5 boolean isTypeShown = true;
-	// 6 boolean isWebsiteShown = true;
 	
 	private JSlider audioSlider = new JSlider();
 	private Thread_GetStreams_FromShoutcast getStreams = null;
 	
 	//width of every column
-	private int[] columnWidths = new int[7];
+	private int[] columnWidths = new int[6];
 
 	//main window object of StreamRipStar
 	private Gui_StreamRipStar StreamRipStar = null;
@@ -396,7 +394,6 @@ public class Gui_StreamBrowser2 extends JFrame implements WindowListener {
 			showListenersColumn.setText(trans.getString("ColumControl.showListenersColumn"));
 			showBitrateColumn.setText(trans.getString("ColumControl.showBitrateColumn"));
 			showTypeColumn.setText(trans.getString("ColumControl.showTypeColumn"));
-			showWebsitewColumn.setText(trans.getString("ColumControl.showWebsitewColumn"));
 	
 			//set Table Header
 			browseHeader[0] = trans.getString("Header.Nr");
@@ -405,7 +402,6 @@ public class Gui_StreamBrowser2 extends JFrame implements WindowListener {
 			browseHeader[3] = trans.getString("Header.Listeners");
 			browseHeader[4] = trans.getString("Header.Bitrate");
 			browseHeader[5] = trans.getString("Header.Type");
-			browseHeader[6] = trans.getString("Header.Website");
 			browseModel.setColumnIdentifiers(browseHeader);
 			
 			//the table popup
@@ -584,7 +580,6 @@ public class Gui_StreamBrowser2 extends JFrame implements WindowListener {
 		selShowPopup.add(showListenersColumn);
 		selShowPopup.add(showBitrateColumn);
 		selShowPopup.add(showTypeColumn);
-		selShowPopup.add(showWebsitewColumn);
 		
 		tablePopup.add(startRecordMenuItem);
 		tablePopup.add(saveMenuItem);
@@ -596,7 +591,6 @@ public class Gui_StreamBrowser2 extends JFrame implements WindowListener {
 		showListenersColumn.addActionListener(new ShowRightColumnOrder(3));
 		showBitrateColumn.addActionListener(new ShowRightColumnOrder(4));
 		showTypeColumn.addActionListener(new ShowRightColumnOrder(5));
-		showWebsitewColumn.addActionListener(new ShowRightColumnOrder(6));
 		
 		startRecordMenuItem.addActionListener(new AddAndStartRecordListener());
 		saveMenuItem.addActionListener( new AddToStreamRipStarListener() );
@@ -608,7 +602,6 @@ public class Gui_StreamBrowser2 extends JFrame implements WindowListener {
 		showListenersColumn.setSelected(isColumnShow[3]);
 		showBitrateColumn.setSelected(isColumnShow[4]);
 		showTypeColumn.setSelected(isColumnShow[5]);
-		showWebsitewColumn.setSelected(isColumnShow[6]);
 	
 	}
 
@@ -757,7 +750,6 @@ public class Gui_StreamBrowser2 extends JFrame implements WindowListener {
 			XMLEvent s3 = eventFactory.createAttribute( "s3",  String.valueOf( strOptions[3] ));
 			XMLEvent s4 = eventFactory.createAttribute( "s4",  String.valueOf( strOptions[4] ));
 			XMLEvent s5 = eventFactory.createAttribute( "s5",  String.valueOf( strOptions[5] ));
-			XMLEvent s6 = eventFactory.createAttribute( "s6",  String.valueOf( strOptions[6] ));
 			
 			XMLEvent b0 = eventFactory.createAttribute( "b0",  String.valueOf( isColumnShow[0] ));
 			XMLEvent b1 = eventFactory.createAttribute( "b1",  String.valueOf( isColumnShow[1] ));
@@ -765,7 +757,6 @@ public class Gui_StreamBrowser2 extends JFrame implements WindowListener {
 			XMLEvent b3 = eventFactory.createAttribute( "b3",  String.valueOf( isColumnShow[3] ));
 			XMLEvent b4 = eventFactory.createAttribute( "b4",  String.valueOf( isColumnShow[4] ));
 			XMLEvent b5 = eventFactory.createAttribute( "b5",  String.valueOf( isColumnShow[5] ));
-			XMLEvent b6 = eventFactory.createAttribute( "b6",  String.valueOf( isColumnShow[6] ));
 			
 			XMLEvent endRoot = eventFactory.createEndElement( "", "", "Settings" ); 
 			XMLEvent endDocument = eventFactory.createEndDocument();
@@ -795,14 +786,12 @@ public class Gui_StreamBrowser2 extends JFrame implements WindowListener {
 			writer.add( s3 ); 
 			writer.add( s4 ); 
 			writer.add( s5 ); 
-			writer.add( s6 ); 
 			writer.add( b0 ); 
 			writer.add( b1 ); 
 			writer.add( b2 ); 
 			writer.add( b3 ); 
 			writer.add( b4 ); 
 			writer.add( b5 ); 
-			writer.add( b6 ); 
 			
 			writer.add( endRoot ); 
 			writer.add( endDocument ); 
@@ -860,8 +849,6 @@ public class Gui_StreamBrowser2 extends JFrame implements WindowListener {
 				    			columnWidths[4] = Integer.valueOf(parser.getAttributeValue(i));
 				    		} else if (parser.getAttributeLocalName( i ).equals("i8")) {
 				    			columnWidths[5] = Integer.valueOf(parser.getAttributeValue(i));
-				    		} else if (parser.getAttributeLocalName( i ).equals("i9")) {
-				    			columnWidths[6] = Integer.valueOf(parser.getAttributeValue(i));
 				    		} else if (parser.getAttributeLocalName( i ).equals("s0")) {
 				    			strOptions[0] = parser.getAttributeValue(i);
 				    		} else if (parser.getAttributeLocalName( i ).equals("s1")) {
@@ -874,8 +861,6 @@ public class Gui_StreamBrowser2 extends JFrame implements WindowListener {
 				    			strOptions[4] = parser.getAttributeValue(i);
 				    		} else if (parser.getAttributeLocalName( i ).equals("s5")) {
 				    			strOptions[5] = parser.getAttributeValue(i);
-				    		} else if (parser.getAttributeLocalName( i ).equals("s6")) {
-				    			strOptions[6] = parser.getAttributeValue(i);
 				    		} else if (parser.getAttributeLocalName( i ).equals("b0")) {
 				    			isColumnShow[0] = Boolean.valueOf(parser.getAttributeValue(i));
 				    		} else if (parser.getAttributeLocalName( i ).equals("b1")) {
@@ -888,8 +873,6 @@ public class Gui_StreamBrowser2 extends JFrame implements WindowListener {
 				    			isColumnShow[4] = Boolean.valueOf(parser.getAttributeValue(i));
 				    		} else if (parser.getAttributeLocalName( i ).equals("b5")) {
 				    			isColumnShow[5] = Boolean.valueOf(parser.getAttributeValue(i));
-				    		} else if (parser.getAttributeLocalName( i ).equals("b6")) {
-				    			isColumnShow[6] = Boolean.valueOf(parser.getAttributeValue(i));
 				    		} 
 				    	}
 				    	filter.loadSettings(strOptions);
