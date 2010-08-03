@@ -72,7 +72,7 @@ public class Gui_TablePanel extends JPanel
         add(scrollPane, BorderLayout.CENTER);
         setSize(new Dimension(650,400));
 
-		table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		table.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
 		table.changeSelection(0,0,true,false );
 		table.setAutoCreateRowSorter(true);
 		table.addMouseListener(new CellMouseListener());
@@ -183,8 +183,13 @@ public class Gui_TablePanel extends JPanel
 	 * removes the selected row from the table
 	 */
 	public void removeStreamfromTable() {
-		model.removeRow(table.convertRowIndexToModel(
-				table.getSelectedRow()));
+		
+		int[] rows = table.getSelectedRows();
+		
+		//remove all selected rows
+		for(int i= rows.length-1; i >= 0; i--) {
+			model.removeRow(table.convertRowIndexToModel(rows[i]));
+		}
 	}
 	
 	
@@ -202,7 +207,10 @@ public class Gui_TablePanel extends JPanel
 		model.addRow(tmp.get(length-1).getBase());
 	}
 	
-//	This method adds Data to the table
+	/**
+	 * This method adds Data to the table
+	 * @param data
+	 */
 	public void addData(Object[] data){
 		model.addRow(data);
 	}
@@ -217,15 +225,24 @@ public class Gui_TablePanel extends JPanel
 		id = controlStreams.getStreamVector().get(id).id;
 		return id;
 	}
+
 	
 	/**
 	 * look for the id of the selected stream and
 	 * search with this id in all streams for the right one.
 	 * @return: the selected stream in table
 	 */
-	public Stream getSelectedStream() {
-		int id = table.convertRowIndexToModel(table.getSelectedRow());
-		return controlStreams.getStreamVector().get(id);
+	public Stream[] getSelectedStream() {
+		int[] ids = table.getSelectedRows();
+		Stream[] streams = new Stream[ids.length];
+		
+		for(int i=0 ; i < ids.length ; i++) {
+			int id = table.convertRowIndexToModel(ids[i]);
+			streams[i] = controlStreams.getStreamVector().get(id);
+		}
+		
+		return streams;
+		
 	}
 	
 	/**
@@ -335,26 +352,26 @@ public class Gui_TablePanel extends JPanel
 	 */
 	public synchronized void startMusicPlayerWithSelectedStream() {
 		//get the selected Stream
-		Stream stream = getSelectedStream();
+		Stream[] stream = getSelectedStream();
 
 		//Test if a relay stream is running and connect to them
 		//else will connect to stream address directly 
-		if(stream.getStatus() && stream.connectToRelayCB) {
+		if(stream[0].getStatus() && stream[0].connectToRelayCB) {
 			if(mainGui.useInternalAudioPlayer()) {
 				stopInternalAudioPlayer();
-				player = new AudioPlayer(stream, mainGui);
+				player = new AudioPlayer(stream[0], mainGui);
 				player.start();
 			} else {
-				controlStreams.startMp3Player("http://127.0.0.1:"+stream.relayServerPortTF);
+				controlStreams.startMp3Player("http://127.0.0.1:"+stream[0].relayServerPortTF);
 			}
 			
-		} else if(stream.address != null  && !stream.address.equals("")) {
+		} else if(stream[0].address != null  && !stream[0].address.equals("")) {
 			if(mainGui.useInternalAudioPlayer()) {
 				stopInternalAudioPlayer();
-				player = new AudioPlayer(stream, mainGui);
+				player = new AudioPlayer(stream[0], mainGui);
 				player.start();
 			} else {
-				controlStreams.startMp3Player(stream.address);
+				controlStreams.startMp3Player(stream[0].address);
 			}
 			
 		} else {
@@ -459,12 +476,12 @@ public class Gui_TablePanel extends JPanel
 		
 		//0 is doing nothing
 		if (action != 0 ) {
-			Stream stream = getSelectedStream();
-			if (stream != null) {	
+			Stream[] stream = getSelectedStream();
+			if (stream[0] != null) {	
 				//action = 1: Open Webbrowser
 				if(action == 1 ) {
-					if(stream.website != null  && !stream.website.equals("")) {
-						controlStreams.startWebBrowser(stream.website);
+					if(stream[0].website != null  && !stream[0].website.equals("")) {
+						controlStreams.startWebBrowser(stream[0].website);
 					} else
 						JOptionPane.showMessageDialog(mainGui,
 								trans.getString("setWebsite"));
@@ -478,7 +495,7 @@ public class Gui_TablePanel extends JPanel
 				//action = 3: switching between start record and stop record
 				if (action == 3) {
 					//if ripping -> stop it
-					if(stream.getStatus())
+					if(stream[0].getStatus())
 						mainGui.stopRippingSelected();
 					//else -> start ripping
 					else

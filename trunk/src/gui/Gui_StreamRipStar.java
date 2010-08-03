@@ -1050,18 +1050,18 @@ public class Gui_StreamRipStar extends JFrame implements WindowListener
 	}
 	
 	/**
-	 * edit selcted stream
+	 * edit the first selected stream
 	 *
 	 */
 	public void editStream() {
 		if(getTabel().isTHSelected()) {
 			//If its currently recording -> show waring
-			if(table.getSelectedStream().getStatus()) {
+			if(table.getSelectedStream()[0].getStatus()) {
 				JOptionPane.showMessageDialog(Gui_StreamRipStar.this
 						,trans.getString("noEditRecord"));
 			}
 			
-			new Gui_StreamOptions(table.getSelectedStream(), Gui_StreamRipStar.this, false, true,false);
+			new Gui_StreamOptions(table.getSelectedStream()[0], Gui_StreamRipStar.this, false, true,false);
 		}
 		else {
 			JOptionPane.showMessageDialog(Gui_StreamRipStar.this
@@ -1069,6 +1069,12 @@ public class Gui_StreamRipStar extends JFrame implements WindowListener
 		}
 	}
 	
+	/**
+	 * Stop an stream, by given the stream object. This method will
+	 * stop fetching the names from the stream, stop recording and 
+	 * reset the optical status on the streamtable
+	 * @param stream
+	 */
 	public void stopRippingUnselected(Stream stream) {
 		stream.getUpdateName().killMe();
 		stream.getProcess().destroy();
@@ -1079,16 +1085,21 @@ public class Gui_StreamRipStar extends JFrame implements WindowListener
 	public void stopRippingSelected() {
 		if(getTabel().isTHSelected()) {
 			
-			Stream toRec = table.getSelectedStream();
-			if (toRec==null) {
-				JOptionPane.showInputDialog(trans.getString("stopError"));
-			} else {
-				Process x = toRec.getProcess();
-				if(x != null) {
-					toRec.getUpdateName().killMe();
-					x.destroy();
-					toRec.decreaseRippingCount();
-					toRec.setStatus(false);
+			Stream[] streamsToStop = table.getSelectedStream();
+			
+			for( int i=0 ; i< streamsToStop.length; i++) {
+				
+				//if the stream doesn't exist anymore, show an errormessage
+				if (streamsToStop[i] == null) {
+					JOptionPane.showInputDialog(trans.getString("stopError"));
+				} else {
+					Process x = streamsToStop[i].getProcess();
+					if(x != null) {
+						streamsToStop[i].getUpdateName().killMe();
+						x.destroy();
+						streamsToStop[i].decreaseRippingCount();
+						streamsToStop[i].setStatus(false);
+					}
 				}
 			}
 		}
@@ -1116,27 +1127,34 @@ public class Gui_StreamRipStar extends JFrame implements WindowListener
 		}
 	}
 	
+	/**
+	 * Start all selected streams, or show an error message
+	 */
 	public void startRippingSelected() {
 		if(getTabel().isTHSelected()) {
-			Stream toRec = table.getSelectedStream();
-			if (toRec==null) {
-				JOptionPane.showInputDialog(trans.getString("exeError"));
-			} else {
-				if(!toRec.getStatus()) {
-					Process p = getControlStream().startStreamripper(toRec);
-					if(p == null) {
-						JOptionPane.showMessageDialog(Gui_StreamRipStar.this,trans.getString("exeError"));
-						System.err.println("Error while exec streamripper");
-					} else {
-						toRec.increaseRippingCount();
-						toRec.setProcess(p);
-						toRec.setStatus(true);
-						Thread_UpdateName updateName = new Thread_UpdateName(toRec,getTabel().getSelectedRow(),getTabel());
-						updateName.start();
-						toRec.setUpdateName(updateName);
+			Stream[] streamsToRecord = table.getSelectedStream();
+			
+			for( int i=0 ; i <streamsToRecord.length; i++) {
+				if (streamsToRecord[i] == null) {
+					JOptionPane.showInputDialog(trans.getString("exeError"));
+				} else {
+					if(!streamsToRecord[i].getStatus()) {
+						Process p = getControlStream().startStreamripper(streamsToRecord[i]);
+						if(p == null) {
+							JOptionPane.showMessageDialog(Gui_StreamRipStar.this,trans.getString("exeError"));
+							System.err.println("Error while exec streamripper");
+						} else {
+							streamsToRecord[i].increaseRippingCount();
+							streamsToRecord[i].setProcess(p);
+							streamsToRecord[i].setStatus(true);
+							Thread_UpdateName updateName = new Thread_UpdateName(streamsToRecord[i],getTabel().getSelectedRow(),getTabel());
+							updateName.start();
+							streamsToRecord[i].setUpdateName(updateName);
+						}
 					}
 				}
 			}
+			
 		}
 		else
 			JOptionPane.showMessageDialog(Gui_StreamRipStar.this
@@ -1179,10 +1197,15 @@ public class Gui_StreamRipStar extends JFrame implements WindowListener
 		}
 	}
 	
+	/**
+	 * Open the website of the first selected streams
+	 * @author eule
+	 *
+	 */
 	class BrowserListener implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
 			if(getTabel().isTHSelected()) {
-				String website = table.getSelectedStream().website;
+				String website = table.getSelectedStream()[0].website;
 				
 				if(website != null  && !website.equals("")) {
 					controlStreams.startWebBrowser(website);
@@ -1273,13 +1296,17 @@ public class Gui_StreamRipStar extends JFrame implements WindowListener
 		}
 	}
 	
-	
+	/**
+	 * Show an field where you can find the runtime options 
+	 * for the first selected stream.
+	 * 
+	 */
 	class ShowStatsListener implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
 			//test if a cell is selected
 			if(getTabel().isTHSelected()) {
 				//get der Stream Object witch is selected
-				Stream stream = table.getSelectedStream();
+				Stream stream = table.getSelectedStream()[0];
 				//open infodialog
 				new Gui_Infodialog(Gui_StreamRipStar.this,stream);
 
@@ -1307,25 +1334,23 @@ public class Gui_StreamRipStar extends JFrame implements WindowListener
 	}
 	
 	class DeleteListener implements ActionListener {
-		public void actionPerformed(ActionEvent e) {	
-			if(getTabel().isTHSelected()) {
-				int i = JOptionPane.showConfirmDialog(Gui_StreamRipStar.this,
+		public void actionPerformed(ActionEvent e) {
+			Stream[] toDeleteStreams = getTabel().getSelectedStream();
+			
+			for(int i= toDeleteStreams.length-1; i >= 0; i--) {
+				int selectedOption = JOptionPane.showConfirmDialog(Gui_StreamRipStar.this,
 						trans.getString("realyDelete"),
 						trans.getString("deleteStream"),JOptionPane.YES_NO_OPTION);
-				if (i == 0) {
+				if (selectedOption == 0) {
 					//If stream is ripping-> do not delete
-					if(table.getSelectedStream().getStatus()) {
+					if(toDeleteStreams[i].getStatus()) {
 						JOptionPane.showMessageDialog(Gui_StreamRipStar.this
 								,trans.getString("noDeleteRecord"));
 					} else {
-						int id = table.getSelectedStreamID();
-						deleteStreamPerID(id);
+						deleteStreamPerID(toDeleteStreams[i].id);
 					}
 				}
 			}
-			else
-				JOptionPane.showMessageDialog(Gui_StreamRipStar.this
-						,trans.getString("select"));
 		}
 	}
 	
