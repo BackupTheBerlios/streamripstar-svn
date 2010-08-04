@@ -1335,20 +1335,38 @@ public class Gui_StreamRipStar extends JFrame implements WindowListener
 	
 	class DeleteListener implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
+			boolean stopDeleting = false;
 			Stream[] toDeleteStreams = getTabel().getSelectedStream();
 			
-			for(int i= toDeleteStreams.length-1; i >= 0; i--) {
-				int selectedOption = JOptionPane.showConfirmDialog(Gui_StreamRipStar.this,
-						trans.getString("realyDelete"),
-						trans.getString("deleteStream"),JOptionPane.YES_NO_OPTION);
-				if (selectedOption == 0) {
-					//If stream is ripping-> do not delete
-					if(toDeleteStreams[i].getStatus()) {
-						JOptionPane.showMessageDialog(Gui_StreamRipStar.this
-								,trans.getString("noDeleteRecord"));
-					} else {
-						deleteStreamPerID(toDeleteStreams[i].id);
+			//first look, if there are really streams to delete
+			if(toDeleteStreams != null && toDeleteStreams.length > 0) {
+				
+				//first run is to look, if an stream is recording
+				for(int i= toDeleteStreams.length-1; i >= 0; i--) {
+					if (toDeleteStreams[i].getStatus()) {
+						stopDeleting = true;
+						break;
 					}
+				}
+				
+				//test if we can move forward
+				if(!stopDeleting) {
+					
+					//now ask, if the user really wants to delete the stream
+					int selectedOption = JOptionPane.showConfirmDialog(Gui_StreamRipStar.this,
+							trans.getString("realyDelete").replace("%s", ""+toDeleteStreams.length),
+							trans.getString("deleteStream"),
+							JOptionPane.YES_NO_OPTION);
+					
+					//if yes -> delete all streams
+					if (selectedOption == 0) {
+						for(int i= toDeleteStreams.length-1; i >= 0; i--) {
+							deleteStreamPerID(toDeleteStreams[i].id);
+						}
+					}
+				} else {
+					JOptionPane.showMessageDialog(Gui_StreamRipStar.this
+							,trans.getString("noDeleteRecord"));
 				}
 			}
 		}
