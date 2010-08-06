@@ -200,6 +200,66 @@ public class Gui_TablePanel extends JPanel
 		}
 	}
 	
+	/**
+	 * Looks, if a stream is selected in the table
+	 * @return true, if a stream is selected, else false; 
+	 */
+	public boolean isStreamSelected() {
+		if(table.getSelectedRow() == -1) {
+			return false;
+		} else {
+			return true;
+		}
+	}
+	
+	/**
+	 * Select the next stream. If no stream is selected, try to select the first
+	 * stream. If the last stream is selected, select the first stream.
+	 */
+	public void selectNextStream() {
+		int selectedRow = table.getSelectedRow();
+		int numberOfStreams = controlStreams.getStreamVector().size();
+		
+		//no stream is selected
+		if(selectedRow == -1 && numberOfStreams > 0) {
+			selectedRow = 0;
+		} else if (selectedRow >= (numberOfStreams-1)) {
+			selectedRow = 0;
+		} else {
+			selectedRow++;
+		}
+		
+		try {
+			table.getSelectionModel().setSelectionInterval(selectedRow, selectedRow);
+		} catch (IllegalArgumentException e) {
+			System.err.println("Gui_TablePanel: Unable to select an row");
+		}
+	}
+	
+	/**
+	 * Select the next stream. If no stream is selected, try to select the first
+	 * stream. If the last stream is selected, select the first stream.
+	 */
+	public void selectPreviousStream() {
+		int selectedRow = table.getSelectedRow();
+		int numberOfStreams = controlStreams.getStreamVector().size();
+		
+		//no stream is selected
+		if(selectedRow == -1 && numberOfStreams > 0) {
+			selectedRow = numberOfStreams-1;
+		} else if (selectedRow >= (numberOfStreams-1)) {
+			selectedRow = numberOfStreams-1;
+		} else {
+			selectedRow--;
+		}
+		
+		try {
+			table.getSelectionModel().setSelectionInterval(selectedRow, selectedRow);
+		} catch (IllegalArgumentException e) {
+			System.err.println("Gui_TablePanel: Unable to select an row");
+		}
+	}
+	
 	public void addLastStreamFromVector()
 	{
 		Vector<Stream> tmp = controlStreams.getStreamVector();

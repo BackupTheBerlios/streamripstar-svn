@@ -153,6 +153,8 @@ public class Gui_StreamRipStar extends JFrame implements WindowListener
 	private JMenuItem streamOptions = new JMenuItem("Options");
 	private JMenuItem stream4AllOptions = new JMenuItem("Overwrite Options For Every Stream");
 	private JMenuItem streamDefaultOptions = new JMenuItem("Edit The Default Options For A New Stream");
+	private JMenuItem playNextStream = new JMenuItem("Play Next Stream");
+	private JMenuItem playLastStream = new JMenuItem("Play Last Stream");
 	private JMenuItem onlineHelp = new JMenuItem("Online Help");
 	private JMenuItem updateMenuItem = new JMenuItem("Look for an Update");
 	private JMenuItem about = new JMenuItem("About StreamRipStar",aboutStreamRipStarMenu);
@@ -469,6 +471,9 @@ public class Gui_StreamRipStar extends JFrame implements WindowListener
 		streamMenu.add(stream4AllOptions);
 		streamMenu.addSeparator();
 		streamMenu.add(streamDefaultOptions);
+		streamMenu.addSeparator();
+		streamMenu.add(playLastStream);
+		streamMenu.add(playNextStream);
 		
 		programmMenu.add(streamRipStarPref);
 		programmMenu.add(importStream);
@@ -504,6 +509,8 @@ public class Gui_StreamRipStar extends JFrame implements WindowListener
 		stopRecordStream.setAccelerator(KeyStroke.getKeyStroke(
 		        KeyEvent.VK_W, ActionEvent.CTRL_MASK));
 		delStream.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_DELETE,0));
+		playLastStream.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_PAGE_UP,0));
+		playNextStream.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_PAGE_DOWN,0));
 
 //		add listener
 		streamRipStarPref.addActionListener(new PreferencesListener());
@@ -527,6 +534,8 @@ public class Gui_StreamRipStar extends JFrame implements WindowListener
 		streamOptions.addActionListener(new EditStreamListener());
 		stream4AllOptions.addActionListener(new Edit4AllStreamListener());
 		streamDefaultOptions.addActionListener(new EditDefaultStreamListener());
+		playLastStream.addActionListener(new PlayPreviousStreamListener());
+		playNextStream.addActionListener(new PlayNextStreamListener());
 		
 		startRecPopupIcon.addActionListener(new StartRecordListener());
 		stopRecPopupIcon.addActionListener(new StopRecordListener());
@@ -1437,6 +1446,41 @@ public class Gui_StreamRipStar extends JFrame implements WindowListener
 	class SearchUpdateListener implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
 			new Gui_searchUpdate(controlStreams,Gui_StreamRipStar.this);
+		}
+	}
+	
+	/**
+	 * Play the previous stream. If no stream is selected, select and play
+	 * the last stream.  
+	 *
+	 */
+	class PlayPreviousStreamListener implements ActionListener {
+		public void actionPerformed(ActionEvent e) {
+			
+			//select the previous stream
+			getTabel().selectPreviousStream();
+			
+			//if a stream is selected, play it
+			if(getTabel().isStreamSelected()) {
+				getTabel().startMusicPlayerWithSelectedStream();
+			}
+		}
+	}
+	
+	/**
+	 * Play the previous stream. If no stream is selected, select the first stream in the list.
+	 * If the last Stream is selected, play the first one.
+	 */
+	class PlayNextStreamListener implements ActionListener {
+		public void actionPerformed(ActionEvent e) {
+			
+			//select the next stream
+			getTabel().selectNextStream();
+
+			//if a stream is selected, play it
+			if(getTabel().isStreamSelected()) {
+				getTabel().startMusicPlayerWithSelectedStream();
+			}
 		}
 	}
 	
