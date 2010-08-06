@@ -1082,30 +1082,28 @@ public class Gui_StreamRipStar extends JFrame implements WindowListener
 		stream.setStatus(false);
 	}
 	
+	/**
+	 * Stop all selected streams. If there are not ripping, they
+	 * will not stop. Nothing will happen in this case.
+	 */
 	public void stopRippingSelected() {
-		if(getTabel().isTHSelected()) {
+		Stream[] streamsToStop = table.getSelectedStream();
+		
+		for( int i=0 ; i< streamsToStop.length; i++) {
 			
-			Stream[] streamsToStop = table.getSelectedStream();
-			
-			for( int i=0 ; i< streamsToStop.length; i++) {
-				
-				//if the stream doesn't exist anymore, show an errormessage
-				if (streamsToStop[i] == null) {
-					JOptionPane.showInputDialog(trans.getString("stopError"));
-				} else {
-					Process x = streamsToStop[i].getProcess();
-					if(x != null) {
-						streamsToStop[i].getUpdateName().killMe();
-						x.destroy();
-						streamsToStop[i].decreaseRippingCount();
-						streamsToStop[i].setStatus(false);
-					}
+			//if the stream doesn't exist anymore, show an errormessage
+			if (streamsToStop[i] == null) {
+				JOptionPane.showInputDialog(trans.getString("stopError"));
+			} else {
+				Process x = streamsToStop[i].getProcess();
+				if(x != null) {
+					streamsToStop[i].getUpdateName().killMe();
+					x.destroy();
+					streamsToStop[i].decreaseRippingCount();
+					streamsToStop[i].setStatus(false);
 				}
 			}
 		}
-		else
-			JOptionPane.showMessageDialog(Gui_StreamRipStar.this
-					,trans.getString("select"));
 	}
 	
 	public void startRippingUnselected(Stream recStream) {
