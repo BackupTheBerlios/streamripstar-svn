@@ -4,6 +4,7 @@ package gui;
 /* eMail: die_eule@gmx.net*/ 
 
 import java.awt.BorderLayout;
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.Transferable;
@@ -26,12 +27,19 @@ import java.util.ResourceBundle;
 import java.util.Vector;
 
 import javax.swing.ImageIcon;
+import javax.swing.JComponent;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
+import javax.swing.JTable;
 import javax.swing.ListSelectionModel;
+import javax.swing.UIManager;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableCellRenderer;
+import javax.swing.table.TableColumn;
+import javax.swing.table.TableColumnModel;
 
 import misc.Stream;
 
@@ -43,7 +51,9 @@ public class Gui_TablePanel extends JPanel
 {
 	private static final long serialVersionUID = 1L;
 	
-	private Object[] tableheader ={"Status","Stream","Aktual Title"};
+	
+
+	private Object[] tableheader ={"Rec","Stream","Aktual Title"};
 	private String[][] Daten = {};
 	private DefaultTableModel model = new DefaultTableModel(Daten,tableheader)
 		{private static final long serialVersionUID = 1L;
@@ -53,7 +63,18 @@ public class Gui_TablePanel extends JPanel
 			return col == 0 ? ImageIcon.class : Object.class;
 		}};
 	private Control_Stream controlStreams;
-	private Gui_JTTable table = new Gui_JTTable(model);  
+	private Gui_JTTable table = new Gui_JTTable(model);
+	
+	private ImageIcon recordSmallIcon = new ImageIcon((URL)getClass().getResource("/Icons/record_middle.png"));
+	private JLabel columnLabel0 = new JLabel(recordSmallIcon,JLabel.CENTER);
+	private JLabel columnLabel1 = new JLabel(tableheader[1].toString(),JLabel.CENTER);
+	private JLabel columnLabel2 = new JLabel(tableheader[2].toString(),JLabel.CENTER);
+	private TableCellRenderer renderer = new JComponentTableCellRenderer();
+	private TableColumnModel columnModel = table.getColumnModel();
+	private TableColumn column0 = columnModel.getColumn(0);
+	private TableColumn column1 = columnModel.getColumn(1);
+	private TableColumn column2 = columnModel.getColumn(2);
+	
 	private Gui_StreamRipStar mainGui = null;
 	private ResourceBundle trans = ResourceBundle.getBundle("translations.StreamRipStar");
 	
@@ -71,13 +92,24 @@ public class Gui_TablePanel extends JPanel
         JScrollPane scrollPane = new JScrollPane(table);
         add(scrollPane, BorderLayout.CENTER);
         setSize(new Dimension(650,400));
-
+        
+       
+        columnLabel0.setBorder(UIManager.getBorder("TableHeader.cellBorder"));
+        columnLabel1.setBorder(UIManager.getBorder("TableHeader.cellBorder"));
+        columnLabel2.setBorder(UIManager.getBorder("TableHeader.cellBorder"));
+        
+        column0.setHeaderRenderer(renderer);
+        column0.setHeaderValue(columnLabel0);
+        column1.setHeaderRenderer(renderer);
+        column1.setHeaderValue(columnLabel1);
+        column2.setHeaderRenderer(renderer);
+        column2.setHeaderValue(columnLabel2);
+        
 		table.setSelectionMode(ListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
 		table.changeSelection(0,0,true,false );
 		table.setAutoCreateRowSorter(true);
 		table.addMouseListener(new CellMouseListener());
-		//set the width for all headers
-		table.getColumn(tableheader[0]).setMaxWidth(50);
+		
 		table.getTableHeader().setReorderingAllowed(false);
 			
 		
@@ -147,36 +179,34 @@ public class Gui_TablePanel extends JPanel
 		table.getRowSorter().toggleSortOrder(1);
 	}
 	
+	/**
+	 * Translate the table headers
+	 */
 	private void setLanguage() {
-		try 
-		{
-			tableheader[0] = trans.getString("status");
-			tableheader[1] = trans.getString("streamname");
-			tableheader[2] = trans.getString("curTitle");
-			model.setColumnIdentifiers(tableheader);
-		}
-		
-		catch ( MissingResourceException e ) { 
-			      System.err.println( e ); 
+		try  {
+			columnLabel1.setText(trans.getString("streamname"));
+			columnLabel2.setText(trans.getString("curTitle"));
+		} catch ( MissingResourceException e ) { 
+			System.err.println( e ); 
 		}
 	}
 
 	//gets the width of the "name" and "title" column
 	public int[] getColumnWidths(){
 		int[] widths = new int[3];
-		widths[2] = table.getColumn(table.getColumnName(0)).getWidth();
-		widths[0] = table.getColumn(table.getColumnName(1)).getWidth();
-		widths[1] = table.getColumn(table.getColumnName(2)).getWidth();
-
+		widths[0] = column0.getWidth();
+		widths[1] = column1.getWidth();
+		widths[2] = column2.getWidth();
+		
 		return widths;
 	}
 
 	//set the width of "name" and "title" column
 	public void setColumWidths(int[] widths)
 	{
-		table.getColumn(table.getColumnName(1)).setPreferredWidth(widths[0]);
-		table.getColumn(table.getColumnName(2)).setPreferredWidth(widths[1]);
-		table.getColumn(table.getColumnName(0)).setPreferredWidth(widths[2]);
+		column0.setPreferredWidth(widths[0]);
+		column1.setPreferredWidth(widths[1]);
+		column2.setPreferredWidth(widths[2]);
 	}
 	
 	/**
@@ -598,5 +628,16 @@ public class Gui_TablePanel extends JPanel
 		this.popup = popup;
 	}
 
+	/**
+	 * To add icon support for the header
+	 *
+	 */
+	class JComponentTableCellRenderer implements TableCellRenderer {
+		@Override
+		public Component getTableCellRendererComponent(JTable arg0,
+				Object arg1, boolean arg2, boolean arg3, int arg4, int arg5) {
+			 return (JComponent) arg1;
+		}
+	}
 }
 
