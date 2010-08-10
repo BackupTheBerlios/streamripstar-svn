@@ -195,8 +195,15 @@
  ----------------------------
  
  0.5.10 -> 0.5.11
- - fix: Volumeslider can't control the valume, until you start the streambrowser
+ - fix: Volumeslider can't control the volume, until you start the streambrowser
  - fix: show all other error messages from the intern Player in the system tray
  - fix: regognice now an running stream an connect to them, if you want it
  - other small fixes
+ 
+  ----------------------------
+ 
+ 0.5.11 -> 0.6
+ - add: can now start/stop multible streams at one time
+ - add: play hear next/last stream in list
+ - change: have now an icon to show the status of a stream
  
