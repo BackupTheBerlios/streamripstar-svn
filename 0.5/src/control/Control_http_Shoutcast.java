@@ -166,6 +166,8 @@ public class Control_http_Shoutcast {
 	 * streamInfo[3] = Bitrate 
 	 * streamInfo[4] = Format
 	 * streamInfo[5] = ID
+	 * streamInfo[6] = Genres
+	 * streamInfo[7] = Website
 	 * 
 	 * @param genre the keyword (most cases the genre) 
 	 * @param keyword true, if the search should be with keywords 
@@ -186,7 +188,7 @@ public class Control_http_Shoutcast {
 				bw = new BufferedReader(new InputStreamReader(readGenresStream));
 	
 				// create a stream to save the info from the website
-				String[] streamInfo = new String[6];
+				String[] streamInfo = new String[8];
 				
 				while (!stopSearching && (text = bw.readLine()) != null) {
 					try {
@@ -202,31 +204,39 @@ public class Control_http_Shoutcast {
 						//here starts a stream
 						if(text.contains("class=\"stationcol\"")) {
 							//next line starts a stream
-							text = bw.readLine();
+							text = readNextHtmlLine(true);
 					
 							//now find the ID for the stream
-							streamInfo[5] = text.substring(text.indexOf("\" id=\"")+6, text.indexOf("\" href=\""));
+							streamInfo[5] = text.substring(text.indexOf("\" id=\"")+6, text.indexOf("\" title=\""));
 
 							//the name
-							streamInfo[0] = readNextHtmlLine().trim();
+							streamInfo[0] = text.substring(text.indexOf("\" title=\"")+9,text.indexOf("\" href=\""));
 
-							//look for the current title
-							streamInfo[1] = readNextHtmlLine().trim().substring(16).trim();
-
-							//look for the amount of listeners to the stream
-							streamInfo[2] = readNextHtmlLine().trim();
+							//The genres
+							streamInfo[6] = readNextHtmlLine(false).substring(5).trim();
+							
+							//The website
+							text = readNextHtmlLine(true);
+							streamInfo[7] = text.substring(text.indexOf(" href=\"")+7,text.indexOf("\" target="));
+							
+							//The current title (now playing...)
+							text = readNextHtmlLine(true);
+							streamInfo[1] = text.substring(text.indexOf("\" title=\"")+9,text.lastIndexOf("\""));
+							
+							//now the max listeners
+							streamInfo[2] = readNextHtmlLine(false).trim();
 							
 							//now have a look at the bitrate
-							streamInfo[3] = readNextHtmlLine().trim();
+							streamInfo[3] = readNextHtmlLine(false).trim();
 							
 							//which Format do we use?
-							streamInfo[4] = readNextHtmlLine().trim();
+							streamInfo[4] = readNextHtmlLine(false).trim();
 							
 							//This stream has all information
 							streams.add(streamInfo);
 							
 							//create an new for the next one
-							streamInfo = new String[6];					
+							streamInfo = new String[8];					
 						}
 
 					} catch (NullPointerException e) {
@@ -311,22 +321,22 @@ public class Control_http_Shoutcast {
 						streamInfo[5] = text.substring(text.indexOf("\" id=\"")+6, text.indexOf("\" href=\""));
 
 						//the name
-						streamInfo[0] = readNextHtmlLine().trim();
+						streamInfo[0] = readNextHtmlLine(false).trim();
 
 						//look for the current title
-						streamInfo[1] = readNextHtmlLine().trim().substring(16).trim();
+						streamInfo[1] = readNextHtmlLine(false).trim().substring(16).trim();
 
 						//the genre witch is only on keyword search available
-						streamInfo[0] += (" - " + readNextHtmlLine().trim());	
+						streamInfo[0] += (" - " + readNextHtmlLine(false).trim());	
 						
 						//look for the amount of listeners to the stream
-						streamInfo[2] = readNextHtmlLine().trim();
+						streamInfo[2] = readNextHtmlLine(false).trim();
 						
 						//now have a look at the bitrate
-						streamInfo[3] = readNextHtmlLine().trim();
+						streamInfo[3] = readNextHtmlLine(false).trim();
 						
 						//which Format do we use?
-						streamInfo[4] = readNextHtmlLine().trim();
+						streamInfo[4] = readNextHtmlLine(false).trim();
 						
 						//This stream has all information
 						streams.add(streamInfo);
@@ -367,8 +377,9 @@ public class Control_http_Shoutcast {
 	 * Read as long as the representing no-html String is empty from the 
 	 * incoming streamreader
 	 * @return the text after the empty line
+	 * @param getNoHTMLText: if true, is returns the no filtert text, instead of the filtered
 	 */
-	public String readNextHtmlLine() {
+	public String readNextHtmlLine(boolean getNoHTMLText) {
 		String next = "";
 		
 		try {
@@ -378,7 +389,11 @@ public class Control_http_Shoutcast {
 				}
 				String noHTML = text.replaceAll("\\<.*?>","").trim();
 				if(noHTML.length() > 0) {
-					return noHTML;
+					if(getNoHTMLText) {
+						return text;
+					} else {
+						return noHTML;
+					}
 				}
 			}
 		} catch (IOException e) {
