@@ -22,8 +22,8 @@ import control.Control_GetPath;
  */
 public class StreamRipStar
 {	
-	public static final int releaseRevision = 75;
-	public static final String releaseVersion = "0.5.11";
+	public static final int releaseRevision = 88;
+	public static final String releaseVersion = "0.5.12";
 	private static boolean noConfiFileFound = false;
 	private static String lang="",reg ="", lnfClassName = null;
 	
