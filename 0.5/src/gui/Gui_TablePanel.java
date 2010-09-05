@@ -370,7 +370,13 @@ public class Gui_TablePanel extends JPanel
 	 */
 	public synchronized void setAudioVolume(int percentage) {
 		if(player != null  && percentage >= 0 && percentage <= 100) {
-			player.setAudioVolum(percentage);
+			
+			double val = 0;
+			//the human ears has a logarithmn frequency characteristic
+			if(percentage !=  0) {
+				val =  10* Math.pow(10, Math.log10(1) + (Math.log10(100)+percentage) /100);
+			} 
+			player.setAudioVolum(new Double(val).intValue());
 		}
 	}
 	
