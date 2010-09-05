@@ -199,4 +199,10 @@
  - fix: show all other error messages from the intern Player in the system tray
  - fix: regognice now an running stream an connect to them, if you want it
  - other small fixes
+  
+ ----------------------------
+ 
+ 0.5.11 -> 0.5.12
+  - Shoutcast works again
+  - change the volume slider to a logarithmical characteristic 
  
