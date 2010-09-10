@@ -204,5 +204,12 @@
  
  0.5.11 -> 0.5.12
   - Shoutcast works again
-  - change the volume slider to a logarithmical characteristic 
+  - change the volume slider to a logarithmical characteristic
+  
+  ----------------------------
+ 
+ 0.5.12 -> 0.6
+ - add: can now start/stop multible streams at one time
+ - add: play hear next/last stream in list
+ - change: have now an icon to show the status of a stream
  
