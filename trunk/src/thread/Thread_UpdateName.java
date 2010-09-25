@@ -15,9 +15,12 @@ import misc.Stream;
 
 
 
-//This Thread read streams from the process of an streamripper process
-//and updates names and error in the right cell on StreamRipStars mainwindow.
-
+/**
+ * This Thread reads streams from the process of an streamripper process
+ * and updates names and error in the right cell on StreamRipStars mainwindow.
+ * @author Johannes Putzke
+ *
+ */
 public class Thread_UpdateName extends Thread
 {
 	private String i = "";
@@ -29,6 +32,14 @@ public class Thread_UpdateName extends Thread
 	private Process streamProcess;
 	private BufferedReader b,c;
 	
+	/**
+	 * To create with this construktor you need the stream, you want to record, the table
+	 * where the new track names will updates in and the row in the table. Make sure there
+	 * really exist. There are no tests for valid paramters.
+	 * @param astream
+	 * @param arow
+	 * @param tablePanel
+	 */
 	public Thread_UpdateName(Stream astream, int arow, Gui_TablePanel tablePanel)
 	{
 		this.stream = astream;
@@ -36,12 +47,18 @@ public class Thread_UpdateName extends Thread
 		this.tablePanel = tablePanel;
 	}
 	
-	//set an variable to kill this thread
-	public void killMe() {
+	/**
+	 * set an variable to kill this thread
+	 */
+	public void killMe()
+	{
 		System.out.println("Kill update names in cells for stream: "+ stream.name);
 		isDead = true;
 	}
 	
+	/**
+	 * Start the thread running and with it read from the input streams
+	 */
 	public void run()
 	{	
 		streamProcess = stream.getProcess();
@@ -71,28 +88,33 @@ public class Thread_UpdateName extends Thread
 					//INPUTSTREAM
 					String tmpo = b.readLine().toLowerCase();
 					
-					if(tmpo != null && !isDead) {
+					if(tmpo != null && !isDead) 
+					{
 						//if you can't connect, streamRipStar print out the reason
 						// for 8 seconds
-						if(tmpo.startsWith("error") && !isDead) {
+						if(tmpo.startsWith("error") && !isDead) 
+						{
 							tablePanel.setSelectedCurrentNameCellAndTitle(tmpo,row,true);
 							Thread.sleep(8000);
 							isDead = true;
 						}
 						
-						if(tmpo.startsWith("connecting") && !isDead) {
+						if(tmpo.startsWith("connecting") && !isDead) 
+						{
 							tablePanel.setSelectedCurrentNameCellAndTitle(
 									trans.getString("connecting"),row,true);
 						}
 						
-						if(tmpo.startsWith("stream:")&& !isDead) {
+						if(tmpo.startsWith("stream:")&& !isDead) 
+						{
 							metaData[0] = tmpo.substring(7).trim();
 							streamG=true;
 							tablePanel.setSelectedCurrentNameCellAndTitle(
 									trans.getString("streamReceived"),row,true);
 						}
 						
-						if(tmpo.startsWith("server name")&& !isDead) {
+						if(tmpo.startsWith("server name")&& !isDead) 
+						{
 							metaData[1] = tmpo.substring(12).trim();
 							serverG=true;
 							tablePanel.setSelectedCurrentNameCellAndTitle(
@@ -101,14 +123,16 @@ public class Thread_UpdateName extends Thread
 						
 						//need to look for the bitrate in an hole string, because the word bitrate
 						//is changed its position in every version of streamripper
-						if(tmpo.contains("bitrate:") && !tmpo.startsWith("server name") && !isDead) {
-							metaData[2] = tmpo.substring(8).trim();
+						if(tmpo.contains("bitrate:") && !tmpo.startsWith("server name") && !isDead)
+						{
+							metaData[2] = tmpo.substring(8).replace("bitrate", "").replace(":", "").trim() + " kbit/s";
 							bitrateG=true;
 							tablePanel.setSelectedCurrentNameCellAndTitle(
 									trans.getString("bitrateReceived"),row,true);
 						}
 						
-						if(tmpo.startsWith("meta interval:")&& !isDead) {
+						if(tmpo.startsWith("meta interval:")&& !isDead)
+						{
 							metaData[3] = tmpo.substring(14).trim();
 							metaG=true;
 							tablePanel.setSelectedCurrentNameCellAndTitle(

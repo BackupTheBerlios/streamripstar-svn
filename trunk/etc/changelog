@@ -205,5 +205,7 @@
  0.5.11 -> 0.6
  - add: can now start/stop multible streams at one time
  - add: play hear next/last stream in list
+ - add: can now remember stream details (Bitrate / Server name / Metaintervall etc)
  - change: have now an icon to show the status of a stream
+ - fix: settings crashes when open it in english language
  

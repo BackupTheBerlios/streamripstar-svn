@@ -135,6 +135,11 @@ public class Control_Stream
 				XMLEvent SPSilenceCB = eventFactory.createAttribute( "SPSilenceCB", String.valueOf(streamVector.get(i).SPSilenceCB));
 				XMLEvent IDV1CB = eventFactory.createAttribute( "IDV1CB", String.valueOf(streamVector.get(i).IDV1CB));
 				XMLEvent IDV2CB = eventFactory.createAttribute( "IDV2CB", String.valueOf(streamVector.get(i).IDV2CB));
+				XMLEvent exeCommand = eventFactory.createAttribute( "exeCommand", String.valueOf(streamVector.get(i).getExeCommand()));
+				XMLEvent send_name = eventFactory.createAttribute( "send_name", String.valueOf(streamVector.get(i).send_name));
+				XMLEvent send_serverName = eventFactory.createAttribute( "send_serverName", String.valueOf(streamVector.get(i).send_serverName));
+				XMLEvent send_metainvervall = eventFactory.createAttribute( "send_metainvervall", String.valueOf(streamVector.get(i).send_metainvervall));
+				XMLEvent send_bitrate = eventFactory.createAttribute( "send_bitrate", String.valueOf(streamVector.get(i).send_bitrate));
 				
 				XMLEvent endStream = eventFactory.createEndElement( "", "", "Stream" ); 
 				
@@ -208,6 +213,11 @@ public class Control_Stream
 				writer.add( SPSilenceCB );
 				writer.add( IDV1CB );
 				writer.add( IDV2CB );
+				writer.add( exeCommand );
+				writer.add( send_name );
+				writer.add( send_serverName );
+				writer.add( send_metainvervall );
+				writer.add( send_bitrate );
 				
 				writer.add( endStream );
 			}
@@ -585,6 +595,18 @@ public class Control_Stream
 				    			stream.IDV1CB  = Boolean.valueOf(parser.getAttributeValue( i ));
 				    		} else if (parser.getAttributeLocalName( i ).equals("IDV2CB")) {
 				    			stream.IDV2CB  = Boolean.valueOf(parser.getAttributeValue( i ));
+				    		} 
+				    		
+				    		else if (parser.getAttributeLocalName( i ).equals("send_bitrate")) {
+				    			stream.send_bitrate  = parser.getAttributeValue( i );
+				    		} else if (parser.getAttributeLocalName( i ).equals("send_metainvervall")) {
+				    			stream.send_metainvervall  = parser.getAttributeValue( i );
+				    		} else if (parser.getAttributeLocalName( i ).equals("send_name")) {
+				    			stream.send_name  = parser.getAttributeValue( i );
+				    		} else if (parser.getAttributeLocalName( i ).equals("send_serverName")) {
+				    			stream.send_serverName  = parser.getAttributeValue( i );
+				    		} else if (parser.getAttributeLocalName( i ).equals("exeCommand")) {
+				    			stream.setExeCommand(parser.getAttributeValue( i ));
 				    		}
 				    	}
 				    	//an ID lower 1 is invalid

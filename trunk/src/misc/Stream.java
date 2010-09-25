@@ -50,6 +50,11 @@ public class Stream
 	public String SPWindowTF2= "";
 	public String SPSilenceTF= "";
 	
+	public String send_name = "-";
+	public String send_serverName = "-";
+	public String send_bitrate = "-";
+	public String send_metainvervall = "-";
+	
 	//bools
 	public boolean singleFileCB = false;
 	public boolean maxTimeCB = false;
@@ -90,7 +95,6 @@ public class Stream
 	private Boolean isRipping = false;	//the the stream ripping?
 	private Process ownStreamripperProcess = null;
 	private Thread_UpdateName updateName = null;
-	private String[] metaData = {"-","-","-","-"};
 
 	/**
 	 * Creates an object stream, including the name and the id.
@@ -124,20 +128,23 @@ public class Stream
 			updateName.killMe();
 			updateName=null;
 		}
-		String[] base = {"-","-","-","-"};
-		setMetaData(base);
 		activeStreams--;
 	}
 	
 	public String[] getMetaData() {
+		String[] metaData = new String[4];
+		metaData[0] = send_name; 
+		metaData[1] = send_serverName;
+		metaData[2] = send_bitrate;
+		metaData[3] = send_metainvervall;
 		return metaData;
 	}
 	
 	public void setMetaData(String[] data) {
-		metaData[0] = data[0]; //send Streamname
-		metaData[1] = data[1]; //send Server name
-		metaData[2] = data[2]; //bitrate
-		metaData[3] = data[3]; //metaintervall
+		send_name = data[0]; //send Streamname
+		send_serverName = data[1]; //send Server name
+		send_bitrate = data[2]; //bitrate
+		send_metainvervall = data[3]; //metaintervall
 	}
 	
 	//increase the number of recording streams
