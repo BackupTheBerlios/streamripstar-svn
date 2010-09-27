@@ -206,6 +206,12 @@
   - Shoutcast works again
   - change the volume slider to a logarithmical characteristic
   
+   ----------------------------
+ 
+ 0.5.12 -> 0.5.13
+  - fix: crash in english version in settings
+  - fix: some small translation issues
+  
   ----------------------------
  
  0.5.12 -> 0.6
