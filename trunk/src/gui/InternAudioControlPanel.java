@@ -3,19 +3,19 @@ package gui;
 /* Written by Johannes Putzke*/
 /* eMail: die_eule@gmx.net*/ 
 
-import java.awt.Dimension;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
-import java.awt.Insets;
+import java.awt.BorderLayout;
 import java.net.URL;
+import java.util.MissingResourceException;
+import java.util.ResourceBundle;
 
+import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JPanel;
-import javax.swing.JScrollPane;
 import javax.swing.JSlider;
-import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import javax.swing.SwingConstants;
+import javax.swing.border.EtchedBorder;
 
 /**
  * This GUI provides an interface to control the internal audio player.
@@ -25,7 +25,8 @@ import javax.swing.JTextField;
  */
 public class InternAudioControlPanel extends JPanel{
 	private static final long serialVersionUID = -1810951909523547564L;
-
+	private ResourceBundle trans = ResourceBundle.getBundle("translations.StreamRipStar");
+	
 	private ImageIcon lastStreamIcon = new ImageIcon((URL)getClass().getResource("/Icons/record.png"));
 	private ImageIcon nextStreamIcon = new ImageIcon((URL)getClass().getResource("/Icons/record.png"));
 	private ImageIcon startStreamIcon = new ImageIcon((URL)getClass().getResource("/Icons/player.png"));
@@ -39,6 +40,7 @@ public class InternAudioControlPanel extends JPanel{
 	private JTextField titleArea = new JTextField();
 	private JSlider audioSlider = new JSlider();
 	
+	private JPanel panel = new JPanel();
 	private Gui_StreamRipStar mainGui = null;
 	
 	/**
@@ -48,43 +50,66 @@ public class InternAudioControlPanel extends JPanel{
 	public InternAudioControlPanel(Gui_StreamRipStar mainGui) {
 		this.mainGui = mainGui;
 		
-		//configure the slider for the voluemcontrol
-		audioSlider.setMinimum(0);
-		audioSlider.setMaximum(100);
-		//set default Value
-		audioSlider.setValue(80);
-		//set jump intervall : on every click 10 percent
-		audioSlider.setMinorTickSpacing(25);
-		//in how many spaces should the text shown?
-		audioSlider.setMajorTickSpacing(50);
-		audioSlider.setMaximumSize(new Dimension(100,40));
-		audioSlider.setMinimumSize(new Dimension(100,40));
-		audioSlider.setPreferredSize(new Dimension(100,40));
-		//The Orientation
-		audioSlider.setOrientation(JSlider.HORIZONTAL);
-		audioSlider.setPaintTicks(true);  
-		audioSlider.setPaintLabels(true); 
-		audioSlider.setPaintTrack(true);
-
-		setLayout(new GridBagLayout());
-		GridBagConstraints c = new GridBagConstraints();
+		setLayout(new BorderLayout());
+		add(panel,BorderLayout.WEST);
+		add(audioSlider,BorderLayout.EAST);
+		add(titleArea,BorderLayout.SOUTH);
 		
-		c.gridy = 0;
-		c.gridx = 0;
-		add(lastStreamButton,c);
-		c.gridx = 1;
-		add(startPlayingButton,c);
-		c.gridx = 2;
-		add(stopPlayingButton,c);
-		c.gridx = 3;
-		add(nextPlayingButton,c);
-		c.gridx = 4;
-		add(audioSlider,c);
-		c.gridy = 1;
-		c.gridx = 0;
-		c.gridwidth = 5;
-		c.weighty = 1.0;
-		c.weightx = 1.0;
-		add(titleArea,c);
+		panel.add(lastStreamButton);
+		panel.add(startPlayingButton);
+		panel.add(stopPlayingButton);
+		panel.add(nextPlayingButton);
+		
+		titleArea.setEditable(false);
+
+		setCorrectedLayout();
+		setTextUnderIcons(false);
+	}
+	
+	public void setCorrectedLayout() {
+		startPlayingButton.setHorizontalTextPosition(SwingConstants.CENTER);
+		startPlayingButton.setVerticalTextPosition(SwingConstants.BOTTOM);
+		startPlayingButton.setBorderPainted(false);
+		startPlayingButton.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED));
+		stopPlayingButton.setHorizontalTextPosition(SwingConstants.CENTER);
+		stopPlayingButton.setVerticalTextPosition(SwingConstants.BOTTOM);
+		stopPlayingButton.setBorderPainted(false);
+		stopPlayingButton.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED));
+		lastStreamButton.setHorizontalTextPosition(SwingConstants.CENTER);
+		lastStreamButton.setVerticalTextPosition(SwingConstants.BOTTOM);
+		lastStreamButton.setBorderPainted(false);
+		lastStreamButton.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED));
+		nextPlayingButton.setHorizontalTextPosition(SwingConstants.CENTER);
+		nextPlayingButton.setVerticalTextPosition(SwingConstants.BOTTOM);
+		nextPlayingButton.setBorderPainted(false);
+		nextPlayingButton.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED));
+		
+	}
+	
+	public void setTextUnderIcons(boolean textEnabled)
+	{
+		if(textEnabled)
+		{	
+			try 
+			{
+				startPlayingButton.setText(trans.getString("internAudioCP.startPlaying"));
+				stopPlayingButton.setText(trans.getString("internAudioCP.stopPlaying"));
+				lastStreamButton.setText(trans.getString("internAudioCP.lastStream"));
+				nextPlayingButton.setText(trans.getString("internAudioCP.nextStream"));
+			}
+			catch(MissingResourceException e)
+			{
+				System.err.println("Translation Error: Error while setting the translation in InternAudioControlPanel");
+				System.err.println(e.getMessage());
+			}
+		} 
+		
+		else 
+		{
+			startPlayingButton.setText(null);
+			stopPlayingButton.setText(null);
+			lastStreamButton.setText(null);
+			nextPlayingButton.setText(null);
+		}
 	}
 }
