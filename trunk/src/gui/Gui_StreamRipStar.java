@@ -79,6 +79,7 @@ public class Gui_StreamRipStar extends JFrame implements WindowListener
 	private Gui_TablePanel table = null; 	//Table that shows all streams
 	private Thread_Control_Schedul controlJob = null;
 	private Gui_StreamBrowser2 streamBrowser = null;
+	private InternAudioControlPanel audioPanel = new InternAudioControlPanel(this);
 	
 	//for runtime
 	private Boolean tray = false;				// false = hide tray icon
@@ -195,6 +196,7 @@ public class Gui_StreamRipStar extends JFrame implements WindowListener
 		contPane.add(iconBar,BorderLayout.PAGE_START);
         contPane.add(table, BorderLayout.CENTER);	//Add that shows all streams
         contPane.add(currentTitleLabel, BorderLayout.SOUTH);
+        contPane.add(this.audioPanel, BorderLayout.SOUTH);
         
         buildMenuBar();
         buildIconBar();
