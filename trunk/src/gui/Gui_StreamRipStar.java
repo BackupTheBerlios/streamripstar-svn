@@ -301,7 +301,10 @@ public class Gui_StreamRipStar extends JFrame implements WindowListener
 		stopRecordButton.setHorizontalTextPosition(SwingConstants.CENTER);
 		stopRecordButton.setVerticalTextPosition(SwingConstants.BOTTOM);
 		stopRecordButton.setBorderPainted(false);
-		hearMusicButton.setHorizontalTextPosition(SwingConstants.CENTER);
+		if(!useInternalPlayer)
+		{
+			hearMusicButton.setHorizontalTextPosition(SwingConstants.CENTER);
+		}
 		hearMusicButton.setVerticalTextPosition(SwingConstants.BOTTOM);
 		hearMusicButton.setBorderPainted(false);
 		scheduleButton.setHorizontalTextPosition(SwingConstants.CENTER);
@@ -335,8 +338,11 @@ public class Gui_StreamRipStar extends JFrame implements WindowListener
 		//add Button to the bar
 		iconBar.add(startRecordButton);
 		iconBar.add(stopRecordButton);
-		iconBar.addSeparator();
-		iconBar.add(hearMusicButton);
+		if(!useInternalPlayer)
+		{
+			iconBar.addSeparator();
+			iconBar.add(hearMusicButton);
+		}
 		iconBar.addSeparator();
 		iconBar.add(scheduleButton);
 		iconBar.add(infoButton);
@@ -377,7 +383,7 @@ public class Gui_StreamRipStar extends JFrame implements WindowListener
 		stopRecordButton.addActionListener(new StopRecordListener());
 		deleteButton.addActionListener(new DeleteListener());
 		editButton.addActionListener(new EditStreamListener());
-		hearMusicButton.addActionListener(new playMusikListener());
+		hearMusicButton.addActionListener(new PlayMusikListener());
 		openMusicFolderButton.addActionListener(new OpenMusikFolder());
 		scheduleButton.addActionListener(new ScheduleListener());
 		infoButton.addActionListener(new ShowStatsListener());
@@ -472,7 +478,7 @@ public class Gui_StreamRipStar extends JFrame implements WindowListener
 		addStream.addActionListener(new AddStreamListener());
 		editStream.addActionListener(new EditStreamListener());
 		delStream.addActionListener(new DeleteListener());
-		tuneInto.addActionListener(new playMusikListener());
+		tuneInto.addActionListener(new PlayMusikListener());
 		exit.addActionListener(new ExitListener(Gui_StreamRipStar.this));
 		openMusicFolder.addActionListener(new OpenMusikFolder());
 		openWebsite.addActionListener(new BrowserListener());
@@ -490,7 +496,7 @@ public class Gui_StreamRipStar extends JFrame implements WindowListener
 		
 		startRecPopupIcon.addActionListener(new StartRecordListener());
 		stopRecPopupIcon.addActionListener(new StopRecordListener());
-		tuneStreamPopupIcon.addActionListener(new playMusikListener());
+		tuneStreamPopupIcon.addActionListener(new PlayMusikListener());
 		optionPopupIcon.addActionListener(new EditStreamListener());
 		
 		//build pop up menu
@@ -1221,10 +1227,10 @@ public class Gui_StreamRipStar extends JFrame implements WindowListener
 	
 	/**
 	 * Is called, when you like to hear music 
-	 * @author eule	
+	 * @author Johannes Putzke	
 	 *
 	 */
-	class playMusikListener implements ActionListener {
+	public class PlayMusikListener implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
 			if(getTabel().isTHSelected()) {
 				getTabel().startMusicPlayerWithSelectedStream();

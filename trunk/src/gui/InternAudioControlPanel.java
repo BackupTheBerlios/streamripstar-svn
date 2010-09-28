@@ -23,6 +23,8 @@ import javax.swing.border.EtchedBorder;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
+import gui.Gui_StreamRipStar;
+
 /**
  * This GUI provides an interface to control the internal audio player.
  * You have buttons to hear: last Stream, next stream, start stream and
@@ -75,7 +77,6 @@ public class InternAudioControlPanel extends JPanel{
 		
 		audioSlider.addChangeListener(new VolumeChangeListener());
 		stopPlayingButton.addActionListener(new StopPlayMusikListener());
-		
 		setCorrectedLayout();
 	}
 	
