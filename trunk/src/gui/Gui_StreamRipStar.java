@@ -97,7 +97,6 @@ public class Gui_StreamRipStar extends JFrame implements WindowListener
 	private ImageIcon deleteIcon = new ImageIcon((URL)getClass().getResource("/Icons/del.png"));
 	private ImageIcon addIcon = new ImageIcon((URL)getClass().getResource("/Icons/add.png"));
 	private ImageIcon hearMusicIcon = new ImageIcon((URL)getClass().getResource("/Icons/player.png"));
-	private ImageIcon stopHearMusicIcon = new ImageIcon((URL)getClass().getResource("/Icons/stop-audio.png"));
 	private ImageIcon openMusicFolderIcon = new ImageIcon((URL)getClass().getResource("/Icons/m_open.png"));
 	private ImageIcon exitIcon = new ImageIcon((URL)getClass().getResource("/Icons/exit.png"));
 	private ImageIcon configIcon = new ImageIcon((URL)getClass().getResource("/Icons/config.png"));
@@ -125,7 +124,6 @@ public class Gui_StreamRipStar extends JFrame implements WindowListener
 	private JButton editButton = new JButton("Edit",editIcon);
 	private JButton addButton = new JButton("Add",addIcon);
 	private JButton hearMusicButton = new JButton("Hear",hearMusicIcon);
-	private JButton stopHearMusicButton = new JButton("Hear",stopHearMusicIcon);
 	private JButton openMusicFolderButton = new JButton("Musicfolder",openMusicFolderIcon);
 	private JButton exitButton = new JButton("Exit",exitIcon);
 	private JButton configButton = new JButton("Preferences",configIcon);
@@ -168,7 +166,6 @@ public class Gui_StreamRipStar extends JFrame implements WindowListener
 	private JMenuItem optionPopupIcon = new JMenuItem("Optionen");
 	
 	private JPopupMenu tablePopup = new JPopupMenu();
-	private JSlider audioSlider = new JSlider();
 	
 	private Font textUnderIconsFont = new Font("Dialog", Font.PLAIN, 10);
 	
@@ -304,26 +301,6 @@ public class Gui_StreamRipStar extends JFrame implements WindowListener
 	
 //  add all JButton with icons
 	public void  buildIconBar() {	
-		//configure the slider for the voluemcontrol
-		audioSlider.setMinimum(0);
-		audioSlider.setMaximum(100);
-		//set default Value
-		audioSlider.setValue(80);
-		//set jump intervall : on every click 10 percent
-		audioSlider.setMinorTickSpacing(25);
-		//in how many spaces should the text shown?
-		audioSlider.setMajorTickSpacing(50);
-		audioSlider.setMaximumSize(new Dimension(100,40));
-		audioSlider.setMinimumSize(new Dimension(100,40));
-		audioSlider.setPreferredSize(new Dimension(100,40));
-		audioSlider.setFont(textUnderIconsFont);
-		
-		//The Orientation
-		audioSlider.setOrientation(JSlider.HORIZONTAL);
-		audioSlider.setPaintTicks(true);  
-		audioSlider.setPaintLabels(true); 
-		audioSlider.setPaintTrack(true);
-		
 		//place Text under the icons
 		startRecordButton.setHorizontalTextPosition(SwingConstants.CENTER);
 		startRecordButton.setVerticalTextPosition(SwingConstants.BOTTOM);
@@ -334,9 +311,6 @@ public class Gui_StreamRipStar extends JFrame implements WindowListener
 		hearMusicButton.setHorizontalTextPosition(SwingConstants.CENTER);
 		hearMusicButton.setVerticalTextPosition(SwingConstants.BOTTOM);
 		hearMusicButton.setBorderPainted(false);
-		stopHearMusicButton.setHorizontalTextPosition(SwingConstants.CENTER);
-		stopHearMusicButton.setVerticalTextPosition(SwingConstants.BOTTOM);
-		stopHearMusicButton.setBorderPainted(false);
 		scheduleButton.setHorizontalTextPosition(SwingConstants.CENTER);
 		scheduleButton.setVerticalTextPosition(SwingConstants.BOTTOM);
 		scheduleButton.setBorderPainted(false);;
@@ -370,8 +344,6 @@ public class Gui_StreamRipStar extends JFrame implements WindowListener
 		iconBar.add(stopRecordButton);
 		iconBar.addSeparator();
 		iconBar.add(hearMusicButton);
-		iconBar.add(stopHearMusicButton);
-		iconBar.add(audioSlider);
 		iconBar.addSeparator();
 		iconBar.add(scheduleButton);
 		iconBar.add(infoButton);
@@ -399,8 +371,6 @@ public class Gui_StreamRipStar extends JFrame implements WindowListener
 		editButton.setToolTipText("Edit stream");
 		addButton.setToolTipText("Add stream");
 		hearMusicButton.setToolTipText("Hear stream");
-		stopHearMusicButton.setToolTipText("Stop playing music with the internal player");
-		audioSlider.setToolTipText("Volume control");
 		exitButton.setToolTipText("Exit");
 		configButton.setToolTipText("Preferences");
 		openMusicFolderButton.setToolTipText("Open musicfolder");
@@ -415,12 +385,10 @@ public class Gui_StreamRipStar extends JFrame implements WindowListener
 		deleteButton.addActionListener(new DeleteListener());
 		editButton.addActionListener(new EditStreamListener());
 		hearMusicButton.addActionListener(new playMusikListener());
-		stopHearMusicButton.addActionListener(new StopPlayMusikListener());
 		openMusicFolderButton.addActionListener(new OpenMusikFolder());
 		scheduleButton.addActionListener(new ScheduleListener());
 		infoButton.addActionListener(new ShowStatsListener());
 		browseGenreButton.addActionListener(new StreamBrowserListener());
-		audioSlider.addChangeListener(new ValueumChangeListener());
 
 		//set new Border 
 		startRecordButton.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED));
@@ -430,7 +398,6 @@ public class Gui_StreamRipStar extends JFrame implements WindowListener
 		editButton.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED));
 		addButton.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED));
 		hearMusicButton.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED));
-		stopHearMusicButton.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED));
 		openMusicFolderButton.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED));
 		exitButton.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED));
 		configButton.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED));
@@ -439,17 +406,6 @@ public class Gui_StreamRipStar extends JFrame implements WindowListener
 		
 	}
 
-	/**
-	 * Is called, when the value is changened from the intern audio player
-	 *
-	 */
-	public class ValueumChangeListener implements ChangeListener {
-
-		@Override
-		public void stateChanged(ChangeEvent arg0) {
-			setVolume(audioSlider.getValue());
-		} 
-	}
 	
 //	Build menu structure
 	public void buildMenuBar() {
@@ -559,7 +515,6 @@ public class Gui_StreamRipStar extends JFrame implements WindowListener
 			startRecordButton.setText(null);
 			stopRecordButton.setText(null);
 			hearMusicButton.setText(null);
-			stopHearMusicButton.setText(null);
 			scheduleButton.setText(null);
 			infoButton.setText(null);
 			deleteButton.setText(null);
@@ -580,7 +535,6 @@ public class Gui_StreamRipStar extends JFrame implements WindowListener
 				editButton.setText(trans.getString("mainWin.editButton"));
 				addButton.setText(trans.getString("mainWin.addButton"));
 				hearMusicButton.setText(trans.getString("mainWin.hearMusicButton"));
-				stopHearMusicButton.setText(trans.getString("mainWin.stopHearMusicButton"));
 				openMusicFolderButton.setText(trans.getString("mainWin.openMusicFolderButton"));
 				exitButton.setText(trans.getString("mainWin.exitButton"));
 				configButton.setText(trans.getString("mainWin.configButton"));
@@ -598,7 +552,6 @@ public class Gui_StreamRipStar extends JFrame implements WindowListener
 			editButton.setFont(textUnderIconsFont);
 			addButton.setFont(textUnderIconsFont);
 			hearMusicButton.setFont(textUnderIconsFont);
-			stopHearMusicButton.setFont(textUnderIconsFont);
 			openMusicFolderButton.setFont(textUnderIconsFont);
 			exitButton.setFont(textUnderIconsFont);
 			configButton.setFont(textUnderIconsFont);
@@ -648,8 +601,6 @@ public class Gui_StreamRipStar extends JFrame implements WindowListener
 			deleteButton.setToolTipText(trans.getString("toolTip.deleteButton"));
 			addButton.setToolTipText(trans.getString("toolTip.addButton"));
 			hearMusicButton.setToolTipText(trans.getString("toolTip.hearMusicButton"));
-			stopHearMusicButton.setToolTipText(trans.getString("toolTip.stopHearMusicButton"));
-			audioSlider.setToolTipText(trans.getString("toolTip.audioSlider"));
 			exitButton.setToolTipText(trans.getString("toolTip.exitButton"));
 			configButton.setToolTipText(trans.getString("toolTip.configButton"));
 			openMusicFolderButton.setToolTipText(trans.getString("toolTip.openMusicFolderButton"));
@@ -694,16 +645,18 @@ public class Gui_StreamRipStar extends JFrame implements WindowListener
 	 * Sets a new Volume to the audioSlider (the volume Control)
 	 * @param newVolume the volume in percent from 0 up to 100
 	 */
-	public void setVolume(int newVolume) {
-		if(audioSlider.getValue() != newVolume) {
-			audioSlider.setValue(newVolume);
+	public void setVolume(int newVolume) 
+	{
+		if(audioPanel.getAudioVolume() != newVolume) 
+		{
+			audioPanel.setAudioVolume(newVolume);
 		}
 		
-		if(streamBrowser != null &&
-				streamBrowser.getAudioSlider().getValue() != newVolume) {
+		if(streamBrowser != null && streamBrowser.getAudioSlider().getValue() != newVolume) 
+		{
 			streamBrowser.getAudioSlider().setValue(newVolume);
 		}
-		getTabel().setAudioVolume(audioSlider.getValue());
+		getTabel().setAudioVolume(newVolume);
 	}
 	
 	/**
@@ -1294,16 +1247,6 @@ public class Gui_StreamRipStar extends JFrame implements WindowListener
 		}
 	}
 	
-	/**
-	 * Stop the internal music player
-	 * @author eule	
-	 *
-	 */
-	class StopPlayMusikListener implements ActionListener {
-		public void actionPerformed(ActionEvent e) {
-			getTabel().stopInternalAudioPlayer();
-		}
-	}
 	
 	/**
 	 * Show an field where you can find the runtime options 

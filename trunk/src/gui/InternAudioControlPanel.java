@@ -4,6 +4,8 @@ package gui;
 /* eMail: die_eule@gmx.net*/ 
 
 import java.awt.BorderLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.net.URL;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
@@ -16,6 +18,8 @@ import javax.swing.JSlider;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import javax.swing.border.EtchedBorder;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 
 /**
  * This GUI provides an interface to control the internal audio player.
@@ -27,8 +31,8 @@ public class InternAudioControlPanel extends JPanel{
 	private static final long serialVersionUID = -1810951909523547564L;
 	private ResourceBundle trans = ResourceBundle.getBundle("translations.StreamRipStar");
 	
-	private ImageIcon lastStreamIcon = new ImageIcon((URL)getClass().getResource("/Icons/record.png"));
-	private ImageIcon nextStreamIcon = new ImageIcon((URL)getClass().getResource("/Icons/record.png"));
+	private ImageIcon lastStreamIcon = new ImageIcon((URL)getClass().getResource("/Icons/questionmark.png"));
+	private ImageIcon nextStreamIcon = new ImageIcon((URL)getClass().getResource("/Icons/questionmark.png"));
 	private ImageIcon startStreamIcon = new ImageIcon((URL)getClass().getResource("/Icons/player.png"));
 	private ImageIcon stopStreamIcon = new ImageIcon((URL)getClass().getResource("/Icons/stop-audio.png"));
 	
@@ -64,6 +68,8 @@ public class InternAudioControlPanel extends JPanel{
 
 		setCorrectedLayout();
 		setTextUnderIcons(false);
+		
+		//mainGUi.getFontForTextUnderIcons();
 	}
 	
 	public void setCorrectedLayout() {
@@ -110,6 +116,49 @@ public class InternAudioControlPanel extends JPanel{
 			stopPlayingButton.setText(null);
 			lastStreamButton.setText(null);
 			nextPlayingButton.setText(null);
+		}
+	}
+	
+	
+	public void setToolTipsAll() 
+	{
+		audioSlider.setToolTipText(trans.getString("toolTip.audioSlider"));
+		stopPlayingButton.setToolTipText(trans.getString("toolTip.stopHearMusicButton"));
+	}
+	
+	public int getAudioVolume() 
+	{
+		return audioSlider.getValue();
+	}
+	
+	public void setAudioVolume(int newVolume)
+	{
+		audioSlider.setValue(newVolume);
+	}
+	
+	/**
+	 * Is called, when the value is changed from the intern audio player
+	 *
+	 */
+	public class VolumeChangeListener implements ChangeListener 
+	{
+		@Override
+		public void stateChanged(ChangeEvent arg0) 
+		{
+			mainGui.setVolume(audioSlider.getValue());
+		} 
+	}
+
+	/**
+	 * Stop the internal music player
+	 * 
+	 * @author Johannes Putzke	
+	 */
+	class StopPlayMusikListener implements ActionListener 
+	{
+		public void actionPerformed(ActionEvent e) 
+		{
+			mainGui.getTabel().stopInternalAudioPlayer();
 		}
 	}
 }
