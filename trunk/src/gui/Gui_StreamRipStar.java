@@ -33,13 +33,11 @@ import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
-import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPopupMenu;
-import javax.swing.JSlider;
 import javax.swing.JToolBar;
 import javax.swing.KeyStroke;
 import javax.swing.SwingConstants;
@@ -47,8 +45,6 @@ import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 import javax.swing.border.EtchedBorder;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
 import javax.xml.stream.XMLEventFactory;
 import javax.xml.stream.XMLEventWriter;
 import javax.xml.stream.XMLInputFactory;
@@ -57,14 +53,10 @@ import javax.xml.stream.XMLStreamConstants;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 import javax.xml.stream.events.XMLEvent;
-
 import misc.Stream;
-
 import thread.Thread_Control_Schedul;
 import thread.Thread_FillTableWithStreams;
 import thread.Thread_UpdateName;
-
-
 import control.Control_GetPath;
 import control.Control_RunExternProgram;
 import control.Control_Stream;
@@ -168,9 +160,7 @@ public class Gui_StreamRipStar extends JFrame implements WindowListener
 	private JPopupMenu tablePopup = new JPopupMenu();
 	
 	private Font textUnderIconsFont = new Font("Dialog", Font.PLAIN, 10);
-	
-	private JLabel currentTitleLabel = new JLabel("");
-	
+
 	//sys tray icon
 	private TrayIcon trayIcon = null;
 	private SystemTray sysTray = null;
@@ -192,7 +182,6 @@ public class Gui_StreamRipStar extends JFrame implements WindowListener
        
 		contPane.add(iconBar,BorderLayout.PAGE_START);
         contPane.add(table, BorderLayout.CENTER);	//Add that shows all streams
-        contPane.add(currentTitleLabel, BorderLayout.SOUTH);
         contPane.add(this.audioPanel, BorderLayout.SOUTH);
         
         buildMenuBar();
@@ -917,34 +906,17 @@ public class Gui_StreamRipStar extends JFrame implements WindowListener
 	/**
 	 * Set the title of the current song in the status field
 	 */
-	public void setTitleForAudioPlayer(String title) {
+	public void setTitleForAudioPlayer(String title,boolean isErrorMessage) {
 		if(title != null) {
-			currentTitleLabel.setText(title);
-			currentTitleLabel.setForeground(Color.BLACK);
+			audioPanel.setTitle(title,isErrorMessage);
 			
 			//show title messages in the streamrbowser, too
 			if(streamBrowser != null) {
-				streamBrowser.setStatusText(title);
+				streamBrowser.setStatusText(title,isErrorMessage);
 			}
 		}
 	}
-	
-	/**
-	 * Shows an error message in the label in buttom of the main window.
-	 * The backgroundcolor is set to red
-	 * @param errorMessage: The message you want to set 
-	 */
-	public void setErrorMesageForAudioPlayer(String errorMessage) {
-		if(errorMessage != null) {
-			currentTitleLabel.setText(errorMessage);
-			currentTitleLabel.setForeground(Color.RED);	
-			
-			//show error messages in the streamrbowser, too
-			if(streamBrowser != null) {
-				streamBrowser.setErrorMessage(errorMessage);
-			}
-		}
-	}
+
 	
 	/**
 	 * 

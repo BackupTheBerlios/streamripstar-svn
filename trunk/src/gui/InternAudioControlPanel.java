@@ -4,6 +4,7 @@ package gui;
 /* eMail: die_eule@gmx.net*/ 
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.net.URL;
@@ -70,6 +71,9 @@ public class InternAudioControlPanel extends JPanel{
 		setTextUnderIcons(false);
 		
 		//mainGUi.getFontForTextUnderIcons();
+		
+		audioSlider.addChangeListener(new VolumeChangeListener());
+		stopPlayingButton.addActionListener(new StopPlayMusikListener());
 	}
 	
 	public void setCorrectedLayout() {
@@ -160,5 +164,20 @@ public class InternAudioControlPanel extends JPanel{
 		{
 			mainGui.getTabel().stopInternalAudioPlayer();
 		}
+	}
+	
+	
+	public void setTitle(String title,boolean isErrorMessage) 
+	{
+		if(!isErrorMessage) 
+		{
+			titleArea.setForeground(Color.BLACK);
+		}
+		
+		else 
+		{
+			titleArea.setForeground(Color.RED);	
+		}
+		titleArea.setText(title);
 	}
 }

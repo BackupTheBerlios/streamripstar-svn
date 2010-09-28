@@ -447,7 +447,7 @@ public class Gui_StreamBrowser2 extends JFrame implements WindowListener {
 			}
 		catch (NullPointerException e) {
 			System.err.println("Failed to load genres");
-			this.setStatusText("Failed to load genres");
+			setStatusText("Failed to load genres",false);
 		}
 	}
 	
@@ -467,20 +467,18 @@ public class Gui_StreamBrowser2 extends JFrame implements WindowListener {
 	 * Show messages to the use
 	 * @param statusText
 	 */
-	public void setStatusText(String statusText) {
-		stautsLabel.setForeground(Color.BLACK);
+	public void setStatusText(String statusText, boolean isErrorMessage) {
+		if(!isErrorMessage) 
+		{
+			stautsLabel.setForeground(Color.BLACK);
+		}
+		else 
+		{
+			stautsLabel.setForeground(Color.RED);
+		}
 		stautsLabel.setText(statusText);
 	}
-	
-	/**
-	 * 
-	 * @param statusText
-	 */
-	public void setErrorMessage(String errorMessage) {
-		stautsLabel.setForeground(Color.RED);
-		stautsLabel.setText(errorMessage);
-	}
-	
+
 	public synchronized void updateUITree() {
 		browseTree.expandRow(0);
 		treeModel.reload();
@@ -1196,7 +1194,7 @@ public class Gui_StreamBrowser2 extends JFrame implements WindowListener {
 			//if the last page is shown, do not load the next last page
 			if(controlHttp.getCurrentPage() <= 1) {
 				System.out.println("Can load the previous page, because the current page is the first one");
-				setStatusText("Can load the previous page, because the current page is the first one");
+				setStatusText("Can load the previous page, because the current page is the first one",false);
 			} else {
 				getStreams = new Thread_GetStreams_FromShoutcast(getMe(),selectedGenre.replace(" ", "%20"),trans,isKeyword,false,true);
 	    		getStreams.start();
@@ -1215,7 +1213,7 @@ public class Gui_StreamBrowser2 extends JFrame implements WindowListener {
 			//if the last page is shown, do not load the next page
 			if(controlHttp.getCurrentPage() >= controlHttp.getTotalPages()) {
 				System.out.println("Can load the next page, because the current page is the last one");
-				setStatusText("Can load the next page, because the current page is the last one");
+				setStatusText("Can load the next page, because the current page is the last one",false);
 			} else {
 				getStreams = new Thread_GetStreams_FromShoutcast(getMe(),selectedGenre.replace(" ", "%20"),trans,isKeyword,true,false);
 	    		getStreams.start();

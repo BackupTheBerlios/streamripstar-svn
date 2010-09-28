@@ -37,7 +37,7 @@ public class Thread_GetStreams_FromShoutcast extends Thread
 	
 	public void killMe() {
 		killMe = true;
-		streamBrowser.setStatusText("Try to abort fetching streams");
+		streamBrowser.setStatusText("Try to abort fetching streams",false);
 	}
 	
 	public void run() {
@@ -45,7 +45,7 @@ public class Thread_GetStreams_FromShoutcast extends Thread
 		streamBrowser.setAbortButtonEnable(true);
 		
 		//set status loading
-		streamBrowser.setStatusText(trans.getString("GetStreams.loading"));
+		streamBrowser.setStatusText(trans.getString("GetStreams.loading"),false);
 		
 		//disable clicking on the genre
 		streamBrowser.disableModelClick(true);
@@ -153,8 +153,8 @@ public class Thread_GetStreams_FromShoutcast extends Thread
 		
 		//set new status
 		if(killMe == true)
-			streamBrowser.setStatusText(trans.getString("GetStreams.abort"));
+			streamBrowser.setStatusText(trans.getString("GetStreams.abort"),false);
 		else
-			streamBrowser.setStatusText(trans.getString("GetStreams.done"));
+			streamBrowser.setStatusText(trans.getString("GetStreams.done"),false);
 	}
 }

@@ -224,7 +224,7 @@ public class Gui_Filter extends JPanel {
 			Vector<String[]> streamTmp = null;
 			
 			//set status loading
-			streamBrowser.setStatusText("Filter streams");
+			streamBrowser.setStatusText("Filter streams",false);
 			
 			//...and get this vector
 			streamsPG = streamBrowser.getControlHttp().getStreams();
@@ -280,7 +280,7 @@ public class Gui_Filter extends JPanel {
 					streamBrowser.getBrowseModel().addRow(tmp);
 				}
 				//set status loading
-				streamBrowser.setStatusText("Filter done!. Ready for new Action");
+				streamBrowser.setStatusText("Filter done!. Ready for new Action",false);
 			}
 		}
 	}
