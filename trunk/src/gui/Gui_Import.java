@@ -40,7 +40,8 @@ import control.Control_Stream;
 
 public class Gui_Import extends JDialog {
 	private static final long serialVersionUID = 1L;
-
+	private ResourceBundle trans = ResourceBundle.getBundle("translations.StreamRipStar");
+	
 	private JPanel mainPanel = new JPanel();
 	
 	private Object[] importHeader = {"import","Stream Name", "Address","Website"};
@@ -75,13 +76,11 @@ public class Gui_Import extends JDialog {
 	
 	private String[][] importableStreams = null;
 	private Gui_StreamRipStar mainGui = null;
-	private ResourceBundle trans = null;
 	private Control_Stream controlStreams = null;
 	
 	public Gui_Import(Gui_StreamRipStar gui, Control_Stream controlStreams)	{
 		super(gui,"importiere Stream");
 		this.mainGui = gui;
-		this.trans = mainGui.getTrans();
 		this.controlStreams = controlStreams;
 		this.setModalityType(ModalityType.APPLICATION_MODAL);
 		setLanguage();

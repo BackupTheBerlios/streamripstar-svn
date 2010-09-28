@@ -28,10 +28,10 @@ import misc.Stream;
 //This class include a Stream with all options
 public class Control_Stream
 {
+	private ResourceBundle trans = ResourceBundle.getBundle("translations.StreamRipStar");
 	private Gui_StreamRipStar mainGui = null;
 	private Vector<Stream> streamVector = new Vector<Stream>(0,1);
 	private Stream defaultStream= null;
-	private ResourceBundle trans;
 	
 	private String webBrowserPath = "";
 	private String mp3PlayerPath = "";
@@ -41,7 +41,6 @@ public class Control_Stream
 	
 	public Control_Stream(Gui_StreamRipStar mainGui) {
 		this.mainGui = mainGui;
-		trans = mainGui.getTrans();
 	}
 	
 	/**

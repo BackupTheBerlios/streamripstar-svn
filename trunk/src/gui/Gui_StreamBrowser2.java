@@ -676,15 +676,15 @@ public class Gui_StreamBrowser2 extends JFrame implements WindowListener {
 			//if url = "" it fails
 			if(url == null || url.equals("")) {
 				JOptionPane.showMessageDialog(getMe()
-						,StreamRipStar.getTrans().getString("Message.emptyString"));
-				System.err.println(StreamRipStar.getTrans().getString("Message.emptyString"));
+						,trans.getString("Message.emptyString"));
+				System.err.println(trans.getString("Message.emptyString"));
 			} else {
 				StreamRipStar.getTabel().startMusicPlayerWithUrl(url, name);
 				System.out.println(url);
 			}
 		} else
 			JOptionPane.showMessageDialog(getMe()
-					,StreamRipStar.getTrans().getString("select"));
+					,trans.getString("select"));
 	}
 	
 	/**
@@ -1095,7 +1095,7 @@ public class Gui_StreamBrowser2 extends JFrame implements WindowListener {
 			} else
 				//if nothing is selected, open popup
 				JOptionPane.showMessageDialog(getMe()
-						,StreamRipStar.getTrans().getString("select"));
+						,trans.getString("select"));
 		}
 	}
 	
@@ -1113,7 +1113,7 @@ public class Gui_StreamBrowser2 extends JFrame implements WindowListener {
 				
 				//if url = "" it fails
 				if(content[0] == null || content[0].equals("")) {
-					JOptionPane.showMessageDialog(getMe(), StreamRipStar.getTrans().getString("Message.emptyString"));
+					JOptionPane.showMessageDialog(getMe(), trans.getString("Message.emptyString"));
 					System.err.println("Error while fetching streamaddress\n");
 				}
 				else {
@@ -1131,7 +1131,7 @@ public class Gui_StreamBrowser2 extends JFrame implements WindowListener {
 			} else
 				//if nothing is selected, open popup
 				JOptionPane.showMessageDialog(getMe()
-						,StreamRipStar.getTrans().getString("select"));
+						,trans.getString("select"));
 		}
 	}
 	

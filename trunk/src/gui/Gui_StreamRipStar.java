@@ -225,10 +225,10 @@ public class Gui_StreamRipStar extends JFrame implements WindowListener
     		new Gui_Settings(this);
         }
 	}
-
-	public ResourceBundle getTrans() {
-		return trans;
-	}
+//
+//	public ResourceBundle getTrans() {
+//		return trans;
+//	}
 	
 	/**
 	 * enables the system tray and set
