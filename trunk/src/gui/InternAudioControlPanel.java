@@ -5,6 +5,7 @@ package gui;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.net.URL;
@@ -52,9 +53,10 @@ public class InternAudioControlPanel extends JPanel{
 	 * 
 	 * @param mainGui
 	 */
-	public InternAudioControlPanel(Gui_StreamRipStar mainGui) {
+	public InternAudioControlPanel(Gui_StreamRipStar mainGui) 
+	{
 		this.mainGui = mainGui;
-		
+		setCorrectedLayout() ;
 		setLayout(new BorderLayout());
 		add(panel,BorderLayout.WEST);
 		add(audioSlider,BorderLayout.EAST);
@@ -66,17 +68,19 @@ public class InternAudioControlPanel extends JPanel{
 		panel.add(nextPlayingButton);
 		
 		titleArea.setEditable(false);
-
-		setCorrectedLayout();
-		setTextUnderIcons(false);
 		
-		//mainGUi.getFontForTextUnderIcons();
+
+		setTextUnderIcons(mainGui.showTextUnderIcons());
+		setFontsAll(mainGui.getFontForTextUnderIcons());
 		
 		audioSlider.addChangeListener(new VolumeChangeListener());
 		stopPlayingButton.addActionListener(new StopPlayMusikListener());
+		
+		setCorrectedLayout();
 	}
 	
-	public void setCorrectedLayout() {
+	public void setCorrectedLayout() 
+	{
 		startPlayingButton.setHorizontalTextPosition(SwingConstants.CENTER);
 		startPlayingButton.setVerticalTextPosition(SwingConstants.BOTTOM);
 		startPlayingButton.setBorderPainted(false);
@@ -93,6 +97,8 @@ public class InternAudioControlPanel extends JPanel{
 		nextPlayingButton.setVerticalTextPosition(SwingConstants.BOTTOM);
 		nextPlayingButton.setBorderPainted(false);
 		nextPlayingButton.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED));
+		
+		panel.setBackground(new Color(238,238,238,255));
 		
 	}
 	
@@ -113,7 +119,6 @@ public class InternAudioControlPanel extends JPanel{
 				System.err.println(e.getMessage());
 			}
 		} 
-		
 		else 
 		{
 			startPlayingButton.setText(null);
@@ -123,11 +128,22 @@ public class InternAudioControlPanel extends JPanel{
 		}
 	}
 	
-	
+	/**
+	 * set the tooltips for all components in this Control panel. It provides
+	 * some default tooltips and changes the language, if needed
+	 */
 	public void setToolTipsAll() 
 	{
 		audioSlider.setToolTipText(trans.getString("toolTip.audioSlider"));
 		stopPlayingButton.setToolTipText(trans.getString("toolTip.stopHearMusicButton"));
+	}
+	
+	public void setFontsAll(Font newFont) 
+	{
+		startPlayingButton.setFont(newFont);
+		stopPlayingButton.setFont(newFont);
+		lastStreamButton.setFont(newFont);
+		nextPlayingButton.setFont(newFont);
 	}
 	
 	public int getAudioVolume() 
@@ -166,7 +182,13 @@ public class InternAudioControlPanel extends JPanel{
 		}
 	}
 	
-	
+	/**
+	 * Set an title in the title bar on the bottom the the hole panel.
+	 * the parameter title is not checked, so it might be checked of 
+	 * null before
+	 * @param title The text you want to show in the title bar
+	 * @param isErrorMessage
+	 */
 	public void setTitle(String title,boolean isErrorMessage) 
 	{
 		if(!isErrorMessage) 

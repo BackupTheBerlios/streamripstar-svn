@@ -55,7 +55,8 @@ public class Gui_Settings extends JDialog
 	private JPanel actionPanel = new JPanel();
 	private JPanel buttonPanel = new JPanel();
 	private JPanel commonPanel = new JPanel();
-
+	private JPanel internPanel = new JPanel();
+	
 	private JTextField ripperPathField = new JTextField("",30) ;
 	private JTextField shoutcastPlayer = new JTextField("",30) ;
 	private JTextField generellPathField = new JTextField("",30) ;
@@ -141,6 +142,7 @@ public class Gui_Settings extends JDialog
 		translationTA.setEditable(false);
 		
 		settingsPane.addTab("General", commonPanel);
+		settingsPane.addTab("Intern Player", internPanel);
 		settingsPane.addTab("Path",pathPanel);
 		settingsPane.addTab("Action",actionPanel);
 		settingsPane.addTab("Language",langIcon,languagePanel);
@@ -393,9 +395,9 @@ public class Gui_Settings extends JDialog
 			
 			//tabs
 			settingsPane.setTitleAt(0, trans.getString("tab.general"));
-			settingsPane.setTitleAt(1, trans.getString("tab.path"));
-			settingsPane.setTitleAt(2, trans.getString("tab.action"));
-			settingsPane.setTitleAt(3, trans.getString("tab.languages")+ " - language");
+			settingsPane.setTitleAt(2, trans.getString("tab.path"));
+			settingsPane.setTitleAt(3, trans.getString("tab.action"));
+			settingsPane.setTitleAt(4, trans.getString("tab.languages")+ " - language");
 
 			//general panel
 			activeTrayIcon.setText(trans.getString("showSysTray"));

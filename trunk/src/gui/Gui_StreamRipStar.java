@@ -71,7 +71,7 @@ public class Gui_StreamRipStar extends JFrame implements WindowListener
 	private Gui_TablePanel table = null; 	//Table that shows all streams
 	private Thread_Control_Schedul controlJob = null;
 	private Gui_StreamBrowser2 streamBrowser = null;
-	private InternAudioControlPanel audioPanel = new InternAudioControlPanel(this);
+	private InternAudioControlPanel audioPanel = null;
 	
 	//for runtime
 	private Boolean tray = false;				// false = hide tray icon
@@ -182,13 +182,18 @@ public class Gui_StreamRipStar extends JFrame implements WindowListener
        
 		contPane.add(iconBar,BorderLayout.PAGE_START);
         contPane.add(table, BorderLayout.CENTER);	//Add that shows all streams
-        contPane.add(this.audioPanel, BorderLayout.SOUTH);
         
         buildMenuBar();
         buildIconBar();
         setLanguage();
         loadProp();
 		setSystemTray();
+		
+		if(useInternalPlayer) {
+			audioPanel = new InternAudioControlPanel(this);
+			contPane.add(this.audioPanel, BorderLayout.SOUTH);
+			hearMusicButton.setEnabled(false);
+		}
 		
         //Center StreamRipStar
         //get size of window
@@ -214,12 +219,11 @@ public class Gui_StreamRipStar extends JFrame implements WindowListener
 		controlJob.start();
 		
         //if preferences should open, do it here
-        if(openPreferences) {
+        if(openPreferences) 
+        {
     		JOptionPane.showMessageDialog(this, trans.getString("firstTime"));
     		new Gui_Settings(this);
         }
-        
-        //add pop up to table
 	}
 
 	public ResourceBundle getTrans() {
@@ -347,8 +351,8 @@ public class Gui_StreamRipStar extends JFrame implements WindowListener
 		iconBar.addSeparator();
 		iconBar.add(exitButton);
 		
-		//set the color of all button the backgroundcolor
-		//from the iconbar and disable der Border
+		//set the color of all buttons to backgroundcolor
+		//from the iconbar and disable the Border
 		iconBar.setBackground(new Color(238,238,238,255));
 		menu.setBackground(new Color(238,238,238,255));
 		
@@ -500,7 +504,8 @@ public class Gui_StreamRipStar extends JFrame implements WindowListener
 	private void setTextUnderIcons() {
 		//if showTextunderButtons is true, the text will
 		//not be shown 
-		if(!showText) {
+		if(!showText) 
+		{
 			startRecordButton.setText(null);
 			stopRecordButton.setText(null);
 			hearMusicButton.setText(null);
@@ -513,10 +518,14 @@ public class Gui_StreamRipStar extends JFrame implements WindowListener
 			configButton.setText(null);
 			exitButton.setText(null);
 			browseGenreButton.setText(null);
-		} else {
+		} 
+		
+		else
+		{
 			
 			//set the translated text under icons
-			try {
+			try 
+			{
 				startRecordButton.setText(trans.getString("mainWin.startRecordButton"));
 				stopRecordButton.setText(trans.getString("mainWin.stopRecordButton"));
 				scheduleButton.setText(trans.getString("mainWin.scheduleButton"));
@@ -529,7 +538,9 @@ public class Gui_StreamRipStar extends JFrame implements WindowListener
 				configButton.setText(trans.getString("mainWin.configButton"));
 				infoButton.setText(trans.getString("mainWin.infoButton"));
 				browseGenreButton.setText(trans.getString("mainWin.browseGenreButton"));
-			} catch (MissingResourceException e){
+			}
+			catch (MissingResourceException e)
+			{
 				System.err.println("Could not find an translation (Text under Icons)");
 			}
 			
@@ -546,8 +557,13 @@ public class Gui_StreamRipStar extends JFrame implements WindowListener
 			configButton.setFont(textUnderIconsFont);
 			infoButton.setFont(textUnderIconsFont);
 			browseGenreButton.setFont(textUnderIconsFont);
-
 		}
+		//if there is a use of the intern player, update the text, too
+		if(useInternalPlayer & audioPanel != null) 
+		{
+			audioPanel.setTextUnderIcons(showText);
+		}
+	
 	}
 	
 	private void setLanguage() {
