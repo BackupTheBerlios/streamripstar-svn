@@ -35,10 +35,10 @@ public class InternAudioControlPanel extends JPanel{
 	private static final long serialVersionUID = -1810951909523547564L;
 	private ResourceBundle trans = ResourceBundle.getBundle("translations.StreamRipStar");
 	
-	private ImageIcon lastStreamIcon = new ImageIcon((URL)getClass().getResource("/Icons/questionmark.png"));
-	private ImageIcon nextStreamIcon = new ImageIcon((URL)getClass().getResource("/Icons/questionmark.png"));
-	private ImageIcon startStreamIcon = new ImageIcon((URL)getClass().getResource("/Icons/player.png"));
-	private ImageIcon stopStreamIcon = new ImageIcon((URL)getClass().getResource("/Icons/stop-audio.png"));
+	private ImageIcon lastStreamIcon = new ImageIcon((URL)getClass().getResource("/Icons/audioplayer/back.png"));
+	private ImageIcon nextStreamIcon = new ImageIcon((URL)getClass().getResource("/Icons/audioplayer/forward.png"));
+	private ImageIcon startStreamIcon = new ImageIcon((URL)getClass().getResource("/Icons/audioplayer/play.png"));
+	private ImageIcon stopStreamIcon = new ImageIcon((URL)getClass().getResource("/Icons/audioplayer/stop.png"));
 	
 	private JButton startPlayingButton = new JButton("Start Playing",startStreamIcon);
 	private JButton stopPlayingButton = new JButton("Stop Playing",stopStreamIcon);
