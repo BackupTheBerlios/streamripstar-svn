@@ -109,6 +109,9 @@ public class Gui_StreamRipStar extends JFrame implements WindowListener
 	private ImageIcon settingsMenu = new ImageIcon((URL)getClass().getResource("/Icons/settings_small.png"));
 	private ImageIcon aboutStreamRipStarMenu = new ImageIcon((URL)getClass().getResource("/Icons/streamRipStar_small.png"));
 	
+	//icon for the window
+	private ImageIcon windowIcon = new ImageIcon((URL)getClass().getResource("/Icons/streamRipStar.png"));
+	
 	private JButton startRecordButton = new JButton("Start",startRecordIcon);
 	private JButton stopRecordButton = new JButton("Stop",stopRecordIcon);
 	private JButton scheduleButton = new JButton("Schedule",schudleIcon);
@@ -171,6 +174,8 @@ public class Gui_StreamRipStar extends JFrame implements WindowListener
 	public Gui_StreamRipStar(Boolean openPreferences)
 	{
 		super("StreamRipStar");
+		setIconImage( windowIcon.getImage() );
+
 		controlStreams = new Control_Stream(this);
 		table = new Gui_TablePanel(controlStreams,this);
 		addWindowListener(this);
