@@ -112,7 +112,9 @@ public class Gui_TablePanel extends JPanel
 		
 		table.getTableHeader().setReorderingAllowed(false);
 			
-		
+		//set a default witdh for the first column
+		column0.setMaxWidth(recordIcon.getIconWidth());
+		column0.setPreferredWidth(recordIcon.getIconWidth());
 		
 		setLanguage(); //Must be at last, because the the identifier changes
 		
