@@ -32,7 +32,7 @@ public class AudioPlayer extends Thread{
 		
 		//say, we are loading the stream
 		if (mainGui != null) {
-			mainGui.setTitleForAudioPlayer(trans.getString("audioplayer.loadingStream"),false);
+			mainGui.setTitleForAudioPlayer("",trans.getString("audioplayer.loadingStream"),false);
 		}
 		
 		try {
@@ -55,7 +55,7 @@ public class AudioPlayer extends Thread{
 	            public void tagsFound(GstObject source, TagList tagList) {
 	                for (String tagName : tagList.getTagNames()) {
 	                    for (Object tagData : tagList.getValues(tagName)) {
-	                    	mainGui.setTitleForAudioPlayer(stream.name + " : " + tagData.toString(),false);
+	                    	mainGui.setTitleForAudioPlayer(stream.name ,tagData.toString(),false);
 	                    }
 	                }
 	            }
@@ -66,12 +66,12 @@ public class AudioPlayer extends Thread{
 				public void errorMessage(GstObject source, int errorCode, String errorMessage) {
 					//Cannot resolve hostname - no connection to the stream
 					if(errorCode == 3 || errorCode == 4) {
-						mainGui.setTitleForAudioPlayer(trans.getString("audioplayer.noConnectionTo"),false);
+						mainGui.setTitleForAudioPlayer("",trans.getString("audioplayer.noConnectionTo"),false);
 					}
 					
 					//Cannot resolve hostname - no connection to the stream
 					else if(errorCode == 6 || errorCode == 12) {
-						mainGui.setTitleForAudioPlayer(errorMessage,false);
+						mainGui.setTitleForAudioPlayer("",errorMessage,false);
 					}
 					
 					//Cannot resolve hostname - no connection to the stream
@@ -81,7 +81,7 @@ public class AudioPlayer extends Thread{
 					
 					//show all other error messages in the tray
 					else {
-						mainGui.setTitleForAudioPlayer(errorMessage,false);
+						mainGui.setTitleForAudioPlayer("",errorMessage,false);
 					}
 					
 					System.out.println("The Errorcode was:"+errorCode);
@@ -113,7 +113,7 @@ public class AudioPlayer extends Thread{
 		if(playbin != null)
 		{
 			playbin.setState(org.gstreamer.State.NULL);
-			mainGui.setTitleForAudioPlayer("",false);
+			mainGui.setTitleForAudioPlayer("","",false);
 		}
 	}
 	
