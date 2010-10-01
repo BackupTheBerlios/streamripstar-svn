@@ -108,8 +108,10 @@ public class AudioPlayer extends Thread{
 	 * Stop the playback of the thread with the player. It set the new 
 	 * status message
 	 */
-	public void stopPlaying() {
-		if(playbin != null) {
+	public void stopPlaying()
+	{
+		if(playbin != null)
+		{
 			playbin.setState(org.gstreamer.State.NULL);
 			mainGui.setTitleForAudioPlayer("",false);
 		}
@@ -119,7 +121,11 @@ public class AudioPlayer extends Thread{
 	 * Set a now volume for the audio player
 	 * @param volumePercent The new volume in percent
 	 */
-	public void setAudioVolum(int volumePercent) {
-		playbin.setVolumePercent(volumePercent);
+	public void setAudioVolum(int volumePercent)
+	{
+		if(playbin != null)
+		{
+			playbin.setVolumePercent(volumePercent);
+		}
 	}
 }
