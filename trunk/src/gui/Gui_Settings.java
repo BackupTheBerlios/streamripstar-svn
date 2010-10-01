@@ -111,7 +111,7 @@ public class Gui_Settings extends JDialog
 	private JComboBox LookAndFeelBox = new JComboBox();
 	
 	private JCheckBox activeTrayIcon = new JCheckBox("Show Systemtray (requires restart)");
-	private JCheckBox showTextCheckBox = new JCheckBox("Show Text under Icons");
+	private JCheckBox showTextCheckBox = new JCheckBox("Show Text under Icons",true);
 	private JCheckBox useInternalAudioPlayerCB = new JCheckBox("Use internal check box (Requires gstreamer installed");
 	private JCheckBox useAnotherLnfBox = new JCheckBox("Use another Look and Feel");
 
@@ -327,10 +327,6 @@ public class Gui_Settings extends JDialog
 		c.weightx = 0.0;
 		c.gridx = 3;
 		buttonPanel.add(abortButton,c);
-		
-		statusBox.setSelectedIndex(2);
-		nameBox.setSelectedIndex(4);
-		currentTrackBox.setSelectedIndex(3);
 
 		dirChooser = new JFileChooser();
 		dirChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
@@ -360,6 +356,10 @@ public class Gui_Settings extends JDialog
 				}
 			}
 		}
+		
+		statusBox.setSelectedIndex(4);
+		nameBox.setSelectedIndex(4);
+		currentTrackBox.setSelectedIndex(4);
 		
 		repaintCommon();
 		

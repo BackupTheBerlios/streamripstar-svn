@@ -207,5 +207,6 @@
  - add: play hear next/last stream in list
  - add: can now remember stream details (Bitrate / Server name / Metaintervall etc)
  - change: have now an icon to show the status of a stream
+ - change: now have useful default settings when start the first time
  - fix: settings crashes when open it in english language
  
