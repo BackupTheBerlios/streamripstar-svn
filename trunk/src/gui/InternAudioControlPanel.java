@@ -76,7 +76,10 @@ public class InternAudioControlPanel extends JPanel{
 		setFontsAll(mainGui.getFontForTextUnderIcons());
 		
 		audioSlider.addChangeListener(new VolumeChangeListener());
+		startPlayingButton.addActionListener(new PlayMusikListener());
 		stopPlayingButton.addActionListener(new StopPlayMusikListener());
+		lastStreamButton.addActionListener(new PlayPreviousStreamListener());
+		nextPlayingButton.addActionListener(new PlayNextStreamListener());
 		setCorrectedLayout();
 	}
 	
@@ -202,5 +205,41 @@ public class InternAudioControlPanel extends JPanel{
 			titleArea.setForeground(Color.RED);	
 		}
 		titleArea.setText(title);
+	}
+	
+	/**
+	 * Play the previous stream. If no stream is selected, select and play
+	 * the last stream.  
+	 */
+	class PlayPreviousStreamListener implements ActionListener
+	{
+		public void actionPerformed(ActionEvent e)
+		{
+			mainGui.playPreviousStream();
+		}
+	}
+	
+	/**
+	 * Play the previous stream. If no stream is selected, select the first stream in the list.
+	 * If the last Stream is selected, play the first one.
+	 */
+	class PlayNextStreamListener implements ActionListener 
+	{
+		public void actionPerformed(ActionEvent e) 
+		{
+			mainGui.playNextStream();
+		}
+	}
+	
+	/**
+	 * Is called, when you like to hear music 
+	 * @author Johannes Putzke	
+	 */
+	public class PlayMusikListener implements ActionListener 
+	{
+		public void actionPerformed(ActionEvent e) 
+		{
+			mainGui.playSelectedStream();
+		}
 	}
 }

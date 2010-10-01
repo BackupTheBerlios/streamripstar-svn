@@ -1257,18 +1257,31 @@ public class Gui_StreamRipStar extends JFrame implements WindowListener
 	}
 	
 	/**
+	 * Start the intern or extern audioplayer to with the selected stream.
+	 * If no Stream is selected, an error message is shown to the user
+	 */
+	public synchronized void playSelectedStream() 
+	{
+		if(getTabel().isTHSelected()) 
+		{
+			getTabel().startMusicPlayerWithSelectedStream();
+		} 
+		else 
+		{
+			JOptionPane.showMessageDialog(Gui_StreamRipStar.this
+					,trans.getString("select"));
+		}
+	}
+	
+	/**
 	 * Is called, when you like to hear music 
 	 * @author Johannes Putzke	
-	 *
 	 */
-	public class PlayMusikListener implements ActionListener {
-		public void actionPerformed(ActionEvent e) {
-			if(getTabel().isTHSelected()) {
-				getTabel().startMusicPlayerWithSelectedStream();
-			} else {
-				JOptionPane.showMessageDialog(Gui_StreamRipStar.this
-						,trans.getString("select"));
-			}
+	public class PlayMusikListener implements ActionListener 
+	{
+		public void actionPerformed(ActionEvent e) 
+		{
+			playSelectedStream();
 		}
 	}
 	
@@ -1418,22 +1431,33 @@ public class Gui_StreamRipStar extends JFrame implements WindowListener
 			new Gui_searchUpdate(controlStreams,Gui_StreamRipStar.this);
 		}
 	}
+	/**
+	 * Play the previous stream. If no stream is selected, select and play
+	 * the last stream.  
+	 */
+	public synchronized void playPreviousStream()
+	{
+		//select the previous stream
+		getTabel().selectPreviousStream();
+		
+		//if a stream is selected, play it
+		if(getTabel().isStreamSelected())
+		{
+			getTabel().startMusicPlayerWithSelectedStream();
+		}
+	}
+	
 	
 	/**
 	 * Play the previous stream. If no stream is selected, select and play
 	 * the last stream.  
 	 *
 	 */
-	class PlayPreviousStreamListener implements ActionListener {
-		public void actionPerformed(ActionEvent e) {
-			
-			//select the previous stream
-			getTabel().selectPreviousStream();
-			
-			//if a stream is selected, play it
-			if(getTabel().isStreamSelected()) {
-				getTabel().startMusicPlayerWithSelectedStream();
-			}
+	class PlayPreviousStreamListener implements ActionListener
+	{
+		public void actionPerformed(ActionEvent e)
+		{
+			playNextStream();
 		}
 	}
 	
@@ -1441,16 +1465,27 @@ public class Gui_StreamRipStar extends JFrame implements WindowListener
 	 * Play the previous stream. If no stream is selected, select the first stream in the list.
 	 * If the last Stream is selected, play the first one.
 	 */
-	class PlayNextStreamListener implements ActionListener {
-		public void actionPerformed(ActionEvent e) {
-			
-			//select the next stream
-			getTabel().selectNextStream();
+	public synchronized void playNextStream()
+	{
+		//select the next stream
+		getTabel().selectNextStream();
 
-			//if a stream is selected, play it
-			if(getTabel().isStreamSelected()) {
-				getTabel().startMusicPlayerWithSelectedStream();
-			}
+		//if a stream is selected, play it
+		if(getTabel().isStreamSelected()) 
+		{
+			getTabel().startMusicPlayerWithSelectedStream();
+		}
+	}
+	
+	/**
+	 * Play the previous stream. If no stream is selected, select the first stream in the list.
+	 * If the last Stream is selected, play the first one.
+	 */
+	class PlayNextStreamListener implements ActionListener 
+	{
+		public void actionPerformed(ActionEvent e) 
+		{
+			playNextStream();
 		}
 	}
 	
