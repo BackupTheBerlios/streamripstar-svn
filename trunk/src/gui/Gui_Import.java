@@ -90,9 +90,14 @@ public class Gui_Import extends JDialog {
 	
 	//Open importframe and load the file in url
 	public Gui_Import(Gui_StreamRipStar gui, Control_Stream controlStreams ,String url)	{
-		this(gui,controlStreams);
+		super(gui,"importiere Stream");
+		this.mainGui = gui;
+		this.controlStreams = controlStreams;
+		this.setModalityType(ModalityType.APPLICATION_MODAL);
+		setLanguage();
 		importPathField.setText(url);
 		load();
+		init();
 	}
 	
 	//set up all graphic components 
