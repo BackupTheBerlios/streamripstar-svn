@@ -10,6 +10,7 @@ import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Image;
+import java.awt.Insets;
 import java.awt.MenuItem;
 import java.awt.PopupMenu;
 import java.awt.SystemTray;
@@ -112,18 +113,18 @@ public class Gui_StreamRipStar extends JFrame implements WindowListener
 	//icon for the window
 	private ImageIcon windowIcon = new ImageIcon((URL)getClass().getResource("/Icons/streamRipStar.png"));
 	
-	private JButton startRecordButton = new JButton("Start",startRecordIcon);
-	private JButton stopRecordButton = new JButton("Stop",stopRecordIcon);
-	private JButton scheduleButton = new JButton("Schedule",schudleIcon);
-	private JButton deleteButton = new JButton("Delete",deleteIcon);
-	private JButton editButton = new JButton("Edit",editIcon);
-	private JButton addButton = new JButton("Add",addIcon);
-	private JButton hearMusicButton = new JButton("Hear",hearMusicIcon);
-	private JButton openMusicFolderButton = new JButton("Musicfolder",openMusicFolderIcon);
-	private JButton exitButton = new JButton("Exit",exitIcon);
-	private JButton configButton = new JButton("Preferences",configIcon);
-	private JButton infoButton = new JButton("Info",infoIcon);
-	private JButton browseGenreButton = new JButton("Browser",browserIcon);
+	private IconButton startRecordButton = new IconButton("Start",startRecordIcon);
+	private IconButton stopRecordButton = new IconButton("Stop",stopRecordIcon);
+	private IconButton scheduleButton = new IconButton("Schedule",schudleIcon);
+	private IconButton deleteButton = new IconButton("Delete",deleteIcon);
+	private IconButton editButton = new IconButton("Edit",editIcon);
+	private IconButton addButton = new IconButton("Add",addIcon);
+	private IconButton hearMusicButton = new IconButton("Hear",hearMusicIcon);
+	private IconButton openMusicFolderButton = new IconButton("Musicfolder",openMusicFolderIcon);
+	private IconButton exitButton = new IconButton("Exit",exitIcon);
+	private IconButton configButton = new IconButton("Preferences",configIcon);
+	private IconButton infoButton = new IconButton("Info",infoIcon);
+	private IconButton browseGenreButton = new IconButton("Browser",browserIcon);
 	
 //	here are listed all menuitems
 	private JMenuBar menu = new JMenuBar();
@@ -297,49 +298,11 @@ public class Gui_StreamRipStar extends JFrame implements WindowListener
 		}
 	}
 	
-//  add all JButton with icons
+
+	/**
+	 * add all JButton to the icon bar
+	 */
 	public void  buildIconBar() {	
-		//place Text under the icons
-		startRecordButton.setHorizontalTextPosition(SwingConstants.CENTER);
-		startRecordButton.setVerticalTextPosition(SwingConstants.BOTTOM);
-		startRecordButton.setBorderPainted(false);
-		stopRecordButton.setHorizontalTextPosition(SwingConstants.CENTER);
-		stopRecordButton.setVerticalTextPosition(SwingConstants.BOTTOM);
-		stopRecordButton.setBorderPainted(false);
-		if(!useInternalPlayer)
-		{
-			hearMusicButton.setHorizontalTextPosition(SwingConstants.CENTER);
-		}
-		hearMusicButton.setVerticalTextPosition(SwingConstants.BOTTOM);
-		hearMusicButton.setBorderPainted(false);
-		scheduleButton.setHorizontalTextPosition(SwingConstants.CENTER);
-		scheduleButton.setVerticalTextPosition(SwingConstants.BOTTOM);
-		scheduleButton.setBorderPainted(false);;
-		infoButton.setHorizontalTextPosition(SwingConstants.CENTER);
-		infoButton.setVerticalTextPosition(SwingConstants.BOTTOM);
-		infoButton.setBorderPainted(false);;
-		deleteButton.setHorizontalTextPosition(SwingConstants.CENTER);
-		deleteButton.setVerticalTextPosition(SwingConstants.BOTTOM);
-		deleteButton.setBorderPainted(false);;
-		editButton.setHorizontalTextPosition(SwingConstants.CENTER);
-		editButton.setVerticalTextPosition(SwingConstants.BOTTOM);
-		editButton.setBorderPainted(false);;
-		addButton.setHorizontalTextPosition(SwingConstants.CENTER);
-		addButton.setVerticalTextPosition(SwingConstants.BOTTOM);
-		addButton.setBorderPainted(false);;
-		openMusicFolderButton.setHorizontalTextPosition(SwingConstants.CENTER);
-		openMusicFolderButton.setVerticalTextPosition(SwingConstants.BOTTOM);
-		openMusicFolderButton.setBorderPainted(false);;
-		configButton.setHorizontalTextPosition(SwingConstants.CENTER);
-		configButton.setVerticalTextPosition(SwingConstants.BOTTOM);
-		configButton.setBorderPainted(false);;
-		browseGenreButton.setHorizontalTextPosition(SwingConstants.CENTER);
-		browseGenreButton.setVerticalTextPosition(SwingConstants.BOTTOM);
-		browseGenreButton.setBorderPainted(false);
-		exitButton.setHorizontalTextPosition(SwingConstants.CENTER);
-		exitButton.setVerticalTextPosition(SwingConstants.BOTTOM);
-		exitButton.setBorderPainted(false);		
-		
 		//add Button to the bar
 		iconBar.add(startRecordButton);
 		iconBar.add(stopRecordButton);
@@ -393,21 +356,6 @@ public class Gui_StreamRipStar extends JFrame implements WindowListener
 		scheduleButton.addActionListener(new ScheduleListener());
 		infoButton.addActionListener(new ShowStatsListener());
 		browseGenreButton.addActionListener(new StreamBrowserListener());
-
-		//set new Border 
-		startRecordButton.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED));
-		stopRecordButton.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED));
-		scheduleButton.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED));
-		deleteButton.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED));
-		editButton.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED));
-		addButton.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED));
-		hearMusicButton.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED));
-		openMusicFolderButton.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED));
-		exitButton.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED));
-		configButton.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED));
-		infoButton.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED));
-		browseGenreButton.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED));
-		
 	}
 
 	

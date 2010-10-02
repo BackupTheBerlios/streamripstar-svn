@@ -14,10 +14,10 @@ import java.util.ResourceBundle;
 
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
-import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JSlider;
 import javax.swing.JTextField;
+import javax.swing.JToolBar;
 import javax.swing.SwingConstants;
 import javax.swing.border.EtchedBorder;
 import javax.swing.event.ChangeEvent;
@@ -31,7 +31,8 @@ import gui.Gui_StreamRipStar;
  * stop stream. In addition you have a volume control slider to adjust
  * the volume. A Field where the actual title is shown, is there too.
  */
-public class InternAudioControlPanel extends JPanel{
+public class InternAudioControlPanel extends JPanel
+{
 	private static final long serialVersionUID = -1810951909523547564L;
 	private ResourceBundle trans = ResourceBundle.getBundle("translations.StreamRipStar");
 	
@@ -40,15 +41,15 @@ public class InternAudioControlPanel extends JPanel{
 	private ImageIcon startStreamIcon = new ImageIcon((URL)getClass().getResource("/Icons/audioplayer/play.png"));
 	private ImageIcon stopStreamIcon = new ImageIcon((URL)getClass().getResource("/Icons/audioplayer/stop.png"));
 	
-	private JButton startPlayingButton = new JButton("Start Playing",startStreamIcon);
-	private JButton stopPlayingButton = new JButton("Stop Playing",stopStreamIcon);
-	private JButton lastStreamButton = new JButton("Play previous Stream",lastStreamIcon);
-	private JButton nextPlayingButton = new JButton("Play Next Stream",nextStreamIcon);
+	private IconButton startPlayingButton = new IconButton("Start Playing",startStreamIcon);
+	private IconButton stopPlayingButton = new IconButton("Stop Playing",stopStreamIcon);
+	private IconButton lastStreamButton = new IconButton("Play previous Stream",lastStreamIcon);
+	private IconButton nextPlayingButton = new IconButton("Play Next Stream",nextStreamIcon);
 	
 	private JTextField titleArea = new JTextField();
 	private JSlider audioSlider = new JSlider();
 	
-	private JPanel panel = new JPanel();
+	private JToolBar panel = new JToolBar();
 	private Gui_StreamRipStar mainGui = null;
 	
 	/**
@@ -58,7 +59,6 @@ public class InternAudioControlPanel extends JPanel{
 	public InternAudioControlPanel(Gui_StreamRipStar mainGui) 
 	{
 		this.mainGui = mainGui;
-		setCorrectedLayout() ;
 		setLayout(new BorderLayout());
 		add(panel,BorderLayout.WEST);
 		add(audioSlider,BorderLayout.EAST);
@@ -70,8 +70,8 @@ public class InternAudioControlPanel extends JPanel{
 		panel.add(nextPlayingButton);
 		
 		titleArea.setEditable(false);
-		
-
+		panel.setBackground(new Color(238,238,238,255));
+		panel.setFloatable(false);
 		setTextUnderIcons(mainGui.showTextUnderIcons());
 		setFontsAll(mainGui.getFontForTextUnderIcons());
 		
@@ -80,32 +80,8 @@ public class InternAudioControlPanel extends JPanel{
 		stopPlayingButton.addActionListener(new StopPlayMusikListener());
 		lastStreamButton.addActionListener(new PlayPreviousStreamListener());
 		nextPlayingButton.addActionListener(new PlayNextStreamListener());
-		setCorrectedLayout();
 	}
-	
-	public void setCorrectedLayout() 
-	{
-		startPlayingButton.setHorizontalTextPosition(SwingConstants.CENTER);
-		startPlayingButton.setVerticalTextPosition(SwingConstants.BOTTOM);
-		startPlayingButton.setBorderPainted(false);
-		startPlayingButton.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED));
-		stopPlayingButton.setHorizontalTextPosition(SwingConstants.CENTER);
-		stopPlayingButton.setVerticalTextPosition(SwingConstants.BOTTOM);
-		stopPlayingButton.setBorderPainted(false);
-		stopPlayingButton.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED));
-		lastStreamButton.setHorizontalTextPosition(SwingConstants.CENTER);
-		lastStreamButton.setVerticalTextPosition(SwingConstants.BOTTOM);
-		lastStreamButton.setBorderPainted(false);
-		lastStreamButton.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED));
-		nextPlayingButton.setHorizontalTextPosition(SwingConstants.CENTER);
-		nextPlayingButton.setVerticalTextPosition(SwingConstants.BOTTOM);
-		nextPlayingButton.setBorderPainted(false);
-		nextPlayingButton.setBorder(BorderFactory.createEtchedBorder(EtchedBorder.LOWERED));
-		
-		panel.setBackground(new Color(238,238,238,255));
-		
-	}
-	
+
 	public void setTextUnderIcons(boolean textEnabled)
 	{
 		if(textEnabled)
