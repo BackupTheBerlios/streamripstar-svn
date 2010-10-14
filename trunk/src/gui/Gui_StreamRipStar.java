@@ -1342,7 +1342,9 @@ public class Gui_StreamRipStar extends JFrame implements WindowListener
 	
 	class AboutDialogListener implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
-			new Gui_AboutStreamRipStar(controlStreams,Gui_StreamRipStar.this);
+			//new Gui_AboutStreamRipStar(controlStreams,Gui_StreamRipStar.this);
+//			new Gui_AboutStreamRipStar2(controlStreams);
+			new Gui_AboutStreamRipStar3(controlStreams,Gui_StreamRipStar.this);
 		}
 	}
 	
