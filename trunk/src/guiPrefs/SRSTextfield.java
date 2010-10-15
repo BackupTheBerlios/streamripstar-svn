@@ -9,15 +9,19 @@ public class SRSTextfield extends JTextField{
 	public SRSTextfield() 
 	{
 		super();
-		this.setBackground(new Color(255,255,255));
-		this.setOpaque(false);
+		setPrefs();
 	}
 	
 	public SRSTextfield(String text) 
 	{
 		super(text);
+		setPrefs();
+	}
+	
+	private void setPrefs()
+	{
 		this.setBackground(new Color(1.0f, 1.0f, 1.0f, 0.25f));
-//		this.setOpaque(false);
+		this.setOpaque(false);
 		this.setBorder(null);
 	}
 }

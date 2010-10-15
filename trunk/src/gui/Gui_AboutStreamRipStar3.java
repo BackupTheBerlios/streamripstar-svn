@@ -3,6 +3,7 @@ package gui;
 /* Written by Johannes Putzke*/
 /* eMail: die_eule@gmx.net*/ 
 
+import guiPrefs.SRSButton;
 import guiPrefs.SRSPanel;
 import guiPrefs.SRSTextArea;
 import guiPrefs.SRSTextfield;
@@ -46,7 +47,8 @@ public class Gui_AboutStreamRipStar3 extends JDialog
 	private JLabel programming = new JLabel("Programming :");
 	private SRSTextfield programmerName = new SRSTextfield("Johannes Putzke"); 
 	private JLabel IconsAndGrap = new JLabel("Icons and Graphics :");
-	private SRSTextArea iconAndGrapName = new SRSTextArea("Christian Putzke (Edmolf) - Icons Mainwindow, Logo and other graphics\nOxygen Icon Projekt - Streambrowser, Updatedialog");
+	private SRSTextArea iconAndGrapName = new SRSTextArea("Christian Putzke (Edmolf) - Icons Mainwindow," +
+			"	\n\tLogo and other graphics\nOxygen Icon Projekt - Streambrowser, Updatedialog");
 	private JLabel license = new JLabel("License :");
 	private SRSTextfield licenceName = new SRSTextfield("GPLV3");
 	private JLabel version = new JLabel("Version :");
@@ -68,7 +70,7 @@ public class Gui_AboutStreamRipStar3 extends JDialog
 	
 	private JLabel BannerLabel = new JLabel(new ImageIcon((URL) getClass()
 			.getResource("/Icons/aboutDialog/logo.png")),JLabel.CENTER);
-	private JButton OKButton = new JButton("OK");
+	private SRSButton OKButton = new SRSButton("OK");
 
 	/**
 	 * Create the About-Dialog by give the controlStream object. The controlstream
@@ -80,16 +82,21 @@ public class Gui_AboutStreamRipStar3 extends JDialog
 	public Gui_AboutStreamRipStar3(Control_Stream controlStreams, JFrame mainWindow) {
 		super(mainWindow);
 		this.controlStreams = controlStreams;
-		SRSPanel panel = new SRSPanel(new ImageIcon((URL)getClass().getResource("/Icons/aboutDialog/hintergrund.png")).getImage());
+		ImageIcon tmpIcon = new ImageIcon((URL)getClass().getResource("/Icons/aboutDialog/hintergrund.png"));
+		SRSPanel panel = new SRSPanel(tmpIcon.getImage());
 		add(panel);
 		panel.setLayout(new GridBagLayout());
+		
+        //set size of window
+    	Dimension frameDim = new Dimension(tmpIcon.getIconWidth(),tmpIcon.getIconHeight());
+    	setSize(frameDim);
 		
 		GridBagConstraints c = new GridBagConstraints();
 		c.fill = GridBagConstraints.HORIZONTAL;
 
 		c.gridx = 0;
 		c.gridy = 0;
-		c.gridwidth = 2;
+		c.gridwidth = 3;
 		c.weighty = 0.0;
 		panel.add(BannerLabel,c);
 		c.weighty = 0.5;
@@ -163,6 +170,7 @@ public class Gui_AboutStreamRipStar3 extends JDialog
 		c.weighty = 0.0;
 		c.gridy = 14;
 		panel.add(OKButton,c);
+		
 		this.setResizable(false);
 		
 		 //escape for exit
@@ -178,11 +186,7 @@ public class Gui_AboutStreamRipStar3 extends JDialog
 		streamripperHomepageAddress.addMouseListener(new OpenWebSiteListener());
 		
     	setLanguage();
-    	
-        //set size of window
-    	pack();
-    	Dimension frameDim = getSize();
-    	
+
         //get resolution
         Dimension screenDim = Toolkit.getDefaultToolkit().getScreenSize();
         //calculates the app. values
