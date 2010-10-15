@@ -171,7 +171,7 @@ public class Gui_AboutStreamRipStar3 extends JDialog
 		c.gridy = 14;
 		panel.add(OKButton,c);
 		
-		this.setResizable(false);
+//		this.setResizable(false);
 		
 		 //escape for exit
 	    KeyStroke escStroke = KeyStroke.getKeyStroke(KeyEvent.VK_ESCAPE, 0, true);
