@@ -15,9 +15,6 @@ public class SRSButton extends JButton implements MouseListener{
 	
 	private Color startColor = new Color(178,253,83,255);
 	private Color endColor = new Color(120,196,25,255);
-	private Color start_trans_Color = new Color(178,253,83,188);
-	private Color end_trans_Color = new Color(120,196,25,188);
-	
 	private Color startColorInUse = startColor;
 	private Color endColorInUse = endColor;
 	
