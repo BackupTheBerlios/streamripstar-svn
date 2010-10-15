@@ -13,8 +13,13 @@ import javax.swing.JButton;
 public class SRSButton extends JButton implements MouseListener{
 	private static final long serialVersionUID = 2239456758385044407L;
 	
-	private Color startColor;
-	private Color endColor;
+	private Color startColor = new Color(178,253,83,255);
+	private Color endColor = new Color(120,196,25,255);
+	private Color start_trans_Color = new Color(178,253,83,188);
+	private Color end_trans_Color = new Color(120,196,25,188);
+	
+	private Color startColorInUse = startColor;
+	private Color endColorInUse = endColor;
 	
 	public SRSButton() 
 	{
@@ -36,22 +41,19 @@ public class SRSButton extends JButton implements MouseListener{
 	
 	private void setPrefs()
 	{
-		startColor = new Color(178,253,83,255);
-		endColor = new Color(120,196,25,255);
-		this.setRolloverEnabled(false);
-		this.setContentAreaFilled(false);
+//		setRolloverEnabled(false);
+		setContentAreaFilled(false);
 		addMouseListener(this);
 	}
 
 	@Override
 	public void paint(Graphics g)
 	{
-		
 		Graphics2D g2 = (Graphics2D) g;
 		
 		GradientPaint vl = new GradientPaint(
-				getWidth(),0, startColor,
-				getWidth(),getHeight(),endColor);
+				getWidth(),0, startColorInUse,
+				getWidth(),getHeight(),endColorInUse);
 		g2.setPaint(vl);
 		g2.fill(new RoundRectangle2D.Double(0, 0, this.getWidth(),this.getHeight(), 0, 0));
 		super.paint(g);
@@ -60,37 +62,27 @@ public class SRSButton extends JButton implements MouseListener{
 	@Override
 	public void mouseClicked(MouseEvent arg0) 
 	{
-		startColor = new Color(178,253,83,255);
-		endColor = new Color(120,196,25,255);
+		startColorInUse = startColor;
+		endColorInUse = endColor;
 	}
 
 	@Override
-	public void mouseEntered(MouseEvent arg0) 
-	{
-		startColor = new Color(178,253,83,180);
-		endColor = new Color(120,196,25,180);
-		repaint();
-	}
+	public void mouseEntered(MouseEvent arg0) { }
 
 	@Override
-	public void mouseExited(MouseEvent arg0) 
-	{
-		startColor = new Color(178,253,83,255);
-		endColor = new Color(120,196,25,255);
-		repaint();
-	}
+	public void mouseExited(MouseEvent arg0) { }
 
 	@Override
 	public void mousePressed(MouseEvent arg0)
 	{
-		endColor = new Color(178,253,83,255);
-		startColor = new Color(120,196,25,255);
+		startColorInUse = endColor;
+		endColorInUse = startColor;
 	}
 
 	@Override
 	public void mouseReleased(MouseEvent arg0)
 	{
-		startColor = new Color(178,253,83,255);
-		endColor = new Color(120,196,25,255);
+		startColorInUse = startColor;
+		endColorInUse = endColor;
 	}
 }
