@@ -322,18 +322,29 @@ public class Gui_TablePanel extends JPanel
 	/**
 	 * look for the id of the selected stream and
 	 * search with this id in all streams for the right one.
-	 * @return: the selected stream in table
+	 * @return: the selected stream in table. If no stream is selected
+	 * or no stream is in the table the return value is null
 	 */
 	public Stream[] getSelectedStream() {
-		int[] ids = table.getSelectedRows();
-		Stream[] streams = new Stream[ids.length];
 		
-		for(int i=0 ; i < ids.length ; i++) {
-			int id = table.convertRowIndexToModel(ids[i]);
-			streams[i] = controlStreams.getStreamVector().get(id);
+		try 
+		{
+			int[] ids = table.getSelectedRows();
+		
+			Stream[] streams = new Stream[ids.length];
+			
+			for(int i=0 ; i < ids.length ; i++) {
+				int id = table.convertRowIndexToModel(ids[i]);
+				streams[i] = controlStreams.getStreamVector().get(id);
+			}
+			
+			return streams;
 		}
-		
-		return streams;
+		catch (ArrayIndexOutOfBoundsException e)
+		{
+			System.err.println("No Stream in the table -> ArrayIndexOutOfBoundException");
+		}
+		return null;
 		
 	}
 	
@@ -446,29 +457,37 @@ public class Gui_TablePanel extends JPanel
 		//get the selected Stream
 		Stream[] stream = getSelectedStream();
 
-		//Test if a relay stream is running and connect to them
-		//else will connect to stream address directly 
-		if(stream[0].getStatus() && stream[0].connectToRelayCB) {
-			if(mainGui.useInternalAudioPlayer()) {
-				stopInternalAudioPlayer();
-				player = new AudioPlayer(stream[0], mainGui);
-				player.start();
+		if (stream != null)
+		{
+			//Test if a relay stream is running and connect to them
+			//else will connect to stream address directly 
+			if(stream[0].getStatus() && stream[0].connectToRelayCB) {
+				if(mainGui.useInternalAudioPlayer()) {
+					stopInternalAudioPlayer();
+					player = new AudioPlayer(stream[0], mainGui);
+					player.start();
+				} else {
+					controlStreams.startMp3Player("http://127.0.0.1:"+stream[0].relayServerPortTF);
+				}
+				
+			} else if(stream[0].address != null  && !stream[0].address.equals("")) {
+				if(mainGui.useInternalAudioPlayer()) {
+					stopInternalAudioPlayer();
+					player = new AudioPlayer(stream[0], mainGui);
+					player.start();
+				} else {
+					controlStreams.startMp3Player(stream[0].address);
+				}
+				
 			} else {
-				controlStreams.startMp3Player("http://127.0.0.1:"+stream[0].relayServerPortTF);
+				System.err.println("error while fetching adress");
 			}
-			
-		} else if(stream[0].address != null  && !stream[0].address.equals("")) {
-			if(mainGui.useInternalAudioPlayer()) {
-				stopInternalAudioPlayer();
-				player = new AudioPlayer(stream[0], mainGui);
-				player.start();
-			} else {
-				controlStreams.startMp3Player(stream[0].address);
-			}
-			
-		} else {
-			System.err.println("error while fetching adress");
-		}	
+		}
+		
+		else 
+		{
+			System.out.println("Could not find a stream to play. Nullpointer");
+		}
 	}
 	
 	
