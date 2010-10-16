@@ -9,7 +9,6 @@ import guiPrefs.SRSPanel;
 import guiPrefs.SRSTextArea;
 import guiPrefs.SRSTextfield;
 import java.awt.Dimension;
-import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
@@ -46,7 +45,7 @@ public class Gui_AboutStreamRipStar3 extends JDialog
 	private SRSLabel programming = new SRSLabel("Programming :");
 	private SRSTextfield programmerName = new SRSTextfield("Johannes Putzke"); 
 	private SRSLabel IconsAndGrap = new SRSLabel("Icons and Graphics :");
-	private SRSTextArea iconAndGrapName = new SRSTextArea("Christian Putzke (Edmolf) - Icons Mainwindow," +
+	private SRSTextArea iconAndGrapName = new SRSTextArea("Christian Putzke (EdMolf) - Icons Mainwindow," +
 			"	\n\tLogo and other graphics\nOxygen Icon Projekt - Streambrowser, Updatedialog");
 	private SRSLabel license = new SRSLabel("License :");
 	private SRSTextfield licenceName = new SRSTextfield("GPLV3");
