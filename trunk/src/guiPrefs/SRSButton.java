@@ -4,10 +4,11 @@ import java.awt.Color;
 import java.awt.GradientPaint;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.Image;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.geom.RoundRectangle2D;
+
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 
 public class SRSButton extends JButton implements MouseListener{
@@ -29,10 +30,16 @@ public class SRSButton extends JButton implements MouseListener{
 		super(text);
 		setPrefs();
 	}
-	
-	public SRSButton(String text, Image bgImage) 
+
+	public SRSButton(String text, ImageIcon icon) 
 	{
-		super(text);
+		super(text,icon);
+		setPrefs();
+	}
+	
+	public SRSButton(ImageIcon icon) 
+	{
+		super(icon);
 		setPrefs();
 	}
 	

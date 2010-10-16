@@ -23,5 +23,6 @@ public class SRSTextfield extends JTextField{
 		this.setBackground(new Color(1.0f, 1.0f, 1.0f, 0.25f));
 		this.setOpaque(false);
 		this.setBorder(null);
+		this.setForeground(Color.WHITE);
 	}
 }

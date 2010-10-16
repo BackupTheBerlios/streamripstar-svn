@@ -1,20 +1,26 @@
 package guiPrefs;
 
 import java.awt.Color;
-import javax.swing.JTextArea;
+import javax.swing.JCheckBox;
 
-public class SRSTextArea extends JTextArea{
+public class SRSCheckBox extends JCheckBox{
 	private static final long serialVersionUID = 2239456758385044407L;
 
-	public SRSTextArea() 
+	public SRSCheckBox() 
 	{
 		super();
 		setPrefs();
 	}
 	
-	public SRSTextArea(String text) 
+	public SRSCheckBox(String text) 
 	{
 		super(text);
+		setPrefs();
+	}
+	
+	public SRSCheckBox(String text, boolean selected) 
+	{
+		super(text,selected);
 		setPrefs();
 	}
 	
@@ -22,6 +28,6 @@ public class SRSTextArea extends JTextArea{
 	{
 		this.setBackground(new Color(1.0f, 1.0f, 1.0f, 0.25f));
 		this.setOpaque(false);
-		this.setForeground(Color.WHITE);
+		this.setBorder(null);
 	}
 }

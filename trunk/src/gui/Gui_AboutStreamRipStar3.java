@@ -4,11 +4,12 @@ package gui;
 /* eMail: die_eule@gmx.net*/ 
 
 import guiPrefs.SRSButton;
+import guiPrefs.SRSLabel;
 import guiPrefs.SRSPanel;
 import guiPrefs.SRSTextArea;
 import guiPrefs.SRSTextfield;
-
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
@@ -22,13 +23,11 @@ import java.net.URL;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 import javax.swing.ImageIcon;
-import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.KeyStroke;
-
 import control.Control_Stream;
 
 /**
@@ -44,31 +43,31 @@ public class Gui_AboutStreamRipStar3 extends JDialog
 	private ResourceBundle trans = ResourceBundle.getBundle("translations.StreamRipStar");
 	private Control_Stream controlStreams = null;
 	
-	private JLabel programming = new JLabel("Programming :");
+	private SRSLabel programming = new SRSLabel("Programming :");
 	private SRSTextfield programmerName = new SRSTextfield("Johannes Putzke"); 
-	private JLabel IconsAndGrap = new JLabel("Icons and Graphics :");
+	private SRSLabel IconsAndGrap = new SRSLabel("Icons and Graphics :");
 	private SRSTextArea iconAndGrapName = new SRSTextArea("Christian Putzke (Edmolf) - Icons Mainwindow," +
 			"	\n\tLogo and other graphics\nOxygen Icon Projekt - Streambrowser, Updatedialog");
-	private JLabel license = new JLabel("License :");
+	private SRSLabel license = new SRSLabel("License :");
 	private SRSTextfield licenceName = new SRSTextfield("GPLV3");
-	private JLabel version = new JLabel("Version :");
+	private SRSLabel version = new SRSLabel("Version :");
 	private SRSTextfield versionName = new SRSTextfield(misc.StreamRipStar.releaseVersion);
-	private JLabel revision = new JLabel("Revision :");
+	private SRSLabel revision = new SRSLabel("Revision :");
 	private SRSTextfield revisionnumber = new SRSTextfield(misc.StreamRipStar.releaseRevision+"");
-	private JLabel streamRipStarSourceforgeSite = new JLabel("StreamRipStars Projektpage :");
+	private SRSLabel streamRipStarSourceforgeSite = new SRSLabel("StreamRipStars Projektpage :");
 	private SRSTextfield streamRipStarSourceforgeAddress = new SRSTextfield("http://developer.berlios.de/projects/streamripstar/");
-	private JLabel streamRipStarHomepage = new JLabel("StreamRipStars Wiki :");
+	private SRSLabel streamRipStarHomepage = new SRSLabel("StreamRipStars Wiki :");
 	private SRSTextfield streamRipStarHomepageAddress = new SRSTextfield("http://sourceforge.net/apps/mediawiki/stripper");
-	private JLabel edmolfHomepage = new JLabel("EdMolfs Homepage");
+	private SRSLabel edmolfHomepage = new SRSLabel("EdMolfs Homepage");
 	private SRSTextfield edmolfHomepageAddress = new SRSTextfield("http://www.edmolf.net");
-	private JLabel streamripperHomepage = new JLabel("Streamrippers Homepage");
+	private SRSLabel streamripperHomepage = new SRSLabel("Streamrippers Homepage");
 	private SRSTextfield streamripperHomepageAddress = new SRSTextfield("http://developer.berlios.de/projects/streamripstar/");
-	private JLabel externPrograms = new JLabel("Extern Programms");
+	private SRSLabel externPrograms = new SRSLabel("Extern Programms");
 	private SRSTextArea externProgramsTA = new SRSTextArea("gstreamer-java (GPL)");
 	
-	private JLabel copyRight = new JLabel("Copyright @ Johannes Putzke");
+	private SRSLabel copyRight = new SRSLabel("Copyright @ Johannes Putzke");
 	
-	private JLabel BannerLabel = new JLabel(new ImageIcon((URL) getClass()
+	private SRSLabel BannerLabel = new SRSLabel(new ImageIcon((URL) getClass()
 			.getResource("/Icons/aboutDialog/logo.png")),JLabel.CENTER);
 	private SRSButton OKButton = new SRSButton("OK");
 
@@ -87,6 +86,8 @@ public class Gui_AboutStreamRipStar3 extends JDialog
 		add(panel);
 		panel.setLayout(new GridBagLayout());
 		
+		//get old font, but change the color
+		
         //set size of window
     	Dimension frameDim = new Dimension(tmpIcon.getIconWidth(),tmpIcon.getIconHeight());
     	setSize(frameDim);
@@ -103,7 +104,7 @@ public class Gui_AboutStreamRipStar3 extends JDialog
 		c.gridwidth = 1;
 		c.gridx = 0;
 		c.gridy = 1;
-		panel.add(new JLabel(""),c);
+		panel.add(new SRSLabel(""),c);
 		c.weighty = 0.0;
 		c.insets = new Insets( 10, 10, 2, 10);
 		c.gridx = 0;
@@ -165,7 +166,7 @@ public class Gui_AboutStreamRipStar3 extends JDialog
 		c.gridx = 0;
 		c.gridy = 13;
 		c.weighty = 0.5;
-		panel.add(new JLabel(""),c);
+		panel.add(new SRSLabel(""),c);
 		c.insets = new Insets( 10, 10, 10, 10);
 		c.weighty = 0.0;
 		c.gridy = 14;
