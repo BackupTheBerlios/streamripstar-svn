@@ -43,6 +43,7 @@ import misc.Stream;
 
 import control.Control_PlayList;
 import control.Control_Stream;
+import control.SRSOutput;
 
 public class Gui_Export extends JDialog
 {
@@ -247,7 +248,7 @@ public class Gui_Export extends JDialog
     		exportModel.setColumnIdentifiers(tableheader);
     		
     	} catch ( MissingResourceException e ) { 
-		      System.err.println( e ); 
+		      SRSOutput.getInstance().logE( e.getMessage() ); 
 	    }
 	}
 	
@@ -418,11 +419,11 @@ public class Gui_Export extends JDialog
 				}
 				catch ( FileNotFoundException f ) 
 				{ 
-				  System.err.println(f); 
+				  SRSOutput.getInstance().logE(f.getMessage()); 
 				} 
 				catch ( IOException g ) 
 				{ 
-				  System.err.println(g); 
+				  SRSOutput.getInstance().logE(g.getMessage()); 
 				}
 				JOptionPane.showMessageDialog(getMe(),trans.getString("succExport"));
 				dispose();

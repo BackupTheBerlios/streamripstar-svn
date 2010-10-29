@@ -89,7 +89,7 @@ public class SearchUpdate extends Thread {
 					bw.close();
 				}
 			} catch (IOException e) {
-				System.err.println("Can't close the connection while fetching update information");
+				SRSOutput.getInstance().logE("Can't close the connection while fetching update information");
 			}
 		}
 	}

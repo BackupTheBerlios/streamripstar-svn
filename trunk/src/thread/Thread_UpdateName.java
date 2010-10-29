@@ -11,6 +11,8 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ResourceBundle;
 
+import control.SRSOutput;
+
 import misc.Stream;
 
 
@@ -52,7 +54,7 @@ public class Thread_UpdateName extends Thread
 	 */
 	public void killMe()
 	{
-		System.out.println("Kill update names in cells for stream: "+ stream.name);
+		SRSOutput.getInstance().log("Kill update names in cells for stream: "+ stream.name);
 		isDead = true;
 	}
 	
@@ -195,10 +197,10 @@ public class Thread_UpdateName extends Thread
 					//Thread.sleep(200);
 				}
 			} catch (IOException e) {
-				System.err.println(e);
+				SRSOutput.getInstance().logE(e.getMessage());
 				stream.setStatus(false);
 			} catch (InterruptedException f) {
-				System.err.println(f);
+				SRSOutput.getInstance().logE(f.getMessage());
 				stream.setStatus(false);
 			}
 		}
@@ -225,10 +227,10 @@ public class Thread_UpdateName extends Thread
 			}
 		}
 		catch (InterruptedException f) {
-			System.err.println(f);
+			SRSOutput.getInstance().logE(f.getMessage());
 			stream.setStatus(false);
 		} catch (IOException e) {
-			System.err.println(e);
+			SRSOutput.getInstance().logE(e.getMessage());
 			stream.setStatus(false);
 		}
 	}

@@ -441,12 +441,12 @@ public class Control_Stream
 	 
 				switch ( parser.getEventType() ) { 
 					case XMLStreamConstants.START_DOCUMENT: 
-						System.out.println( "Loading file Streams.xml" );
+						SRSOutput.getInstance().log( "Loading file Streams.xml" );
 						parser.getEventType();
 						break; 
 				 
 				    case XMLStreamConstants.END_DOCUMENT: 
-				    	System.out.println( "End of read settings " ); 
+				    	SRSOutput.getInstance().log( "End of read settings " ); 
 				    	parser.close(); 
 				    	break; 
 				 
@@ -621,7 +621,7 @@ public class Control_Stream
 			}
 
 		} catch (FileNotFoundException e) {
-			System.err.println("No configuartion file found: Streams.xml");
+			SRSOutput.getInstance().logE("No configuartion file found: Streams.xml");
 		} catch (XMLStreamException e) {
 			e.printStackTrace();
 		}
@@ -641,12 +641,12 @@ public class Control_Stream
 	 
 				switch ( parser.getEventType() ) { 
 					case XMLStreamConstants.START_DOCUMENT: 
-						System.out.println( "Loading file Streams.xml" );
+						SRSOutput.getInstance().log( "Loading file Streams.xml" );
 						parser.getEventType();
 						break; 
 				 
 				    case XMLStreamConstants.END_DOCUMENT: 
-				    	System.out.println( "End of read settings " ); 
+				    	SRSOutput.getInstance().log( "End of read settings " ); 
 				    	parser.close(); 
 				    	break; 
 				 
@@ -804,7 +804,7 @@ public class Control_Stream
 			}
 
 		} catch (FileNotFoundException e) {
-			System.err.println("No configuartion file found: DefaultStream.xml");
+			SRSOutput.getInstance().logE("No configuartion file found: DefaultStream.xml");
 		} catch (XMLStreamException e) {
 			e.printStackTrace();
 		}
@@ -915,7 +915,7 @@ public class Control_Stream
 	public void startMp3Player(String content) {
 		String path = getMP3PlayerPath();
 		if(path == null)
-			System.err.println("Can't find mp3Player");
+			SRSOutput.getInstance().logE("Can't find mp3Player");
 		else
 			new Control_RunExternProgram(path + " " + content).run();
 	}
@@ -923,7 +923,7 @@ public class Control_Stream
 	public void startWebBrowser(String url) {
 		String path = getWebBrowserPath();
 		if(path == null || path.equals("")) {
-			System.err.println("Can't find the webbrowser");
+			SRSOutput.getInstance().logE("Can't find the webbrowser");
 			JOptionPane.showMessageDialog(mainGui,
 						trans.getString("setBrowserOnly"));
 		}
@@ -941,11 +941,10 @@ public class Control_Stream
 		options.add(0,streamripperPath);
 
 		try {
-			System.out.println("trying to start with command: \n");
-			System.out.println(options);
+			SRSOutput.getInstance().log("trying to start with command: \n");
 			streamProcess = new ProcessBuilder(options).start();
 		} catch (IOException e) {
-		    System.err.println("Error while executing streamripper"+e);
+		    SRSOutput.getInstance().logE("Error while executing streamripper"+e);
 		}
 		
 		//put all option from the vector into an String
@@ -1066,7 +1065,7 @@ public class Control_Stream
 				length += Integer.parseInt(stream.maxTimeMMTF)*60;
 				length += Integer.parseInt(stream.maxTimessTF);
 			} catch (NumberFormatException e) {
-				System.err.println("Wrong Number in options" +
+				SRSOutput.getInstance().logE("Wrong Number in options" +
 						"Please use numbers only in lengthfields");
 			}
 			options.add("-l");

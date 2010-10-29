@@ -56,6 +56,7 @@ import control.Control_GetPath;
 import control.Control_RunExternProgram;
 import control.Control_Stream;
 import control.Control_Threads;
+import control.SRSOutput;
 
 public class Gui_StreamRipStar extends JFrame implements WindowListener 
 {
@@ -271,7 +272,7 @@ public class Gui_StreamRipStar extends JFrame implements WindowListener
 			    try {
 			        sysTray.add(trayIcon);
 			    } catch (AWTException e) {
-			        System.err.println("TrayIcon could not be added.");
+			        SRSOutput.getInstance().logE("TrayIcon could not be added.");
 			    }
 			}
 		} else {
@@ -494,7 +495,7 @@ public class Gui_StreamRipStar extends JFrame implements WindowListener
 			}
 			catch (MissingResourceException e)
 			{
-				System.err.println("Could not find an translation (Text under Icons)");
+				SRSOutput.getInstance().logE("Could not find an translation (Text under Icons)");
 			}
 			
 			//set an smaller font
@@ -586,7 +587,7 @@ public class Gui_StreamRipStar extends JFrame implements WindowListener
 			optionPopupIcon.setText(trans.getString("popup.options"));
 			
 		} catch ( MissingResourceException e ) { 
-			System.err.println( e ); 
+			SRSOutput.getInstance().logE( e.getMessage() ); 
 		}
 	}
 	
@@ -660,11 +661,11 @@ public class Gui_StreamRipStar extends JFrame implements WindowListener
 	 
 				switch ( parser.getEventType() ) { 
 					case XMLStreamConstants.START_DOCUMENT: 
-						System.out.println( "Loading file Prefs-MainWindow.xml" ); 
+						SRSOutput.getInstance().log( "Loading file Prefs-MainWindow.xml" ); 
 						break; 
 				 
 				    case XMLStreamConstants.END_DOCUMENT: 
-				    	System.out.println( "End of read settings " ); 
+				    	SRSOutput.getInstance().log( "End of read settings " ); 
 				    	parser.close(); 
 				    	break; 
 				 
@@ -696,7 +697,7 @@ public class Gui_StreamRipStar extends JFrame implements WindowListener
 			}
 
 		} catch (FileNotFoundException e) {
-			System.err.println("No configuartion file found: Prefs-MainWindow.xml");
+			SRSOutput.getInstance().logE("No configuartion file found: Prefs-MainWindow.xml");
 			pack();
 		} catch (XMLStreamException e) {
 			e.printStackTrace();
@@ -713,11 +714,11 @@ public class Gui_StreamRipStar extends JFrame implements WindowListener
 	 
 				switch ( parser.getEventType() ) { 
 					case XMLStreamConstants.START_DOCUMENT: 
-						System.out.println( "Loading file Settings-StreamRipStar.xml" ); 
+						SRSOutput.getInstance().log( "Loading file Settings-StreamRipStar.xml" ); 
 						break; 
 				 
 				    case XMLStreamConstants.END_DOCUMENT: 
-				    	System.out.println( "End of read settings " ); 
+				    	SRSOutput.getInstance().log( "End of read settings " ); 
 				    	parser.close(); 
 				    	break; 
 				 
@@ -772,7 +773,7 @@ public class Gui_StreamRipStar extends JFrame implements WindowListener
 			}
 
 		} catch (FileNotFoundException e) {
-			System.err.println("No configuartion file found: Settings-StreamRipStar.xml");
+			SRSOutput.getInstance().logE("No configuartion file found: Settings-StreamRipStar.xml");
 		} catch (XMLStreamException e) {
 			e.printStackTrace();
 		}
@@ -1030,7 +1031,7 @@ public class Gui_StreamRipStar extends JFrame implements WindowListener
 			Process p = getControlStream().startStreamripper(recStream);
 			if(p == null) {
 				JOptionPane.showMessageDialog(Gui_StreamRipStar.this,trans.getString("exeError"));
-				System.err.println("Error while exec streamripper");
+				SRSOutput.getInstance().logE("Error while exec streamripper");
 			} else {
 				recStream.setProcess(p);
 				recStream.setStatus(true);
@@ -1058,7 +1059,7 @@ public class Gui_StreamRipStar extends JFrame implements WindowListener
 						Process p = getControlStream().startStreamripper(streamsToRecord[i]);
 						if(p == null) {
 							JOptionPane.showMessageDialog(Gui_StreamRipStar.this,trans.getString("exeError"));
-							System.err.println("Error while exec streamripper");
+							SRSOutput.getInstance().logE("Error while exec streamripper");
 						} else {
 							streamsToRecord[i].increaseRippingCount();
 							streamsToRecord[i].setProcess(p);

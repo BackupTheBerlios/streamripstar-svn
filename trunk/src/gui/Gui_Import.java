@@ -37,6 +37,7 @@ import javax.swing.table.DefaultTableModel;
 
 import control.Control_PlayList;
 import control.Control_Stream;
+import control.SRSOutput;
 
 public class Gui_Import extends JDialog {
 	private static final long serialVersionUID = 1L;
@@ -213,7 +214,7 @@ public class Gui_Import extends JDialog {
     		importModel.setColumnIdentifiers(importHeader);
     		
     	} catch ( MissingResourceException e ) { 
-		      System.err.println( e ); 
+		      SRSOutput.getInstance().logE( e.getMessage() ); 
 	    }
 	}
 	

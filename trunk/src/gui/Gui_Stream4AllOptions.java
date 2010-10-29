@@ -39,6 +39,8 @@ import javax.swing.KeyStroke;
 import javax.swing.ToolTipManager;
 import javax.swing.border.TitledBorder;
 
+import control.SRSOutput;
+
 import misc.Stream;
 
 
@@ -1014,7 +1016,7 @@ public class Gui_Stream4AllOptions extends JDialog implements WindowListener {
 			saveAndExitButton.setText(trans.getString("okButton"));
 			questButton.setText(trans.getString("helpButton"));
     	} catch ( MissingResourceException e ) { 
-		      System.err.println( e ); 
+		      SRSOutput.getInstance().logE( e.getMessage() ); 
 	    }
 	}
 	

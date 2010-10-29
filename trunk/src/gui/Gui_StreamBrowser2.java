@@ -61,6 +61,7 @@ import misc.Stream;
 import thread.Thread_GetStreams_FromShoutcast;
 import control.Control_GetPath;
 import control.Control_http_Shoutcast;
+import control.SRSOutput;
 import control.Shoutcast2;
 
 public class Gui_StreamBrowser2 extends JFrame implements WindowListener {
@@ -410,7 +411,7 @@ public class Gui_StreamBrowser2 extends JFrame implements WindowListener {
 			hearMenuItem.setText(trans.getString("popup.hear"));
 			
 		} catch ( MissingResourceException e ) { 
-		      System.err.println( e ); 
+		      SRSOutput.getInstance().logE( e.getMessage() ); 
 		}
 	}
 	
@@ -446,7 +447,7 @@ public class Gui_StreamBrowser2 extends JFrame implements WindowListener {
 				updateUITree();
 			}
 		catch (NullPointerException e) {
-			System.err.println("Failed to load genres");
+			SRSOutput.getInstance().logE("Failed to load genres");
 			setStatusText("Failed to load genres",false);
 		}
 	}
@@ -642,10 +643,10 @@ public class Gui_StreamBrowser2 extends JFrame implements WindowListener {
 			//else the original
 			if(filter.isFiltered()) {
 				streams = filter.getFilteredStreamVector();
-				System.out.println("Use Filtered StreamVector");
+				SRSOutput.getInstance().log("Use Filtered StreamVector");
 			} else {
 				streams = controlHttp.getStreams();
-				System.out.println("Use Normal StreamVector");
+				SRSOutput.getInstance().log("Use Normal StreamVector");
 			}
 			
 			if(streams != null) {
@@ -656,7 +657,7 @@ public class Gui_StreamBrowser2 extends JFrame implements WindowListener {
 				address[0] = controlHttp.getfirstStreamFromURL(url);
 				address[1] = streams.get(nr)[0];
 			} else {
-				System.err.println("Gets an empty FILTERED stream vector: can't get info");
+				SRSOutput.getInstance().logE("Gets an empty FILTERED stream vector: can't get info");
 			}
 		}
 		return address;
@@ -677,10 +678,10 @@ public class Gui_StreamBrowser2 extends JFrame implements WindowListener {
 			if(url == null || url.equals("")) {
 				JOptionPane.showMessageDialog(getMe()
 						,trans.getString("Message.emptyString"));
-				System.err.println(trans.getString("Message.emptyString"));
+				SRSOutput.getInstance().logE(trans.getString("Message.emptyString"));
 			} else {
 				StreamRipStar.getTabel().startMusicPlayerWithUrl(url, name);
-				System.out.println(url);
+				SRSOutput.getInstance().log(url);
 			}
 		} else
 			JOptionPane.showMessageDialog(getMe()
@@ -817,11 +818,11 @@ public class Gui_StreamBrowser2 extends JFrame implements WindowListener {
 	 
 				switch ( parser.getEventType() ) { 
 					case XMLStreamConstants.START_DOCUMENT: 
-						System.out.println( "Loading file Streambrowser.xml" ); 
+						SRSOutput.getInstance().log( "Loading file Streambrowser.xml" ); 
 						break; 
 				 
 				    case XMLStreamConstants.END_DOCUMENT: 
-				    	System.out.println( "End of read settings " ); 
+				    	SRSOutput.getInstance().log( "End of read settings " ); 
 				    	parser.close(); 
 				    	break; 
 				 
@@ -885,12 +886,12 @@ public class Gui_StreamBrowser2 extends JFrame implements WindowListener {
 			}
 
 		} catch (FileNotFoundException e) {
-			System.err.println("No configuartion file found: Streambrowser.xml");
+			SRSOutput.getInstance().logE("No configuartion file found: Streambrowser.xml");
 		} catch (XMLStreamException e) {
 			if(e.getMessage().startsWith("Message: Premature end of file.")) {
-				System.err.println("Error: Streambrowser: XML file had an unexpected end");
+				SRSOutput.getInstance().logE("Error: Streambrowser: XML file had an unexpected end");
 			} else {
-				System.err.println("Error while reading the streambrowser settings");
+				SRSOutput.getInstance().logE("Error while reading the streambrowser settings");
 			}
 		}
 	}
@@ -1086,7 +1087,7 @@ public class Gui_StreamBrowser2 extends JFrame implements WindowListener {
 				
 				//if url = "" it fails
 				if(content[0].equals("")) {
-					System.err.println("Error while fetching streamaddress\n");
+					SRSOutput.getInstance().logE("Error while fetching streamaddress\n");
 				}
 				else {
 					Gui_StreamOptions dialog = new Gui_StreamOptions(null,StreamRipStar,true,true,false);
@@ -1114,7 +1115,7 @@ public class Gui_StreamBrowser2 extends JFrame implements WindowListener {
 				//if url = "" it fails
 				if(content[0] == null || content[0].equals("")) {
 					JOptionPane.showMessageDialog(getMe(), trans.getString("Message.emptyString"));
-					System.err.println("Error while fetching streamaddress\n");
+					SRSOutput.getInstance().logE("Error while fetching streamaddress\n");
 				}
 				else {
 					Gui_StreamOptions tmpAddStream = new Gui_StreamOptions(
@@ -1124,7 +1125,7 @@ public class Gui_StreamBrowser2 extends JFrame implements WindowListener {
 					Stream tmpStream = tmpAddStream.getStream();
 					if(tmpStream != null) {
 						StreamRipStar.startRippingUnselected(tmpStream);
-						System.out.println("Debug: Adding stream from Streambrowser" +
+						SRSOutput.getInstance().log("Debug: Adding stream from Streambrowser" +
 								"and start recording");
 					}
 				}
@@ -1193,7 +1194,7 @@ public class Gui_StreamBrowser2 extends JFrame implements WindowListener {
 		public void actionPerformed(ActionEvent arg0) {
 			//if the last page is shown, do not load the next last page
 			if(controlHttp.getCurrentPage() <= 1) {
-				System.out.println("Can load the previous page, because the current page is the first one");
+				SRSOutput.getInstance().log("Can load the previous page, because the current page is the first one");
 				setStatusText("Can load the previous page, because the current page is the first one",false);
 			} else {
 				getStreams = new Thread_GetStreams_FromShoutcast(getMe(),selectedGenre.replace(" ", "%20"),trans,isKeyword,false,true);
@@ -1212,7 +1213,7 @@ public class Gui_StreamBrowser2 extends JFrame implements WindowListener {
 			
 			//if the last page is shown, do not load the next page
 			if(controlHttp.getCurrentPage() >= controlHttp.getTotalPages()) {
-				System.out.println("Can load the next page, because the current page is the last one");
+				SRSOutput.getInstance().log("Can load the next page, because the current page is the last one");
 				setStatusText("Can load the next page, because the current page is the last one",false);
 			} else {
 				getStreams = new Thread_GetStreams_FromShoutcast(getMe(),selectedGenre.replace(" ", "%20"),trans,isKeyword,true,false);

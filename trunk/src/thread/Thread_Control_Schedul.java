@@ -26,6 +26,7 @@ import misc.Stream;
 
 import control.Control_GetPath;
 import control.Control_Threads;
+import control.SRSOutput;
 
 
 public class Thread_Control_Schedul extends Thread{
@@ -53,7 +54,7 @@ public class Thread_Control_Schedul extends Thread{
 			try {
 				Thread.sleep(50);
 			} catch (InterruptedException e) {
-				System.err.println("Error while waiting for starting the scheduls : Thread_Control_Scheduls");
+				SRSOutput.getInstance().logE("Error while waiting for starting the scheduls : Thread_Control_Scheduls");
 			}
 		}
 		//load all jobs from xml-file into vector
@@ -195,11 +196,11 @@ public class Thread_Control_Schedul extends Thread{
 	 
 				switch ( parser.getEventType() ) { 
 					case XMLStreamConstants.START_DOCUMENT: 
-						System.out.println( "Loading file Scheduls.xml" ); 
+						SRSOutput.getInstance().log( "Loading file Scheduls.xml" ); 
 						break; 
 				 
 				    case XMLStreamConstants.END_DOCUMENT: 
-				    	System.out.println( "End of read settings " ); 
+				    	SRSOutput.getInstance().log( "End of read settings " ); 
 				    	parser.close(); 
 				    	break; 
 				 
@@ -245,7 +246,7 @@ public class Thread_Control_Schedul extends Thread{
 			}
 
 		} catch (FileNotFoundException e) {
-			System.err.println("No configuartion file found: Scheduls.xml");
+			SRSOutput.getInstance().logE("No configuartion file found: Scheduls.xml");
 		} catch (XMLStreamException e) {
 			e.printStackTrace();
 		}

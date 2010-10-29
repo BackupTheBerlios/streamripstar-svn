@@ -45,6 +45,7 @@ import javax.xml.stream.events.XMLEvent;
 
 import control.Control_GetPath;
 import control.Control_TestStartFirst;
+import control.SRSOutput;
 
 public class Gui_Settings extends JDialog
 {
@@ -643,11 +644,11 @@ public class Gui_Settings extends JDialog
 	 
 				switch ( parser.getEventType() ) { 
 					case XMLStreamConstants.START_DOCUMENT: 
-						System.out.println( "Loading file Settings-StreamRipStar.xml" ); 
+						SRSOutput.getInstance().log( "Loading file Settings-StreamRipStar.xml" ); 
 						break; 
 				 
 				    case XMLStreamConstants.END_DOCUMENT: 
-				    	System.out.println( "End of read settings " ); 
+				    	SRSOutput.getInstance().log( "End of read settings " ); 
 				    	parser.close(); 
 				    	break; 
 				 
@@ -713,7 +714,7 @@ public class Gui_Settings extends JDialog
 			}
 
 		} catch (FileNotFoundException e) {
-			System.err.println("No configuartion file found: Settings-StreamRipStar.xml");
+			SRSOutput.getInstance().logE("No configuartion file found: Settings-StreamRipStar.xml");
 			fillWithFoundPrograms();
 		} catch (XMLStreamException e) {
 			e.printStackTrace();

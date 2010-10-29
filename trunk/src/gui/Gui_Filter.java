@@ -21,6 +21,8 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.border.TitledBorder;
 
+import control.SRSOutput;
+
 @SuppressWarnings("serial")
 public class Gui_Filter extends JPanel {
 	private boolean DEBUG = false;
@@ -165,7 +167,7 @@ public class Gui_Filter extends JPanel {
 			bitrateTitle.setTitle(trans.getString("Filter.Title.Bitrates"));
 			typeTitle.setTitle(trans.getString("Filter.Title.Types"));
 		} catch ( MissingResourceException e ) { 
-		      System.err.println( e ); 
+		      SRSOutput.getInstance().logE( e.getMessage() ); 
 		}
 	}
 	
@@ -335,7 +337,7 @@ public class Gui_Filter extends JPanel {
 						streamBitrate = Integer.valueOf(oldStreams.get(i)[3]);
 					} catch(NumberFormatException e) {
 						if(DEBUG) {
-							System.out.println("Wrong Bitrate in Stream");
+							SRSOutput.getInstance().log("Wrong Bitrate in Stream");
 						}
 						//don't add it
 						streamBitrate = -1;
@@ -351,7 +353,7 @@ public class Gui_Filter extends JPanel {
 			
 		} catch(NumberFormatException e) {
 			if(DEBUG) {
-				System.out.println("Wrong Bitrate in Stream");
+				SRSOutput.getInstance().log("Wrong Bitrate in Stream");
 			}
 			JOptionPane.showMessageDialog(streamBrowser
 					,"Wrong Value in a bitrate field");

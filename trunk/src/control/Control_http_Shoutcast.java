@@ -142,7 +142,7 @@ public class Control_http_Shoutcast {
 				}
 			}
 		} catch (Exception e) {
-			System.out.println("Could not get the playlist file from server");
+			SRSOutput.getInstance().log("Could not get the playlist file from server");
 			return null;
 		} finally {
 			if (readStream != null) {
@@ -230,12 +230,12 @@ public class Control_http_Shoutcast {
 						}
 
 					} catch (NullPointerException e) {
-						System.out.println("Error while loading from shoutcast website 1");
+						SRSOutput.getInstance().log("Error while loading from shoutcast website 1");
 					} catch (StringIndexOutOfBoundsException e) {
-						System.out.println("Error while loading from shoutcast website 2");
+						SRSOutput.getInstance().log("Error while loading from shoutcast website 2");
 						e.printStackTrace();
 					} catch (NumberFormatException e) {
-						System.err.println("Controled Crash in StreamBrowser");
+						SRSOutput.getInstance().logE("Controled Crash in StreamBrowser");
 						e.printStackTrace();
 					}
 				}
@@ -336,16 +336,16 @@ public class Control_http_Shoutcast {
 					}
 
 				} catch (NullPointerException e) {
-					System.out.println("Error while loading from shoutcast website 1");
+					SRSOutput.getInstance().log("Error while loading from shoutcast website 1");
 				} catch (StringIndexOutOfBoundsException e) {
-					System.out.println("Error while loading from shoutcast website 2");
+					SRSOutput.getInstance().log("Error while loading from shoutcast website 2");
 				} catch (NumberFormatException e) {
-					System.err.println("Controled Crash in StreamBrowser");
+					SRSOutput.getInstance().logE("Controled Crash in StreamBrowser");
 					e.printStackTrace();
 				}
 			}
 		} catch (Exception e) {
-			System.out.println("HHHIIIIIIIIERRR");
+			SRSOutput.getInstance().log("HHHIIIIIIIIERRR");
 			if (e.getMessage().startsWith("stream is closed")) {
 				stopSearching = true;
 			} else

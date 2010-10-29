@@ -106,7 +106,7 @@ public class Gui_searchUpdate extends JDialog {
 			okButton.setText(trans.getString("searchUpdate.okButton"));
 			
 		} catch ( MissingResourceException e ) { 
-			System.err.println("Error in translation in Gui_searchUpdate: ");
+			SRSOutput.getInstance().logE("Error in translation in Gui_searchUpdate: ");
 			e.printStackTrace();
 	    }		
 	}

@@ -17,6 +17,7 @@ import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 
 import control.Control_GetPath;
+import control.SRSOutput;
 /**
  * with this class you can start StreamRipStar
  */
@@ -108,11 +109,11 @@ public class StreamRipStar
 	 
 				switch ( parser.getEventType() ) { 
 					case XMLStreamConstants.START_DOCUMENT: 
-						System.out.println( "Loading file Settings-StreamRipStar.xml" ); 
+						SRSOutput.getInstance().log( "Loading file Settings-StreamRipStar.xml" ); 
 						break; 
 				 
 				    case XMLStreamConstants.END_DOCUMENT: 
-				    	System.out.println( "End of read settings " ); 
+				    	SRSOutput.getInstance().log( "End of read settings " ); 
 				    	parser.close(); 
 				    	break; 
 				 
@@ -147,7 +148,7 @@ public class StreamRipStar
 			}
 
 		} catch (FileNotFoundException e) {
-			System.err.println("No configuartion file found: Settings-StreamRipStar.xml");
+			SRSOutput.getInstance().logE("No configuartion file found: Settings-StreamRipStar.xml");
 			noConfiFileFound = true;
 		} catch (XMLStreamException e) {
 			e.printStackTrace();

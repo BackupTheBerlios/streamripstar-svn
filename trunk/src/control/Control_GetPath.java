@@ -36,7 +36,7 @@ public class Control_GetPath {
 		//look first in the exe directory
 		File savePath = new File("StreamRipStar");
 		
-		//look first for the save path in the excecutable path
+		//look first for the save path in the executable path
 		//if it don't exist, look for the path in the home
 		//directory
 		if(!savePath.exists()) {
@@ -45,11 +45,10 @@ public class Control_GetPath {
 				savePath = new File( home+"/.StreamRipStar");
 				if(savePath.exists() && savePath.isDirectory()) {
 					path =  home+"/.StreamRipStar";
-//					System.out.println("Save Path exist in: " + path);
 					return path;
 				} else {
 					askWhereToSave();
-					System.out.println("Created new save path in : " + path);
+					SRSOutput.getInstance().log("Created new save path in : " + path);
 					return path;
 				}
 			}
@@ -59,11 +58,10 @@ public class Control_GetPath {
 				savePath = new File( home+"\\.StreamRipStar");
 				if( savePath.exists() && savePath.isDirectory() ) {
 					path = home+"\\.StreamRipStar";
-//					System.out.println("Save Path exist in: " + path);
 					return path;
 				} else {
 					askWhereToSave();
-					System.out.println("Created new save path in : " + path);
+					SRSOutput.getInstance().log("Created new save path in : " + path);
 					return path;
 				}
 			}
@@ -74,22 +72,21 @@ public class Control_GetPath {
 				savePath = new File( home+sep+".StreamRipStar");
 				if( savePath.exists() && savePath.isDirectory() ) {
 					path = home+sep+".StreamRipStar";
-					System.out.println("Save Path exist in: " + path);
+					SRSOutput.getInstance().log("Save Path exist in: " + path);
 					return path;
 				} else {
 					askWhereToSave();
-					System.out.println("Created new save path in : " + path);
+					SRSOutput.getInstance().log("Created new save path in : " + path);
 					return path;
 				}
 			}
 		} else {
 			if(savePath.isDirectory()) {
-//				System.out.println("Save Path exist in: " + path);
 				return(savePath.getPath());
 			}
 			else {
 				askWhereToSave();
-				System.out.println("Created new save path in : " + path);
+				SRSOutput.getInstance().log("Created new save path in : " + path);
 				return path;
 			}
 		}

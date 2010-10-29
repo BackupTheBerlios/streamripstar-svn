@@ -18,6 +18,7 @@ import thread.Thread_KeepTableSchedulUpdated;
 
 
 import control.Control_Stream;
+import control.SRSOutput;
 
 public class Gui_SchedulManager extends JFrame implements WindowListener {
 	private static final long serialVersionUID = 1L;
@@ -188,7 +189,7 @@ public class Gui_SchedulManager extends JFrame implements WindowListener {
 			schedulHeader[6] = trans.getString("JobMan.table.comment");
 			model.setColumnIdentifiers(schedulHeader);
 		} catch ( MissingResourceException e ) { 
-		      System.err.println( e ); 
+		      SRSOutput.getInstance().logE( e.getMessage() ); 
 		}
 	}
 	
@@ -209,7 +210,7 @@ public class Gui_SchedulManager extends JFrame implements WindowListener {
 			
 			model.addRow(x);
 		} catch (NullPointerException e) {
-			System.err.println("Corrupt schedulJob found. ignore it");
+			SRSOutput.getInstance().logE("Corrupt schedulJob found. ignore it");
 		}
 	}
 

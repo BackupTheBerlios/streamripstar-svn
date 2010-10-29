@@ -49,7 +49,7 @@ public class Control_TestStartFirst {
 		
 		//catch an empty array for wrong installed java systems
 		if(binPath == null) {
-			System.err.println("No executable bin path found on the linux system");
+			SRSOutput.getInstance().logE("No executable bin path found on the linux system");
 			return null;
 		}
 		String[][] foundPrograms = new String[programNames.length][6];

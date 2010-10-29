@@ -24,7 +24,7 @@ public class Control_PlayList
 	{
 
 		File x = new File(path);
-		System.out.println("Loading file ....");
+		SRSOutput.getInstance().log("Loading file ....");
 		String[][] streams = null;
 		Vector<String> titleVector = new Vector<String>(0,1);	//saves the Streamnames tmp
 		Vector<String> addressVector = new Vector<String>(0,1);	//saves the Streamaddress tmp
@@ -35,7 +35,7 @@ public class Control_PlayList
 			try
 			{
 				BufferedReader br = new BufferedReader(new FileReader(path));
-				System.out.println("Successful loaded ....");
+				SRSOutput.getInstance().log("Successful loaded ....");
 				
 				String readBuffer = "";
 				String address = "";
@@ -188,15 +188,15 @@ public class Control_PlayList
 			}
 			catch ( FileNotFoundException e ) 
 			{ 
-			  System.err.println( "Datei nicht gefunden" ); 
+			  SRSOutput.getInstance().logE( "Datei nicht gefunden" ); 
 			}
 			catch ( IOException e ) 
 			{ 
-			  System.err.println( "I/O failed." ); 
+			  SRSOutput.getInstance().logE( "I/O failed." ); 
 			}
 		}
 		else
-			System.out.println("Could not find file");
+			SRSOutput.getInstance().log("Could not find file");
 		return streams;
 	}
 	

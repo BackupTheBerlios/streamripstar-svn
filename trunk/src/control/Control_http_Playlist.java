@@ -88,7 +88,7 @@ public class Control_http_Playlist extends Thread{
 					bw.close();
 				}
 			} catch (IOException e) {
-				System.err.println("Can not close the connection for fetching the last tracks");
+				SRSOutput.getInstance().logE("Can not close the connection for fetching the last tracks");
 			}
 		}
 	}

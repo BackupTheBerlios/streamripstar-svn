@@ -18,6 +18,7 @@ import thread.Thread_Control_Schedul;
 
 
 import control.Control_Stream;
+import control.SRSOutput;
 
 public class Gui_AddSchedul extends JDialog implements WindowListener{
 	private static final long serialVersionUID = 1L;
@@ -316,7 +317,7 @@ public class Gui_AddSchedul extends JDialog implements WindowListener{
 			dailyCB.setText(trans.getString("AddJob.dailyCB"));
 			weeklyCB.setText(trans.getString("AddJob.weeklyCB"));
 		} catch ( MissingResourceException e ) { 
-		      System.err.println( e ); 
+		      SRSOutput.getInstance().logE( e.getMessage() ); 
 	    }
 	}
 	

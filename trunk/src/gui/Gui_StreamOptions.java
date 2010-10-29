@@ -36,6 +36,8 @@ import javax.swing.KeyStroke;
 import javax.swing.ToolTipManager;
 import javax.swing.border.TitledBorder;
 
+import control.SRSOutput;
+
 import misc.Stream;
 
 
@@ -960,7 +962,7 @@ public class Gui_StreamOptions extends JFrame implements WindowListener {
     		saveButton.setText(trans.getString("save"));
 			saveAndExitButton.setText(trans.getString("okButton"));
     	} catch ( MissingResourceException e ) { 
-		      System.err.println( e ); 
+		      SRSOutput.getInstance().logE( e.getMessage() ); 
 	    }
 	}
 	

@@ -9,6 +9,8 @@ import misc.Stream;
 import org.gstreamer.*;
 import org.gstreamer.elements.PlayBin2;
 
+import control.SRSOutput;
+
 import gui.Gui_StreamRipStar;
 
 /**
@@ -76,7 +78,7 @@ public class AudioPlayer extends Thread{
 					
 					//Cannot resolve hostname - no connection to the stream
 					else if(errorCode == 1) {
-						System.out.println(errorMessage);
+						SRSOutput.getInstance().log(errorMessage);
 					}
 					
 					//show all other error messages in the tray
@@ -84,8 +86,8 @@ public class AudioPlayer extends Thread{
 						mainGui.setTitleForAudioPlayer("",errorMessage,false);
 					}
 					
-					System.out.println("The Errorcode was:"+errorCode);
-					System.out.println("The Errormessage was:"+errorMessage);
+					SRSOutput.getInstance().log("The Errorcode was:"+errorCode);
+					SRSOutput.getInstance().log("The Errormessage was:"+errorMessage);
 				}
 			});
 			

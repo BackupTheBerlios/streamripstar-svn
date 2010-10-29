@@ -25,6 +25,7 @@ import misc.Stream;
 
 
 import control.Control_http_Playlist;
+import control.SRSOutput;
 
 public class Gui_Infodialog extends JDialog
 {
@@ -85,7 +86,7 @@ public class Gui_Infodialog extends JDialog
 			commandExe.setText(trans.getString("Info.commandExe"));
 			lastTrackLabel.setText(trans.getString("Info.Loading"));
 		} catch ( MissingResourceException e ) { 
-		      System.err.println( e ); 
+		      SRSOutput.getInstance().logE( e.getMessage() ); 
 	    }
 	}
 	

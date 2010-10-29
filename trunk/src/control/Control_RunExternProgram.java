@@ -15,7 +15,7 @@ public class Control_RunExternProgram implements Runnable  {
 		try {
 			Runtime.getRuntime().exec(path);
 		} catch (Exception e) {
-		    System.err.println("Fehler beim Ausführen von"+path+e);
+		    SRSOutput.getInstance().logE("Fehler beim Ausführen von"+path+e);
 		}
 	}
 }

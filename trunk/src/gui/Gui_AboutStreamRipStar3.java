@@ -28,6 +28,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.KeyStroke;
 import control.Control_Stream;
+import control.SRSOutput;
 
 /**
  * Shows an Dialog with all information about StreamRipStar. Here you can find the
@@ -232,7 +233,7 @@ public class Gui_AboutStreamRipStar3 extends JDialog
     		externPrograms.setText(trans.getString("about.externPrograms"));
     	}
 		catch ( MissingResourceException e ) { 
-		      System.err.println( e ); 
+		      SRSOutput.getInstance().logE( e.getMessage() ); 
 	    }
 	}
 	

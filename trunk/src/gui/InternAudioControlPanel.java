@@ -19,6 +19,8 @@ import javax.swing.JToolBar;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
+import control.SRSOutput;
+
 import gui.Gui_StreamRipStar;
 
 /**
@@ -91,8 +93,8 @@ public class InternAudioControlPanel extends JPanel
 			}
 			catch(MissingResourceException e)
 			{
-				System.err.println("Translation Error: Error while setting the translation in InternAudioControlPanel");
-				System.err.println(e.getMessage());
+				SRSOutput.getInstance().logE("Translation Error: Error while setting the translation in InternAudioControlPanel");
+				SRSOutput.getInstance().logE(e.getMessage());
 			}
 		} 
 		else 

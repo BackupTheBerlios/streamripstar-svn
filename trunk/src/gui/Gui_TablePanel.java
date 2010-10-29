@@ -46,6 +46,7 @@ import misc.Stream;
 import thread.AudioPlayer;
 
 import control.Control_Stream;
+import control.SRSOutput;
 
 public class Gui_TablePanel extends JPanel
 {
@@ -136,10 +137,10 @@ public class Gui_TablePanel extends JPanel
 							String url = files.get(0).toString();
 							
 							if(url.endsWith(".pls") || url.endsWith(".m3u")) {
-								System.out.println("Right extension");
+								SRSOutput.getInstance().log("Right extension");
 								new Gui_Import(getMainGui(),getControlStreams(), url);
 							} else {
-								System.out.println("Wrong extension");
+								SRSOutput.getInstance().log("Wrong extension");
 							}
 							e.dropComplete(true);
 							return;
@@ -156,10 +157,10 @@ public class Gui_TablePanel extends JPanel
 								URI fileURI = new URI(tmp);
 								String url = URLDecoder.decode(fileURI.getPath(),"UTF-8");
 								if(url.endsWith(".pls") || url.endsWith(".m3u")) {
-									System.out.println("Right extension");
+									SRSOutput.getInstance().log("Right extension");
 									new Gui_Import(getMainGui(),getControlStreams() ,url);
 								} else {
-									System.out.println("Wrong extension");
+									SRSOutput.getInstance().log("Wrong extension");
 								}
 
 							}
@@ -189,7 +190,7 @@ public class Gui_TablePanel extends JPanel
 			columnLabel1.setText(trans.getString("streamname"));
 			columnLabel2.setText(trans.getString("curTitle"));
 		} catch ( MissingResourceException e ) { 
-			System.err.println( e ); 
+			SRSOutput.getInstance().logE( e.getMessage()); 
 		}
 	}
 
@@ -264,7 +265,7 @@ public class Gui_TablePanel extends JPanel
 		try {
 			table.getSelectionModel().setSelectionInterval(selectedRow, selectedRow);
 		} catch (IllegalArgumentException e) {
-			System.err.println("Gui_TablePanel: Unable to select an row");
+			SRSOutput.getInstance().logE("Gui_TablePanel: Unable to select an row");
 		}
 	}
 	
@@ -288,7 +289,7 @@ public class Gui_TablePanel extends JPanel
 		try {
 			table.getSelectionModel().setSelectionInterval(selectedRow, selectedRow);
 		} catch (IllegalArgumentException e) {
-			System.err.println("Gui_TablePanel: Unable to select an row");
+			SRSOutput.getInstance().logE("Gui_TablePanel: Unable to select an row");
 		}
 	}
 	
@@ -342,7 +343,7 @@ public class Gui_TablePanel extends JPanel
 		}
 		catch (ArrayIndexOutOfBoundsException e)
 		{
-			System.err.println("No Stream in the table -> ArrayIndexOutOfBoundException");
+			SRSOutput.getInstance().logE("No Stream in the table -> ArrayIndexOutOfBoundException");
 		}
 		return null;
 		
@@ -480,13 +481,13 @@ public class Gui_TablePanel extends JPanel
 				}
 				
 			} else {
-				System.err.println("error while fetching adress");
+				SRSOutput.getInstance().logE("error while fetching adress");
 			}
 		}
 		
 		else 
 		{
-			System.out.println("Could not find a stream to play. Nullpointer");
+			SRSOutput.getInstance().log("Could not find a stream to play. Nullpointer");
 		}
 	}
 	
@@ -542,7 +543,7 @@ public class Gui_TablePanel extends JPanel
 			}
 			
 		} else {
-			System.err.println("error while fetching adress");
+			SRSOutput.getInstance().logE("error while fetching adress");
 		}		
 	}
 
@@ -625,7 +626,7 @@ public class Gui_TablePanel extends JPanel
 				}
 			}
 			else
-				System.err.println("can't find stream in vector");
+				SRSOutput.getInstance().logE("can't find stream in vector");
 		}
 	}
 

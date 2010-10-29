@@ -6,6 +6,7 @@ import control.Control_Threads;
 /* This program is licensed under the terms of the GPLV3 or newer*/
 /* Written by Johannes Putzke*/
 /* eMail: die_eule@gmx.net*/ 
+import control.SRSOutput;
 
 /**
  * starts filling the table with streams
@@ -24,11 +25,11 @@ public class Thread_FillTableWithStreams extends Thread {
 	
 	public void run() {
 		//ask for control
-		System.out.println("Thread: Ask for filling table with Streams");
+		SRSOutput.getInstance().log("Thread: Ask for filling table with Streams");
 		
 		//start filling the table with streams
 		if(controlStreams != null && tablePanel!= null) {
-			System.out.println("Thread: filling table with streams");
+			SRSOutput.getInstance().log("Thread: filling table with streams");
 	        controlStreams.loadStreamsOnStart();
 			tablePanel.fillTableWithStreams();
 			controlStreams.loadDefaultStreamOnStart();
