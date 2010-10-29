@@ -911,24 +911,50 @@ public class Control_Stream
 		return mp3PlayerPath;
 	}
 	
-	
-	public void startMp3Player(String content) {
+	/**
+	 * Start the audio player the with content. If no audio player is selcted in the 
+	 * preferences, an error message is shown to the user.
+	 * s
+	 * @param content Content must be a url like C:/funny.mp3 or http://192.134.243.43:232
+	 * to play an stream or file
+	 */
+	public void startMp3Player(String content)
+	{
 		String path = getMP3PlayerPath();
-		if(path == null)
+		
+		if(path == null || path.trim().equals(""))
+		{
 			SRSOutput.getInstance().logE("Can't find mp3Player");
+			JOptionPane.showMessageDialog(mainGui,
+						trans.getString("setAudioPlayer"),null,JOptionPane.ERROR_MESSAGE);
+		}
+		
 		else
+		{
 			new Control_RunExternProgram(path + " " + content).run();
+		}
 	}
 	
-	public void startWebBrowser(String url) {
+	/**
+	 * Start the webbrowser with the specific url. If the path to
+	 * the browser is not set, an error message is shown to the user.
+	 * @param url the url, which the browser should load on start
+	 */
+	public void startWebBrowser(String url) 
+	{
 		String path = getWebBrowserPath();
-		if(path == null || path.equals("")) {
+		
+		if(path == null || path.equals("")) 
+		{
 			SRSOutput.getInstance().logE("Can't find the webbrowser");
 			JOptionPane.showMessageDialog(mainGui,
-						trans.getString("setBrowserOnly"));
+						trans.getString("setBrowserOnly"),null,JOptionPane.ERROR_MESSAGE);
 		}
-		else
+		
+		else 
+		{
 			new Control_RunExternProgram(path + " " + url).run();
+		}
 	}
 	
 	public Process startStreamripper(Stream stream) {
