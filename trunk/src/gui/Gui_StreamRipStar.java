@@ -148,6 +148,7 @@ public class Gui_StreamRipStar extends JFrame implements WindowListener
 	private JMenuItem onlineHelp = new JMenuItem("Online Help");
 	private JMenuItem updateMenuItem = new JMenuItem("Look for an Update");
 	private JMenuItem about = new JMenuItem("About StreamRipStar",aboutStreamRipStarMenu);
+	private JMenuItem viewLog = new JMenuItem("Show the log messages",aboutStreamRipStarMenu);
 	private JMenuItem streamRipStarSite = new JMenuItem("Go to StreamRipStars Website");
 	private JMenuItem exit = new JMenuItem("Exit");
 	
@@ -392,6 +393,7 @@ public class Gui_StreamRipStar extends JFrame implements WindowListener
 		helpMenu.add(onlineHelp);
 		helpMenu.add(streamRipStarSite);
 		helpMenu.add(updateMenuItem);
+		helpMenu.add(viewLog);
 		helpMenu.add(about);
 		
 //		set shortcuts
@@ -431,6 +433,7 @@ public class Gui_StreamRipStar extends JFrame implements WindowListener
 		openMusicFolder.addActionListener(new OpenMusikFolder());
 		openWebsite.addActionListener(new BrowserListener());
 		about.addActionListener(new AboutDialogListener());
+		viewLog.addActionListener(new ViewLogDialogListener());
 		streamRipStarSite.addActionListener(new GoToWebSiteListener());
 		startRecordStream.addActionListener(new StartRecordListener());
 		stopRecordStream.addActionListener(new StopRecordListener());
@@ -1343,9 +1346,13 @@ public class Gui_StreamRipStar extends JFrame implements WindowListener
 	
 	class AboutDialogListener implements ActionListener {
 		public void actionPerformed(ActionEvent e) {
-			//new Gui_AboutStreamRipStar(controlStreams,Gui_StreamRipStar.this);
-//			new Gui_AboutStreamRipStar2(controlStreams);
 			new Gui_AboutStreamRipStar3(controlStreams,Gui_StreamRipStar.this);
+		}
+	}
+	
+	class ViewLogDialogListener implements ActionListener {
+		public void actionPerformed(ActionEvent e) {
+			new ViewLog(Gui_StreamRipStar.this);
 		}
 	}
 	
