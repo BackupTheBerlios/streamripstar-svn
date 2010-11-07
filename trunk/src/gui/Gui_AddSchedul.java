@@ -9,6 +9,7 @@ import java.net.URL;
 import java.text.*;
 import java.util.*;
 import javax.swing.*;
+import javax.swing.plaf.basic.BasicComboBoxRenderer;
 import javax.swing.text.DateFormatter;
 
 import misc.SchedulJob;
@@ -57,6 +58,8 @@ public class Gui_AddSchedul extends JDialog implements WindowListener{
 	
 	private JComboBox nameBox;
 	private String[] streamNames;
+	private String[] streamNames_short;
+	private final int MAX_STREAM_NAME_LENGTH = 40;
 	
 	private Vector<Stream> streams;
 	private boolean createNew = false;
@@ -116,13 +119,27 @@ public class Gui_AddSchedul extends JDialog implements WindowListener{
 			streams = controlStreams.getStreamVector();
 			//how many names do we have?
 			streamNames = new String[streams.capacity()];
+			streamNames_short = new String[streams.capacity()];
+			
 			// copy every name into box
-			for(int i=0; i < streams.capacity(); i++) {
+			for(int i=0; i < streams.capacity(); i++) 
+			{	
 				streamNames[i] = streams.get(i).name;
+			
+				//if the name is too long, is would cut all other Components -> so cut them after
+				//a specific amount of signs
+				if(streamNames[i].length() >= MAX_STREAM_NAME_LENGTH)
+				{
+					streamNames_short[i] = streamNames[i].substring(0, MAX_STREAM_NAME_LENGTH) + "...";
+				}
+				else
+				{
+					streamNames_short[i] = streamNames[i];
+				}
 			}
 			
 			//finally create nameBox
-			nameBox = new JComboBox(streamNames);
+			nameBox = new JComboBox(streamNames_short);
 			
 			
 		} else {
@@ -165,9 +182,23 @@ public class Gui_AddSchedul extends JDialog implements WindowListener{
 			streams = controlStreams.getStreamVector();
 			//how many names do we have?
 			streamNames = new String[streams.capacity()];
+			streamNames_short = new String[streams.capacity()];
+			
 			// copy every name into box
-			for(int i=0; i < streams.capacity(); i++) {
+			for(int i=0; i < streams.capacity(); i++) 
+			{	
 				streamNames[i] = streams.get(i).name;
+			
+				//if the name is too long, is would cut all other Components -> so cut them after
+				//a specific amount of signs
+				if(streamNames[i].length() >= MAX_STREAM_NAME_LENGTH)
+				{
+					streamNames_short[i] = streamNames[i].substring(0, MAX_STREAM_NAME_LENGTH) + "...";
+				}
+				else
+				{
+					streamNames_short[i] = streamNames[i];
+				}
 			}
 			
 			//finally create nameBox
@@ -180,6 +211,7 @@ public class Gui_AddSchedul extends JDialog implements WindowListener{
 					break;
 				}
 			}
+			
 			//set job enabled
 			enableCB.setSelected(oldJob.isJobenabled());
 		}
@@ -275,6 +307,8 @@ public class Gui_AddSchedul extends JDialog implements WindowListener{
 		c.weightx = 0.0;
 		buttonPanel.add(abortButton,c);
 		
+		this.nameBox.setRenderer(new MyComboBoxRenderer());
+		
 		//add listeners
 		addButton.addActionListener(new AddListener());
 		abortButton.addActionListener(new AbortListener());
@@ -283,13 +317,13 @@ public class Gui_AddSchedul extends JDialog implements WindowListener{
 		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
         // get resolution
         Dimension screenDim = Toolkit.getDefaultToolkit().getScreenSize();
+        pack();
+        Dimension windowDim = getSize();
         // calculates the app. values
-        int x = (screenDim.width - Integer.valueOf(width))/2;
-        int y = (screenDim.height - Integer.valueOf(high))/2;
+        int x = (screenDim.width - windowDim.width)/2;
+        int y = (screenDim.height - windowDim.height)/2;
         // set location
         setLocation(x, y);
-		// setSize
-        setSize(new Dimension(Integer.valueOf(width),Integer.valueOf(high)));
         // make visible
 		setVisible(true);
 	}
@@ -423,4 +457,33 @@ public class Gui_AddSchedul extends JDialog implements WindowListener{
 	public void windowDeiconified (WindowEvent e) { }
 	public void windowActivated (WindowEvent e) { }
 	public void windowDeactivated (WindowEvent e) { }
+	
+	private class MyComboBoxRenderer extends BasicComboBoxRenderer
+	{
+		private static final long serialVersionUID = 8399268144344845430L;
+
+		public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus)
+		{
+			if (isSelected)
+			{
+				setBackground(list.getSelectionBackground());
+				setForeground(list.getSelectionForeground());
+				
+				if (-1 < index)
+				{
+					list.setToolTipText(streamNames[index]);
+				}
+			}
+			
+			else
+			{
+				setBackground(list.getBackground());
+				setForeground(list.getForeground());
+			}
+			
+			setFont(list.getFont());
+			setText((value == null) ? "" : value.toString());
+			return this;
+		}
+	}
 }
