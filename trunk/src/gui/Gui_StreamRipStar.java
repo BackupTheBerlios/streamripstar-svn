@@ -1162,9 +1162,11 @@ public class Gui_StreamRipStar extends JFrame implements WindowListener
 		}
 	}
 	
-	class PreferencesListener implements ActionListener {
-		public void actionPerformed(ActionEvent e) {
-			new Gui_Settings(Gui_StreamRipStar.this);
+	class PreferencesListener implements ActionListener
+	{
+		public void actionPerformed(ActionEvent e)
+		{
+			new Gui_Settings2(Gui_StreamRipStar.this);
 		}
 	}
 	

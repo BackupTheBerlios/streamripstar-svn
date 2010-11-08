@@ -28,10 +28,7 @@ public class Gui_AddSchedul extends JDialog implements WindowListener{
 	
 	private ImageIcon abortIcon = new ImageIcon((URL)getClass().getResource("/Icons/abort_small.png"));
 	private ImageIcon addIcon = new ImageIcon((URL)getClass().getResource("/Icons/ok_small.png"));
-	
-	private int width = 300;
-	private int high = 350;
-	
+
 	private JPanel datePanel = new JPanel();
 	private JPanel buttonPanel = new JPanel();
 	
