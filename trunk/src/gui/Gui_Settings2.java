@@ -196,35 +196,42 @@ public class Gui_Settings2 extends JDialog
 		
 		//now pack them together
 		GridBagConstraints c = new GridBagConstraints();
-		c.fill = GridBagConstraints.VERTICAL;
+		c.fill = GridBagConstraints.HORIZONTAL;
 		c.insets = new Insets( 1, 1, 1, 1);
-		c.anchor = GridBagConstraints.NORTH;
+		c.anchor = GridBagConstraints.PAGE_START;
 		
 //TAB 1:		
 		c.gridy = 0;
 		c.gridx = 0;
+		c.weightx = 1;
+		c.weighty = 0;
 		pathAudioPanel.add(internalaudioPanel,c);
 		c.gridy = 1;
 		pathAudioPanel.add(pathPanel,c);
 		c.gridy = 2;
+		c.weighty = 1;
 		pathAudioPanel.add(new JLabel(""),c);
 		
 //TAB 2:
 		c.gridy = 0;
+		c.weighty = 0;
 		lookAndFeelPanel.add(sysTrayIconPanel,c);
 		c.gridy = 1;
 		lookAndFeelPanel.add(otherLookAndFeelPanel,c);
 		c.gridy = 2;
 		lookAndFeelPanel.add(actionPanel,c);
 		c.gridy = 3;
+		c.weighty = 1;
 		lookAndFeelPanel.add(new JLabel(""),c);
 		
 //TAB 3:
 		c.gridy = 0;
+		c.weighty = 0;
 		langLogPanel.add(languagePanel,c);
 		c.gridy = 1;
 		langLogPanel.add(logPanel,c);
 		c.gridy = 2;
+		c.weighty = 1;
 		langLogPanel.add(new JLabel(""),c);
 		
 		mainPanel.add(commonPanel);
@@ -235,6 +242,7 @@ public class Gui_Settings2 extends JDialog
 //1. line: Path to streamripper
 		c.gridy = 0;
 		c.gridx = 0;
+		c.weighty = 0;
 		pathPanel.add(ripLabel,c);
 		c.gridx = 1;
 		c.weightx = 1.0;
@@ -860,19 +868,16 @@ public class Gui_Settings2 extends JDialog
 				switch (list.getSelectedIndex())
 				{
 					case 0:	//common preferences are selected
-						mainPanel.add(commonPanel);
+						mainPanel.add(lookAndFeelPanel);
 						break;
 					case 1:
-						mainPanel.add(pathPanel);
+						mainPanel.add(pathAudioPanel);
 						break;
 					case 2:
-						mainPanel.add(actionPanel);
-						break;
-					case 3:
-						mainPanel.add(languagePanel);
+						mainPanel.add(langLogPanel);
 						break;
 					default:
-						mainPanel.add(commonPanel);
+						mainPanel.add(lookAndFeelPanel);
 				}
 			}
 		}
