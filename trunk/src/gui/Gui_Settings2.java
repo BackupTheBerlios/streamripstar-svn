@@ -60,18 +60,28 @@ public class Gui_Settings2 extends JDialog
 	
 	private ImageIcon commonPrefIcon = new ImageIcon((URL)getClass().getResource("/Icons/preferences/testicon_64.png"));
 	private ImageIcon pathPrefIcon = new ImageIcon((URL)getClass().getResource("/Icons/preferences/testicon_64.png"));
-	private ImageIcon langPrefIcon = new ImageIcon((URL)getClass().getResource("/Icons/preferences/testicon_64.png"));
 	private ImageIcon audioPlayerPrefIcon = new ImageIcon((URL)getClass().getResource("/Icons/preferences/testicon_64.png"));
-	private ImageIcon actionAndLogPrefIcon = new ImageIcon((URL)getClass().getResource("/Icons/preferences/testicon_64.png"));
 	
 	private OnlyOneActivePanel mainPanel = new OnlyOneActivePanel();
 	private JScrollPane mainSP = new JScrollPane(mainPanel);
+	//pathAudioPanel = pathPanel + audioPanel
+	private JPanel pathAudioPanel = new JPanel();
 	private JPanel pathPanel = new JPanel();
-	private JPanel languagePanel = new JPanel();
+	private JPanel internalaudioPanel = new JPanel();
+	
+	//lookAndFeelPanel = look and feel
+	private JPanel lookAndFeelPanel = new JPanel();
+	private JPanel sysTrayIconPanel = new JPanel();
+	private JPanel otherLookAndFeelPanel = new JPanel(); 
 	private JPanel actionPanel = new JPanel();
+	
+	//langLogPanel = language + log panel
+	private JPanel langLogPanel = new JPanel();
+	private JPanel languagePanel = new JPanel();
+	private JPanel logPanel = new JPanel();
+	
 	private JPanel buttonPanel = new JPanel();
 	private JPanel commonPanel = new JPanel();
-	private JPanel internPanel = new JPanel();
 	
 	private JTextField ripperPathField = new JTextField("",30) ;
 	private JTextField shoutcastPlayer = new JTextField("",30) ;
@@ -142,11 +152,9 @@ public class Gui_Settings2 extends JDialog
 		this.setModalityType(ModalityType.APPLICATION_MODAL);
 	
 		Object elements[][] = {
-				{"Allgemein",commonPrefIcon},
-				{"Pfade",pathPrefIcon},
-				{"Audio",audioPlayerPrefIcon},
-				{"Sprache",langPrefIcon},
-				{"Aktionen und Loggen",actionAndLogPrefIcon}};
+				{"Look And Feel",commonPrefIcon},
+				{"Audio and Programs",pathPrefIcon},
+				{"Language and Log",audioPlayerPrefIcon}};
 		
 		list = new JList(elements);
 		list.setCellRenderer(new IconCellRenderer());
@@ -165,33 +173,65 @@ public class Gui_Settings2 extends JDialog
 		
 		
 		translationTA.setEditable(false);
-//		
-//		settingsPane.addTab("General", commonPanel);
-//		settingsPane.addTab("Intern Player", internPanel);
-//		settingsPane.addTab("Path",pathPanel);
-//		settingsPane.addTab("Action",actionPanel);
-//		settingsPane.addTab("Language",langIcon,languagePanel);
-//		
-		setLayout(new BorderLayout());
+
 		
+
+		//pack the basic layout
+		setLayout(new BorderLayout());
 		add(new JScrollPane(list), BorderLayout.WEST);
-//		add(commonPanel, BorderLayout.CENTER);
 		add(mainSP, BorderLayout.CENTER);
 		add(buttonPanel, BorderLayout.SOUTH);
 		
-		mainPanel.add(commonPanel);
-		
+		//Set Layouts for JPanels
+		pathAudioPanel.setLayout(new GridBagLayout());
 		pathPanel.setLayout(new GridBagLayout());
-		languagePanel.setLayout(new GridBagLayout());
+		internalaudioPanel.setLayout(new GridBagLayout());
+		lookAndFeelPanel.setLayout(new GridBagLayout());
+		sysTrayIconPanel.setLayout(new GridBagLayout());
+		otherLookAndFeelPanel.setLayout(new GridBagLayout());
 		actionPanel.setLayout(new GridBagLayout());
+		langLogPanel.setLayout(new GridBagLayout());
+		languagePanel.setLayout(new GridBagLayout());
+		logPanel.setLayout(new GridBagLayout());
+		
+		//now pack them together
+		GridBagConstraints c = new GridBagConstraints();
+		c.fill = GridBagConstraints.VERTICAL;
+		c.insets = new Insets( 1, 1, 1, 1);
+		c.anchor = GridBagConstraints.NORTH;
+		
+//TAB 1:		
+		c.gridy = 0;
+		c.gridx = 0;
+		pathAudioPanel.add(internalaudioPanel,c);
+		c.gridy = 1;
+		pathAudioPanel.add(pathPanel,c);
+		c.gridy = 2;
+		pathAudioPanel.add(new JLabel(""),c);
+		
+//TAB 2:
+		c.gridy = 0;
+		lookAndFeelPanel.add(sysTrayIconPanel,c);
+		c.gridy = 1;
+		lookAndFeelPanel.add(otherLookAndFeelPanel,c);
+		c.gridy = 2;
+		lookAndFeelPanel.add(actionPanel,c);
+		c.gridy = 3;
+		lookAndFeelPanel.add(new JLabel(""),c);
+		
+//TAB 3:
+		c.gridy = 0;
+		langLogPanel.add(languagePanel,c);
+		c.gridy = 1;
+		langLogPanel.add(logPanel,c);
+		c.gridy = 2;
+		langLogPanel.add(new JLabel(""),c);
+		
+		mainPanel.add(commonPanel);
 		buttonPanel.setLayout(new GridBagLayout());
 		commonPanel.setLayout(new GridBagLayout());
-		
-		GridBagConstraints c = new GridBagConstraints();
-		c.fill = GridBagConstraints.HORIZONTAL;
+
 		c.insets = new Insets( 2, 5, 2, 5);
-		c.anchor = GridBagConstraints.NORTHWEST;
-		
 //1. line: Path to streamripper
 		c.gridy = 0;
 		c.gridx = 0;
