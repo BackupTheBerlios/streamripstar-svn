@@ -21,6 +21,8 @@ import java.io.FileOutputStream;
 import java.net.URL;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
+
+import javax.swing.BorderFactory;
 import javax.swing.DefaultListCellRenderer;
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
@@ -39,6 +41,7 @@ import javax.swing.JTextField;
 import javax.swing.KeyStroke;
 import javax.swing.ListCellRenderer;
 import javax.swing.UIManager;
+import javax.swing.border.TitledBorder;
 import javax.xml.stream.XMLEventFactory;
 import javax.xml.stream.XMLEventWriter;
 import javax.xml.stream.XMLInputFactory;
@@ -140,6 +143,10 @@ public class Gui_Settings2 extends JDialog
 	private JCheckBox useInternalAudioPlayerCB = new JCheckBox("Use internal check box (Requires gstreamer installed");
 	private JCheckBox useAnotherLnfBox = new JCheckBox("Use another Look and Feel");
 
+	private TitledBorder sysTrayTabTitle = BorderFactory.createTitledBorder("System Tray Icon");
+	private TitledBorder lookAndFeelTabTitle = BorderFactory.createTitledBorder("Look and Feel");
+	private TitledBorder actionsTabTitle = BorderFactory.createTitledBorder("Actions on columns");
+	
 	private UIManager.LookAndFeelInfo[] lookAndFeelInfos;
 
 	private ResourceBundle trans = ResourceBundle.getBundle("translations.StreamRipStar");
@@ -165,7 +172,8 @@ public class Gui_Settings2 extends JDialog
 		lookAndFeelInfos = UIManager.getInstalledLookAndFeels();
 		lookAndFeelList = new String[lookAndFeelInfos.length];
 		
-		for(int i=0; i < lookAndFeelInfos.length; i++) {
+		for(int i=0; i < lookAndFeelInfos.length; i++)
+		{
 			lookAndFeelList[i] = lookAndFeelInfos[i].getName();
 		}
 		
@@ -194,13 +202,64 @@ public class Gui_Settings2 extends JDialog
 		languagePanel.setLayout(new GridBagLayout());
 		logPanel.setLayout(new GridBagLayout());
 		
+		//set borders
+		sysTrayIconPanel.setBorder(sysTrayTabTitle);
+		otherLookAndFeelPanel.setBorder(lookAndFeelTabTitle);
+		actionPanel.setBorder(actionsTabTitle);
+		
+		
 		//now pack them together
 		GridBagConstraints c = new GridBagConstraints();
 		c.fill = GridBagConstraints.HORIZONTAL;
 		c.insets = new Insets( 1, 1, 1, 1);
 		c.anchor = GridBagConstraints.PAGE_START;
 		
-//TAB 1:		
+
+		
+//TAB 1: lookAndFeelPanel
+		c.gridx = 0;
+		c.gridy = 0;
+		c.weighty = 0;
+		c.weightx = 1;
+		lookAndFeelPanel.add(sysTrayIconPanel,c);
+		c.gridy = 1;
+		lookAndFeelPanel.add(otherLookAndFeelPanel,c);
+		c.gridy = 2;
+		lookAndFeelPanel.add(actionPanel,c);
+		c.gridy = 3;
+		c.weighty = 1;
+		lookAndFeelPanel.add(new JLabel(""),c);
+		
+		//TAB 1 - Panel 1: sysTrayIconPanel 
+			c.gridy = 0;
+			c.gridx = 0;
+			c.weighty = 0;
+			sysTrayIconPanel.add(activeTrayIcon,c);
+			c.gridy = 1;
+			sysTrayIconPanel.add(windowClosing,c);
+			c.gridy = 2;
+			c.gridx = 1;
+			c.gridwidth=2;
+			sysTrayIconPanel.add(windowActionBox,c);
+			
+		//TAB 1 - Panel 2: otherLookAndFeelPanel
+			c.gridy = 0;
+			c.gridx = 0;
+			c.weightx = 1;
+			c.weighty = 0;
+			c.gridwidth=2;
+			otherLookAndFeelPanel.add(useAnotherLnfBox,c);
+			c.weightx = 0;
+			c.gridy = 1;
+			c.gridwidth=1;
+			otherLookAndFeelPanel.add(lnfLabel,c);
+			c.gridx = 1;
+			otherLookAndFeelPanel.add(LookAndFeelBox,c);
+			c.gridy = 2;
+			c.gridx = 0;
+			otherLookAndFeelPanel.add(showTextCheckBox,c);
+
+//TAB X:		
 		c.gridy = 0;
 		c.gridx = 0;
 		c.weightx = 1;
@@ -211,18 +270,6 @@ public class Gui_Settings2 extends JDialog
 		c.gridy = 2;
 		c.weighty = 1;
 		pathAudioPanel.add(new JLabel(""),c);
-		
-//TAB 2:
-		c.gridy = 0;
-		c.weighty = 0;
-		lookAndFeelPanel.add(sysTrayIconPanel,c);
-		c.gridy = 1;
-		lookAndFeelPanel.add(otherLookAndFeelPanel,c);
-		c.gridy = 2;
-		lookAndFeelPanel.add(actionPanel,c);
-		c.gridy = 3;
-		c.weighty = 1;
-		lookAndFeelPanel.add(new JLabel(""),c);
 		
 //TAB 3:
 		c.gridy = 0;
@@ -354,38 +401,6 @@ public class Gui_Settings2 extends JDialog
 		actionPanel.add(currentTrackBox,c);
 		
 //CommonPanel
-	//1.Line: activeTrayIcon
-		c.insets = new Insets( 2, 5, 2, 5);
-		c.gridy = 0;
-		c.gridx = 0;
-		c.gridwidth=2;
-		commonPanel.add(activeTrayIcon,c);
-	//2.Line: activeTrayIcon
-		c.gridwidth=1;
-		c.gridy = 1;
-		commonPanel.add(windowClosing,c);
-		c.gridx = 1;
-		commonPanel.add(windowActionBox,c);
-		c.gridx = 2;
-		c.weightx = 1;
-		commonPanel.add(new JLabel(""),c);
-	//3.Line: activeTrayIcon
-		c.gridy = 2;
-		c.gridx = 0;
-		c.gridwidth=2;
-		commonPanel.add(useAnotherLnfBox,c);
-		c.gridy = 3;
-		c.gridwidth=1;
-		commonPanel.add(lnfLabel,c);
-		c.gridx = 1;
-		commonPanel.add(LookAndFeelBox,c);
-		c.gridx = 2;
-		c.weightx = 1;
-		commonPanel.add(new JLabel(""),c);
-	//4.Line: Show Text?
-		c.gridy = 4;
-		c.gridx = 0;
-		commonPanel.add(showTextCheckBox,c);
 	//5.Line: Shall we use the internal audio Player ?
 		c.gridy = 5;
 		c.gridx = 0;
@@ -439,6 +454,9 @@ public class Gui_Settings2 extends JDialog
 		statusBox.setSelectedIndex(4);
 		nameBox.setSelectedIndex(4);
 		currentTrackBox.setSelectedIndex(4);
+		
+		//set default panel when start
+		mainPanel.add(lookAndFeelPanel);
 		
 		repaintCommon();
 		
@@ -939,6 +957,7 @@ public class Gui_Settings2 extends JDialog
 			activePanel = newPanel;
 			super.add(newPanel, BorderLayout.CENTER);
 			this.repaint();
+			this.updateUI();
 		}
 	}
 
