@@ -109,6 +109,7 @@ public class Gui_Settings2 extends JDialog
 	private JLabel currentTrackLabel = new JLabel("Current Track: ");
 	private JLabel windowClosing = new JLabel("Action when clicking on closing window");
 	private JLabel lnfLabel = new JLabel("All installed Look and Feels");
+	private JLabel logLabel = new JLabel("How much do you want to log?");
 	
 	private JTextArea translationTA = new JTextArea();
 	private JScrollPane translationSP = new JScrollPane(translationTA);
@@ -127,6 +128,7 @@ public class Gui_Settings2 extends JDialog
 	private String[] languages = {"English", "German"};
 	private String[] actions = {"none","Open Browser","edit Stream","start/stop", "play Stream"};
 	private String[] windowActions = {"do nothing", "Exit StreamRipStar", "Send in Systemtray"};
+	private String[] logLevel = {"Nothing", "Error", "Normal", "Everything"};
 	private String[] lookAndFeelList;
 	
 	private String lookAndFeelBox_className = null;
@@ -137,6 +139,7 @@ public class Gui_Settings2 extends JDialog
 	private JComboBox currentTrackBox = new JComboBox(actions);
 	private JComboBox windowActionBox = new JComboBox(windowActions);
 	private JComboBox LookAndFeelBox = new JComboBox();
+	private JComboBox logLevelBox = new JComboBox(logLevel);
 	
 	private JCheckBox activeTrayIcon = new JCheckBox("Show Systemtray (requires restart)");
 	private JCheckBox showTextCheckBox = new JCheckBox("Show Text under Icons",true);
@@ -416,8 +419,14 @@ public class Gui_Settings2 extends JDialog
 			c.gridwidth = 2;
 			languagePanel.add(translationSP,c);
 		
-		//TAB 1 - Panel 1: Logpanel	
-			
+		//TAB 1 - Panel 1: Logpanel
+			c.gridy = 0;
+			c.gridx = 0;
+			c.gridwidth = 1;
+			logPanel.add(logLabel,c);
+			c.gridx = 1;
+			c.weightx = 1;
+			logPanel.add(logLevelBox,c);
 
 		
 
@@ -688,6 +697,7 @@ public class Gui_Settings2 extends JDialog
 			if(useAnotherLnfBox.isSelected()) {
 				lookAndFeel_index = eventFactory.createAttribute( "LookAndFeelBox_className",lookAndFeelInfos[LookAndFeelBox.getSelectedIndex()].getClassName());
 			}
+			XMLEvent logLevel_index = eventFactory.createAttribute( "logLevel_index",  String.valueOf(logLevelBox.getSelectedIndex())); 
 			XMLEvent endRoot = eventFactory.createEndElement( "", "", "Settings" ); 
 			XMLEvent endDocument = eventFactory.createEndDocument();
 			
@@ -708,7 +718,8 @@ public class Gui_Settings2 extends JDialog
 			writer.add( currentTrackBox_index ); 
 			writer.add( langMenu_index ); 
 			writer.add( windowActionBox_index ); 
-			writer.add( lookAndFeel_index ); 
+			writer.add( lookAndFeel_index );
+			writer.add( logLevel_index );
 			writer.add( endRoot ); 
 			writer.add( endDocument ); 
 			writer.close();
@@ -815,6 +826,9 @@ public class Gui_Settings2 extends JDialog
 				    			} else {
 				    				lookAndFeelBox_className = parser.getAttributeValue(i);
 				    			}
+				    		}
+				    		else if (parser.getAttributeLocalName( i ).equals("logLevel_index")) {
+				    			this.logLevelBox.setSelectedIndex(Integer.valueOf(parser.getAttributeValue(i)));
 				    		}
 				    	}
 				    	break; 
