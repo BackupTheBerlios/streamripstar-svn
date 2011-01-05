@@ -451,6 +451,7 @@ public class Gui_Settings2 extends JDialog
 		browseFileBrowserPath.addActionListener(new FileBrowserListener());
 		activeTrayIcon.addActionListener(new ChangeTrayFields());
 		useAnotherLnfBox.addActionListener(new ChangeTrayFields());
+		useInternalAudioPlayerCB.addActionListener(new ChangeTrayFields());
 		
 		//set new language
 		setLanguage();
@@ -862,6 +863,16 @@ public class Gui_Settings2 extends JDialog
 		} else {
 			LookAndFeelBox.setEnabled(false);
 			lnfLabel.setEnabled(false);
+		}
+		
+		if(this.useInternalAudioPlayerCB.isSelected()){
+			mediaPlayer.setEnabled(false);
+			shoutcastPlayer.setEnabled(false);
+			browseMP3Player.setEnabled(false);
+		} else {
+			mediaPlayer.setEnabled(true);
+			shoutcastPlayer.setEnabled(true);
+			browseMP3Player.setEnabled(true);
 		}
 	}
 	
