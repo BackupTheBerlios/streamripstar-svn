@@ -144,8 +144,12 @@ public class Gui_Settings2 extends JDialog
 	private JCheckBox useAnotherLnfBox = new JCheckBox("Use another Look and Feel");
 
 	private TitledBorder sysTrayTabTitle = BorderFactory.createTitledBorder("System Tray Icon");
-	private TitledBorder lookAndFeelTabTitle = BorderFactory.createTitledBorder("Look and Feel");
-	private TitledBorder actionsTabTitle = BorderFactory.createTitledBorder("Actions on columns");
+	private TitledBorder lookAndFeelTabTitle = BorderFactory.createTitledBorder("Look And Feel");
+	private TitledBorder actionsTabTitle = BorderFactory.createTitledBorder("Actions On Columns");
+	private TitledBorder languageTabTitle = BorderFactory.createTitledBorder("Language");
+	private TitledBorder logTabTitle = BorderFactory.createTitledBorder("Logging");
+	private TitledBorder internalAudioTitle = BorderFactory.createTitledBorder("Audio");
+	private TitledBorder pathTitle = BorderFactory.createTitledBorder("Path To Programs");
 	
 	private UIManager.LookAndFeelInfo[] lookAndFeelInfos;
 
@@ -178,11 +182,8 @@ public class Gui_Settings2 extends JDialog
 		}
 		
 		LookAndFeelBox = new JComboBox(lookAndFeelList);
-		
-		
-		translationTA.setEditable(false);
 
-		
+		translationTA.setEditable(false);
 
 		//pack the basic layout
 		setLayout(new BorderLayout());
@@ -201,12 +202,17 @@ public class Gui_Settings2 extends JDialog
 		langLogPanel.setLayout(new GridBagLayout());
 		languagePanel.setLayout(new GridBagLayout());
 		logPanel.setLayout(new GridBagLayout());
+		buttonPanel.setLayout(new GridBagLayout());
+		commonPanel.setLayout(new GridBagLayout());
 		
 		//set borders
 		sysTrayIconPanel.setBorder(sysTrayTabTitle);
 		otherLookAndFeelPanel.setBorder(lookAndFeelTabTitle);
 		actionPanel.setBorder(actionsTabTitle);
-		
+		languagePanel.setBorder(languageTabTitle);
+		logPanel.setBorder(logTabTitle);
+		internalaudioPanel.setBorder(internalAudioTitle);
+		pathPanel.setBorder(pathTitle);
 		
 		//now pack them together
 		GridBagConstraints c = new GridBagConstraints();
@@ -258,8 +264,42 @@ public class Gui_Settings2 extends JDialog
 			c.gridy = 2;
 			c.gridx = 0;
 			otherLookAndFeelPanel.add(showTextCheckBox,c);
-
-//TAB X:		
+			
+		//TAB 1 - Panel 3: actionPanel
+			//1. Line: explain what you are doing
+			c.insets = new Insets( 5, 5, 10, 5);
+			c.weightx = 0.0;
+			c.gridy = 0;
+			c.gridx = 0;
+			c.gridwidth = 7;
+			actionPanel.add(explainActionLabel,c);
+			c.gridx = 0;
+			c.weightx = 1;
+			actionPanel.add(new JLabel(""),c);
+			//2. Line: click on status
+			c.insets = new Insets( 2, 30, 2, 5);
+			c.weightx = 0;
+			c.gridwidth = 1;
+			c.gridy = 1;
+			c.gridx = 0;
+			actionPanel.add(statusLabel,c);
+			c.gridx = 1;
+			actionPanel.add(statusBox,c);
+			//3. Line: click on Name
+			c.gridy = 2;
+			c.gridx = 0;
+			actionPanel.add(nameLabel,c);
+			c.gridx = 1;
+			actionPanel.add(nameBox,c);
+			//4. Line: click on current Track
+			c.gridy = 3;
+			c.gridx = 0;
+			actionPanel.add(currentTrackLabel,c);
+			c.gridx = 1;
+			actionPanel.add(currentTrackBox,c);
+			
+//TAB 2: Path and Audio	
+		c.insets = new Insets( 1, 1, 1, 1);
 		c.gridy = 0;
 		c.gridx = 0;
 		c.weightx = 1;
@@ -270,8 +310,69 @@ public class Gui_Settings2 extends JDialog
 		c.gridy = 2;
 		c.weighty = 1;
 		pathAudioPanel.add(new JLabel(""),c);
+
+		//TAB 2 - Panel 1: Internal Audio
+			c.gridy = 0;
+			c.gridx = 0;
+			c.weighty = 0;
+			internalaudioPanel.add(useInternalAudioPlayerCB,c);
 		
-//TAB 3:
+		//TAB 2 - Panel 2: Paths
+			//1. line: Path to streamripper
+			c.gridy = 0;
+			c.gridx = 0;
+			c.weighty = 0;
+			pathPanel.add(ripLabel,c);
+			c.gridx = 1;
+			c.weightx = 1.0;
+			pathPanel.add(ripperPathField,c);
+			c.gridx = 2;
+			c.weightx = 0.0;
+			pathPanel.add(browseRipper,c);
+			//2. line: Path to shoutcast player
+			c.gridy = 1;
+			c.gridx = 0;
+			pathPanel.add(mediaPlayer,c);
+			c.gridx = 1;
+			c.weightx = 1.0;
+			pathPanel.add(shoutcastPlayer,c);
+			c.gridx = 2;
+			c.weightx = 0.0;
+			pathPanel.add(browseMP3Player,c);
+			//3. line: path to generall savepath for the stream
+			c.gridy = 2;
+			c.gridx = 0;
+			pathPanel.add(generellPathLabel,c);
+			c.gridx = 1;
+			c.weightx = 1.0;
+			pathPanel.add(generellPathField,c);
+			c.gridx = 2;
+			c.weightx = 0.0;
+			pathPanel.add(browseGenerellPath,c);
+			//4. line: path ot webbrowser
+			c.gridy = 3;
+			c.gridx = 0;
+			pathPanel.add(webBrowserLabel,c);
+			c.gridx = 1;
+			c.weightx = 1.0;
+			pathPanel.add(webBrowserField,c);
+			c.gridx = 2;
+			c.weightx = 0.0;
+			pathPanel.add(browseWebBrowserPath,c);
+			//5. line: path ot fielbrowser
+			c.gridy = 4;
+			c.gridx = 0;
+			pathPanel.add(fileBrowserLabel,c);
+			c.gridx = 1;
+			c.weightx = 1.0;		
+			pathPanel.add(fileBrowserField,c);
+			c.gridx = 2;
+			c.weightx = 0.0;
+			pathPanel.add(browseFileBrowserPath,c);
+		
+		
+		
+//TAB 3: Language and Logging
 		c.gridy = 0;
 		c.weighty = 0;
 		langLogPanel.add(languagePanel,c);
@@ -281,132 +382,41 @@ public class Gui_Settings2 extends JDialog
 		c.weighty = 1;
 		langLogPanel.add(new JLabel(""),c);
 		
-		mainPanel.add(commonPanel);
-		buttonPanel.setLayout(new GridBagLayout());
-		commonPanel.setLayout(new GridBagLayout());
+		//TAB 1 - Panel 1: languagePanel
+			//1. line on lang: langchange
+			c.weightx = 0.0;
+			c.gridy = 0;
+			c.gridx = 0;
+			languagePanel.add(langMenu, c);
+			c.weightx = 1.0;
+			c.gridx = 1;
+			languagePanel.add(new JLabel(""), c);
+			//2. line on lang: langchange
+			c.weightx = 0.0;
+			c.gridy = 1;
+			c.gridx = 0;
+			c.gridwidth = 2;
+			languagePanel.add(reqRestart,c);
+			//3. line on lang: langchange
+			c.weightx = 0.0;
+			c.gridy = 2;
+			c.gridx = 0;
+			c.gridwidth = 2;
+			languagePanel.add(new JLabel(" "),c);
+			//4. line on lang: langchange
+			c.weightx = 0.0;
+			c.weighty = 0.0;
+			c.gridy = 3;
+			c.gridx = 0;
+			c.gridwidth = 2;
+			languagePanel.add(translationSP,c);
+		
+		//TAB 1 - Panel 1: Logpanel	
+			
 
-		c.insets = new Insets( 2, 5, 2, 5);
-//1. line: Path to streamripper
-		c.gridy = 0;
-		c.gridx = 0;
-		c.weighty = 0;
-		pathPanel.add(ripLabel,c);
-		c.gridx = 1;
-		c.weightx = 1.0;
-		pathPanel.add(ripperPathField,c);
-		c.gridx = 2;
-		c.weightx = 0.0;
-		pathPanel.add(browseRipper,c);
-//2. line: Path to shoutcast player
-		c.gridy = 1;
-		c.gridx = 0;
-		pathPanel.add(mediaPlayer,c);
-		c.gridx = 1;
-		c.weightx = 1.0;
-		pathPanel.add(shoutcastPlayer,c);
-		c.gridx = 2;
-		c.weightx = 0.0;
-		pathPanel.add(browseMP3Player,c);
-//3. line: path to generall savepath for the stream
-		c.gridy = 2;
-		c.gridx = 0;
-		pathPanel.add(generellPathLabel,c);
-		c.gridx = 1;
-		c.weightx = 1.0;
-		pathPanel.add(generellPathField,c);
-		c.gridx = 2;
-		c.weightx = 0.0;
-		pathPanel.add(browseGenerellPath,c);
-//4. line: path ot webbrowser
-		c.gridy = 3;
-		c.gridx = 0;
-		pathPanel.add(webBrowserLabel,c);
-		c.gridx = 1;
-		c.weightx = 1.0;
-		pathPanel.add(webBrowserField,c);
-		c.gridx = 2;
-		c.weightx = 0.0;
-		pathPanel.add(browseWebBrowserPath,c);
-//5. line: path ot fielbrowser
-		c.gridy = 4;
-		c.gridx = 0;
-		pathPanel.add(fileBrowserLabel,c);
-		c.gridx = 1;
-		c.weightx = 1.0;		
-		pathPanel.add(fileBrowserField,c);
-		c.gridx = 2;
-		c.weightx = 0.0;
-		pathPanel.add(browseFileBrowserPath,c);
 		
-//Language Panel
-	//1. line on lang: langchange
-		c.weightx = 0.0;
-		c.gridy = 0;
-		c.gridx = 0;
-		languagePanel.add(langMenu, c);
-		c.weightx = 1.0;
-		c.gridx = 1;
-		languagePanel.add(new JLabel(""), c);
-	//2. line on lang: langchange
-		c.weightx = 0.0;
-		c.gridy = 1;
-		c.gridx = 0;
-		c.gridwidth = 2;
-		languagePanel.add(reqRestart,c);
-	//3. line on lang: langchange
-		c.weightx = 0.0;
-		c.gridy = 2;
-		c.gridx = 0;
-		c.gridwidth = 2;
-		languagePanel.add(new JLabel(" "),c);
-	//4. line on lang: langchange
-		c.weightx = 0.0;
-		c.weighty = 0.0;
-		c.gridy = 3;
-		c.gridx = 0;
-		c.gridwidth = 2;
-		languagePanel.add(translationSP,c);
-		
-//ACTIONPANEL
-	//1. Line: explain what you are doing
-		c.insets = new Insets( 5, 5, 10, 5);
-		c.weightx = 0.0;
-		c.gridy = 0;
-		c.gridx = 0;
-		c.gridwidth = 7;
-		actionPanel.add(explainActionLabel,c);
-		c.gridx = 0;
-		c.weightx = 1;
-		actionPanel.add(new JLabel(""),c);
-	//2. Line: click on status
-		c.insets = new Insets( 2, 30, 2, 5);
-		c.weightx = 0;
-		c.gridwidth = 1;
-		c.gridy = 1;
-		c.gridx = 0;
-		actionPanel.add(statusLabel,c);
-		c.gridx = 1;
-		actionPanel.add(statusBox,c);
-	//3. Line: click on Name
-		c.gridy = 2;
-		c.gridx = 0;
-		actionPanel.add(nameLabel,c);
-		c.gridx = 1;
-		actionPanel.add(nameBox,c);
-	//4. Line: click on current Track
-		c.gridy = 3;
-		c.gridx = 0;
-		actionPanel.add(currentTrackLabel,c);
-		c.gridx = 1;
-		actionPanel.add(currentTrackBox,c);
-		
-//CommonPanel
-	//5.Line: Shall we use the internal audio Player ?
-		c.gridy = 5;
-		c.gridx = 0;
-		commonPanel.add(useInternalAudioPlayerCB,c);
 
-//BUTTONPANEL
+	//BUTTONPANEL
 		c.insets = new Insets( 5, 5,5 ,5 );
 		c.weightx = 0;
 		c.gridy = 0;
