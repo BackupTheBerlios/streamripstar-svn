@@ -305,6 +305,8 @@ public class Gui_Settings2 extends JDialog
 		c.weightx = 1;
 		c.weighty = 0;
 		pathAudioPanel.add(internalaudioPanel,c);
+		
+		c.weightx = 0;
 		c.gridy = 1;
 		pathAudioPanel.add(pathPanel,c);
 		c.gridy = 2;
@@ -315,8 +317,21 @@ public class Gui_Settings2 extends JDialog
 			c.gridy = 0;
 			c.gridx = 0;
 			c.weighty = 0;
+			c.gridwidth = 3;
+			c.insets = new Insets( 1, 1, 4, 1);
 			internalaudioPanel.add(useInternalAudioPlayerCB,c);
-		
+			c.insets = new Insets( 1, 1, 1, 1);
+			c.gridwidth = 1;
+			c.gridy = 1;
+			c.gridx = 0;
+			internalaudioPanel.add(mediaPlayer,c);
+			c.gridx = 1;
+			c.weightx = 1.0;
+			internalaudioPanel.add(shoutcastPlayer,c);
+			c.gridx = 2;
+			c.weightx = 0.0;
+			internalaudioPanel.add(browseMP3Player,c);
+			
 		//TAB 2 - Panel 2: Paths
 			//1. line: Path to streamripper
 			c.gridy = 0;
@@ -329,18 +344,8 @@ public class Gui_Settings2 extends JDialog
 			c.gridx = 2;
 			c.weightx = 0.0;
 			pathPanel.add(browseRipper,c);
-			//2. line: Path to shoutcast player
-			c.gridy = 1;
-			c.gridx = 0;
-			pathPanel.add(mediaPlayer,c);
-			c.gridx = 1;
-			c.weightx = 1.0;
-			pathPanel.add(shoutcastPlayer,c);
-			c.gridx = 2;
-			c.weightx = 0.0;
-			pathPanel.add(browseMP3Player,c);
 			//3. line: path to generall savepath for the stream
-			c.gridy = 2;
+			c.gridy = 1;
 			c.gridx = 0;
 			pathPanel.add(generellPathLabel,c);
 			c.gridx = 1;
@@ -350,7 +355,7 @@ public class Gui_Settings2 extends JDialog
 			c.weightx = 0.0;
 			pathPanel.add(browseGenerellPath,c);
 			//4. line: path ot webbrowser
-			c.gridy = 3;
+			c.gridy = 2;
 			c.gridx = 0;
 			pathPanel.add(webBrowserLabel,c);
 			c.gridx = 1;
@@ -360,7 +365,7 @@ public class Gui_Settings2 extends JDialog
 			c.weightx = 0.0;
 			pathPanel.add(browseWebBrowserPath,c);
 			//5. line: path ot fielbrowser
-			c.gridy = 4;
+			c.gridy = 3;
 			c.gridx = 0;
 			pathPanel.add(fileBrowserLabel,c);
 			c.gridx = 1;
