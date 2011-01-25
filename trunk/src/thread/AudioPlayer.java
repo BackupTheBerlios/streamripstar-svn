@@ -38,6 +38,7 @@ public class AudioPlayer extends Thread{
 		}
 		
 		try {
+			Gst.quit();
 			Gst.init();
 	        playbin = new PlayBin2("AudioPlayer");
 	        try {
@@ -67,33 +68,42 @@ public class AudioPlayer extends Thread{
 				@Override
 				public void errorMessage(GstObject source, int errorCode, String errorMessage) {
 					//Cannot resolve hostname - no connection to the stream
-					if(errorCode == 3 || errorCode == 4) {
-						mainGui.setTitleForAudioPlayer("",trans.getString("audioplayer.noConnectionTo"),false);
-					}
-					
-					//Cannot resolve hostname - no connection to the stream
-					else if(errorCode == 6 || errorCode == 12) {
+//					if(errorCode == 3 || errorCode == 4) {
+//						mainGui.setTitleForAudioPlayer("",trans.getString("audioplayer.noConnectionTo"),false);
+//					}
+//					
+//					//Cannot resolve hostname - no connection to the stream
+//					else if(errorCode == 6 || errorCode == 12) {
+//						mainGui.setTitleForAudioPlayer("",errorMessage,false);
+//					}
+//					
+//					//Cannot resolve hostname - no connection to the stream
+//					else if(errorCode == 1) {
+//						SRSOutput.getInstance().log(errorMessage);
+//					}
+//					
+//					//show all other error messages in the tray
+//					else {
 						mainGui.setTitleForAudioPlayer("",errorMessage,false);
-					}
-					
-					//Cannot resolve hostname - no connection to the stream
-					else if(errorCode == 1) {
-						SRSOutput.getInstance().log(errorMessage);
-					}
-					
-					//show all other error messages in the tray
-					else {
-						mainGui.setTitleForAudioPlayer("",errorMessage,false);
-					}
+//					}
 					
 					SRSOutput.getInstance().log("The Errorcode was:"+errorCode);
 					SRSOutput.getInstance().log("The Errormessage was:"+errorMessage);
 				}
 			});
+
 			
 	        playbin.setState(org.gstreamer.State.PLAYING);
 	        Gst.main();
-	        playbin.setState(org.gstreamer.State.NULL);
+	        while(playbin.getState() == org.gstreamer.State.PLAYING)
+	        {
+	        	try {
+					Thread.sleep(250);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+	        }
+	        stopPlaying();
 
 		} catch (java.lang.UnsatisfiedLinkError e) {
 			mainGui.showErrorMessageInPopUp(trans.getString("audioplayer.noGstreamerInstalled"));
@@ -112,10 +122,11 @@ public class AudioPlayer extends Thread{
 	 */
 	public void stopPlaying()
 	{
-		if(playbin != null)
+		if(playbin != null && playbin.getState() != org.gstreamer.State.NULL)
 		{
 			playbin.setState(org.gstreamer.State.NULL);
-			mainGui.setTitleForAudioPlayer("","",false);
+			Gst.quit();
+			//mainGui.setTitleForAudioPlayer("","",false);
 		}
 	}
 	
