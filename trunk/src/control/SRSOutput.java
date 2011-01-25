@@ -67,7 +67,7 @@ public class SRSOutput
 	 * 
 	 * @param loglevel the maximum loglevel
 	 */
-	public void setLogleve(LOGLEVEL loglevel)
+	public void setLoglevel(LOGLEVEL loglevel)
 	{
 		if(loglevel == LOGLEVEL.Nothing)
 		{
@@ -101,7 +101,7 @@ public class SRSOutput
 	 * 
 	 * @return the current loglevel
 	 */
-	public LOGLEVEL getLogleve()
+	public LOGLEVEL getLoglevel()
 	{
 		if(logLevel == -1)
 		{
@@ -222,11 +222,11 @@ public class SRSOutput
 		SRSOutput.getInstance().log("Das ist eine Testnachricht und zwar die 2. Mal sehen\n wie sie mit Zeilenumbruch aussieht");
 		SRSOutput.getInstance().logE("Das ist eine Errornachricht");
 		SRSOutput.getInstance().logD("sollte nicht zu sehen sein");
-		SRSOutput.getInstance().setLogleve(LOGLEVEL.Error);
+		SRSOutput.getInstance().setLoglevel(LOGLEVEL.Error);
 		SRSOutput.getInstance().logE("sollte da sein");
 		SRSOutput.getInstance().log("sollte nicht zu sehen sein");
 		SRSOutput.getInstance().logD("sollte nicht zu sehen sein");
-		SRSOutput.getInstance().setLogleve(LOGLEVEL.Debug);
+		SRSOutput.getInstance().setLoglevel(LOGLEVEL.Debug);
 		SRSOutput.getInstance().logD("sollte da sein");
 	}
 }

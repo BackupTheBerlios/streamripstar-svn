@@ -751,6 +751,28 @@ public class Gui_Settings2 extends JDialog
 		mainGui.setNewRuntimePrefs(actions,showTextCheckBox.isSelected(),activeTrayIcon.isSelected(),
 				newlnfClassName,useInternalAudioPlayerCB.isSelected());
 		mainGui.getControlStream().setPaths(path);
+		
+		//update the log Level
+		int level = logLevelBox.getSelectedIndex();
+		
+		switch(level) 
+		{
+			case 0:
+				SRSOutput.getInstance().setLoglevel(SRSOutput.LOGLEVEL.Nothing);
+				break;
+			case 1:
+				SRSOutput.getInstance().setLoglevel(SRSOutput.LOGLEVEL.Error);
+				break;
+			case 2:
+				SRSOutput.getInstance().setLoglevel(SRSOutput.LOGLEVEL.Normal);
+				break;
+			case 3:
+				SRSOutput.getInstance().setLoglevel(SRSOutput.LOGLEVEL.Nothing);
+				break;
+			default:
+				SRSOutput.getInstance().setLoglevel(SRSOutput.LOGLEVEL.Normal);	
+		}
+		
 	}
 	
 	/**
