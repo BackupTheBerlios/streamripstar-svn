@@ -35,6 +35,7 @@ public class AudioPlayer extends Thread{
 		this.stream = stream;
 		this.mainGui = mainGui;
 		playbin = new PlayBin2("AudioPlayer");
+		lg.logD("AudioPlayer: Player created");
 	}
 	
 	/**
@@ -54,7 +55,6 @@ public class AudioPlayer extends Thread{
 		
 		try {
 
-			lg.logD("");
 	        try {
 	        	//test if we should connect to the realy stream or to the internet
 	        	if(stream.getStatus() && stream.connectToRelayCB) {
@@ -115,8 +115,9 @@ public class AudioPlayer extends Thread{
 				}
 			});
 
-			
+			lg.logD("AudioPlayer: Loading stream");
 	        playbin.setState(org.gstreamer.State.PLAYING);
+	        lg.logD("AudioPlayer: Start Playing");
 	        Gst.main();
 
 		} catch (java.lang.UnsatisfiedLinkError e) {
@@ -136,12 +137,22 @@ public class AudioPlayer extends Thread{
 	 */
 	public void stopPlaying()
 	{
+		if(stream != null)
+		{
+			lg.logD("AudioPlayer: Try to stop the audio player with the stream: "+stream.name);
+		}
+		
 		if(playbin != null && playbin.getState(200) != org.gstreamer.State.NULL)
 		{
 			while(playbin.getState(200) != org.gstreamer.State.NULL) {
 				playbin.setState(org.gstreamer.State.NULL);
 			}
 			mainGui.showMessageInTray("");
+		}
+		
+		if(stream != null)
+		{
+			lg.logD("AudioPlayer: Audio Player with stream: "+stream.name + "has been stopped");
 		}
 	}
 	
@@ -153,6 +164,7 @@ public class AudioPlayer extends Thread{
 	{
 		if(playbin != null)
 		{
+			lg.logD("AudioPlayer: set new volume to"+volumePercent);
 			playbin.setVolumePercent(volumePercent);
 		}
 	}
