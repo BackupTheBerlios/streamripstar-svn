@@ -229,13 +229,14 @@ public class Gui_AddSchedul extends JDialog implements WindowListener{
 		c.insets = new Insets( 2, 2, 2, 2);
 		
 		c.gridwidth = 6;
-		c.weightx = 0.0;
+		c.weightx = 1.0;
 		c.gridy = 0;
 		c.gridx = 0;
 		datePanel.add(nameBox,c);
 		
 		//for better look
 		c.gridy = 1;
+		c.weightx = 0.0;
 		datePanel.add(new JLabel(" "),c);
 		
 		c.gridwidth = 1;
