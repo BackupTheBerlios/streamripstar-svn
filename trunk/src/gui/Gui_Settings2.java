@@ -175,6 +175,7 @@ public class Gui_Settings2 extends JDialog
 		list.setLayoutOrientation(JList.HORIZONTAL_WRAP);
 	    list.setVisibleRowCount(-1);
 	    list.addMouseListener(new ClickOnListListener());
+	   
 		//create rest of components at runtime
 		lookAndFeelInfos = UIManager.getInstalledLookAndFeels();
 		lookAndFeelList = new String[lookAndFeelInfos.length];
@@ -385,6 +386,7 @@ public class Gui_Settings2 extends JDialog
 		c.weighty = 0;
 		langLogPanel.add(languagePanel,c);
 		c.gridy = 1;
+		c.weightx = 1.0;
 		langLogPanel.add(logPanel,c);
 		c.gridy = 2;
 		c.weighty = 1;
@@ -425,7 +427,7 @@ public class Gui_Settings2 extends JDialog
 			c.gridwidth = 1;
 			logPanel.add(logLabel,c);
 			c.gridx = 1;
-			c.weightx = 1;
+			c.weightx = 1.0;
 			logPanel.add(logLevelBox,c);
 
 		
@@ -482,7 +484,8 @@ public class Gui_Settings2 extends JDialog
 		
 		//set default panel when start
 		mainPanel.add(lookAndFeelPanel);
-		
+		list.setSelectedIndex(0);
+		 
 		repaintCommon();
 		
 		//set size of window

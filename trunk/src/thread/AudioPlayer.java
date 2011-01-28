@@ -81,28 +81,18 @@ public class AudioPlayer extends Thread{
 			playbin.getBus().connect(new Bus.ERROR() {
 				@Override
 				public void errorMessage(GstObject source, int errorCode, String errorMessage) {
-					//Cannot resolve hostname - no connection to the stream
-//					if(errorCode == 3 || errorCode == 4) {
-//						mainGui.setTitleForAudioPlayer("",trans.getString("audioplayer.noConnectionTo"),false);
-//					}
-//					
 //					//Cannot resolve hostname - no connection to the stream
-//					else if(errorCode == 6 || errorCode == 12) {
-//						mainGui.setTitleForAudioPlayer("",errorMessage,false);
-//					}
-//					
-//					//Cannot resolve hostname - no connection to the stream
-//					else if(errorCode == 1) {
-//						SRSOutput.getInstance().log(errorMessage);
-//					}
-//					
-//					//show all other error messages in the tray
-//					else {
-						mainGui.setTitleForAudioPlayer("",errorMessage,false);
-//					}
+					if(errorCode == 1) {
+						SRSOutput.getInstance().log(errorMessage);
+					}
 					
-					SRSOutput.getInstance().log("The Errorcode was:"+errorCode);
-					SRSOutput.getInstance().log("The Errormessage was:"+errorMessage);
+					//show all other error messages in the tray
+					else {
+						mainGui.setTitleForAudioPlayer("",errorMessage,false);
+					}
+					
+					lg.logD("The Errorcode was:"+errorCode);
+					lg.log("The Errormessage was:"+errorMessage);
 				}
 			});
 
