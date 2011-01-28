@@ -192,9 +192,13 @@ public class Gui_StreamRipStar extends JFrame implements WindowListener
 		setSystemTray();
 		
 		if(useInternalPlayer) {
+			//load the audio panel
 			audioPanel = new InternAudioControlPanel(this);
 			contPane.add(this.audioPanel, BorderLayout.SOUTH);
 			hearMusicButton.setEnabled(false);
+			
+			//and pre-load the audio system
+			table.loadFirstAudioPlayer();
 		}
 		
         //Center StreamRipStar

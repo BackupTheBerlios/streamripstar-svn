@@ -24,23 +24,37 @@ public class AudioPlayer extends Thread{
 	private Stream stream;
 	private Gui_StreamRipStar mainGui;
 	private PlayBin2 playbin;
+	private SRSOutput lg = SRSOutput.getInstance();
 	
+	/**
+	 * Use this constructor if you want to play a stream
+	 * @param stream
+	 * @param mainGui
+	 */
 	public AudioPlayer(Stream stream, Gui_StreamRipStar mainGui ) {
 		this.stream = stream;
 		this.mainGui = mainGui;
+		playbin = new PlayBin2("AudioPlayer");
+	}
+	
+	/**
+	 * Use this constructor, if you wan't to initialize the audio system
+	 */
+	public AudioPlayer()
+	{
+		Gst.init();
 	}
 	
 	public void run() {
 		
 		//say, we are loading the stream
 		if (mainGui != null) {
-			mainGui.setTitleForAudioPlayer("",trans.getString("audioplayer.loadingStream"),false);
+			mainGui.showMessageInTray(trans.getString("audioplayer.loadingStream"));
 		}
 		
 		try {
-	        String[] args = {"timeout=4"};
-			Gst.init("StreamRipStar", args);
-	        playbin = new PlayBin2("AudioPlayer");
+
+			lg.logD("");
 	        try {
 	        	//test if we should connect to the realy stream or to the internet
 	        	if(stream.getStatus() && stream.connectToRelayCB) {
@@ -92,21 +106,18 @@ public class AudioPlayer extends Thread{
 				}
 			});
 
+			playbin.getBus().connect(new Bus.BUFFERING()
+			{
+				@Override
+				public void bufferingData(GstObject arg0, int arg1)
+				{
+					mainGui.showMessageInTray("Buffering... ("+arg1+")");
+				}
+			});
+
 			
 	        playbin.setState(org.gstreamer.State.PLAYING);
 	        Gst.main();
-
-	        
-	        
-//	        while(playbin.getState() == org.gstreamer.State.PLAYING)
-//	        {
-//	        	try {
-//					Thread.sleep(250);
-//				} catch (InterruptedException e) {
-//					e.printStackTrace();
-//				}
-//	        }
-//	        stopPlaying();
 
 		} catch (java.lang.UnsatisfiedLinkError e) {
 			mainGui.showErrorMessageInPopUp(trans.getString("audioplayer.noGstreamerInstalled"));
@@ -127,8 +138,9 @@ public class AudioPlayer extends Thread{
 	{
 		if(playbin != null && playbin.getState(200) != org.gstreamer.State.NULL)
 		{
-			playbin.setState(org.gstreamer.State.NULL);
-			//Gst.deinit();
+			while(playbin.getState(200) != org.gstreamer.State.NULL) {
+				playbin.setState(org.gstreamer.State.NULL);
+			}
 			mainGui.showMessageInTray("");
 		}
 	}

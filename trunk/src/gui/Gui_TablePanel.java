@@ -449,6 +449,17 @@ public class Gui_TablePanel extends JPanel
 	}
 	
 	/**
+	 * Initialize the first instance of the internal audio player. This must
+	 * be done, because gstreamer hangs for a while on the first start and we
+	 * loose control over all audio player, but the last one. -> all audio player
+	 * will play and can't be stopped anymore
+	 */
+	public void loadFirstAudioPlayer()
+	{
+		player = new AudioPlayer();
+	}
+	
+	/**
 	 * Looks for the selected stream in the stream table and
 	 * start playing it with the correct player. This can either 
 	 * be the internal or the external, which is defined in the 
