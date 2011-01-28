@@ -38,8 +38,8 @@ public class AudioPlayer extends Thread{
 		}
 		
 		try {
-			Gst.quit();
-			Gst.init();
+	        String[] args = {"timeout=4"};
+			Gst.init("StreamRipStar", args);
 	        playbin = new PlayBin2("AudioPlayer");
 	        try {
 	        	//test if we should connect to the realy stream or to the internet
@@ -95,15 +95,18 @@ public class AudioPlayer extends Thread{
 			
 	        playbin.setState(org.gstreamer.State.PLAYING);
 	        Gst.main();
-	        while(playbin.getState() == org.gstreamer.State.PLAYING)
-	        {
-	        	try {
-					Thread.sleep(250);
-				} catch (InterruptedException e) {
-					e.printStackTrace();
-				}
-	        }
-	        stopPlaying();
+
+	        
+	        
+//	        while(playbin.getState() == org.gstreamer.State.PLAYING)
+//	        {
+//	        	try {
+//					Thread.sleep(250);
+//				} catch (InterruptedException e) {
+//					e.printStackTrace();
+//				}
+//	        }
+//	        stopPlaying();
 
 		} catch (java.lang.UnsatisfiedLinkError e) {
 			mainGui.showErrorMessageInPopUp(trans.getString("audioplayer.noGstreamerInstalled"));
@@ -122,11 +125,11 @@ public class AudioPlayer extends Thread{
 	 */
 	public void stopPlaying()
 	{
-		if(playbin != null && playbin.getState() != org.gstreamer.State.NULL)
+		if(playbin != null && playbin.getState(200) != org.gstreamer.State.NULL)
 		{
 			playbin.setState(org.gstreamer.State.NULL);
-			Gst.quit();
-			//mainGui.setTitleForAudioPlayer("","",false);
+			//Gst.deinit();
+			mainGui.showMessageInTray("");
 		}
 	}
 	
