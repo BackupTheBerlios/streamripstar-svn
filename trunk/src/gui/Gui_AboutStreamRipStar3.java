@@ -198,6 +198,7 @@ public class Gui_AboutStreamRipStar3 extends JDialog
         
         setLocation(x, y);
     	makeEditable(false);
+    	setResizable(false);
     	setVisible(true);
 	}
 	
