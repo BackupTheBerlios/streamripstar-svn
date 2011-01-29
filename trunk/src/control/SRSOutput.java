@@ -5,6 +5,7 @@ package control;
 /* eMail: die_eule@gmx.net*/ 
 
 import java.io.BufferedWriter;
+import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
@@ -23,6 +24,7 @@ public class SRSOutput
 	private SimpleDateFormat formatter = new SimpleDateFormat ("yyyy.MM.dd '-' HH:mm:ss ");
 	private static SRSOutput instance = null;
 	private BufferedWriter writer = null;
+	private String path = new Control_GetPath().getStreamRipStarPath() + "/output.log";
 	
 	
 	/**
@@ -30,8 +32,15 @@ public class SRSOutput
 	 */
 	private SRSOutput()
 	{
-		String path = new Control_GetPath().getStreamRipStarPath() + "/output.log";
+		init();
 		
+	}
+	
+	/**
+	 * initalizie the log file and make it writeable
+	 */
+	private void init() 
+	{
 		try 
 		{
 			writer = new BufferedWriter(new FileWriter(path,true));
@@ -45,6 +54,21 @@ public class SRSOutput
 		}
 	}
 	
+	/**
+	 * initalizie the log file and make it writeable
+	 */
+	private void deInit() 
+	{
+		try 
+		{
+			writer.close();
+		}
+		catch (IOException e) 
+		{
+			System.err.println("Error in SRSOutput: Can't close writer: "+path);
+			e.printStackTrace();
+		}
+	}
 	
 	/**
 	 * Get the object from this class. If no one exist, one will created from this method.
@@ -210,6 +234,23 @@ public class SRSOutput
 			return true;
 	}
 	
+	/**
+	 * Deletes the log file and all messages 
+	 */
+	public synchronized void deleteLogFile()
+	{
+		deInit();
+		try {
+			File outPutFile = new File(path);
+			outPutFile.delete();
+		} catch (NullPointerException e) {
+			//mache hier was
+		}
+		
+		init();
+		
+		//noch die Fehler abfangen
+	}
 	
 	/**
 	 * For testing

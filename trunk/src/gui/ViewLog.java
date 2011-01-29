@@ -18,6 +18,7 @@ import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 
@@ -37,6 +38,8 @@ public class ViewLog extends JDialog
 	private ResourceBundle trans = ResourceBundle.getBundle("translations.StreamRipStar");
 	
 	private JButton OKButton = new JButton("OK");
+	private JButton deleteButton = new JButton("Delete File");
+	private JPanel buttonPanel = new JPanel();
 	private JTextArea logField = new JTextArea();
 	private JScrollPane logSP = new JScrollPane(logField);
 
@@ -52,8 +55,13 @@ public class ViewLog extends JDialog
 		
 		setLayout(new BorderLayout());
 		add(logSP, BorderLayout.CENTER);
-		add(OKButton, BorderLayout.SOUTH);
+		add(buttonPanel, BorderLayout.SOUTH);
 		OKButton.addActionListener(new OKListener());
+		deleteButton.addActionListener(new DeleteListener());
+		
+		buttonPanel.add(OKButton);
+		buttonPanel.add(deleteButton);
+		
     	setLanguage();
     	
     	logField.setEditable(false);
@@ -128,12 +136,22 @@ public class ViewLog extends JDialog
 	}
 	
 	/**
-	 * 
+	 * Close this dialog
 	 * @author Johannes Putzke
 	 */
     public class OKListener implements ActionListener {
         public void actionPerformed(ActionEvent e) {
             dispose();
+        }
+    }
+    
+	/**
+	 * 
+	 * @author Johannes Putzke
+	 */
+    public class DeleteListener implements ActionListener {
+        public void actionPerformed(ActionEvent e) {
+            SRSOutput.getInstance().deleteLogFile();
         }
     }
 }
