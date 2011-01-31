@@ -22,6 +22,7 @@ import javax.swing.event.ChangeListener;
 import control.SRSOutput;
 
 import gui.Gui_StreamRipStar;
+import guiPrefs.VolumeControl;
 
 /**
  * This GUI provides an interface to control the internal audio player.
@@ -45,7 +46,7 @@ public class InternAudioControlPanel extends JPanel
 	private IconButton nextPlayingButton = new IconButton("Play Next Stream",nextStreamIcon);
 	
 	private JTextField titleArea = new JTextField();
-	private JSlider audioSlider = new JSlider();
+	private VolumeControl audioSlider2 = new VolumeControl();
 	
 	private JToolBar panel = new JToolBar();
 	private Gui_StreamRipStar mainGui = null;
@@ -59,7 +60,8 @@ public class InternAudioControlPanel extends JPanel
 		this.mainGui = mainGui;
 		setLayout(new BorderLayout());
 		add(panel,BorderLayout.WEST);
-		add(audioSlider,BorderLayout.EAST);
+		add(audioSlider2,BorderLayout.EAST);
+//		add(audioSlider2,BorderLayout.CENTER);
 		add(titleArea,BorderLayout.SOUTH);
 		
 		panel.add(lastStreamButton);
@@ -73,7 +75,7 @@ public class InternAudioControlPanel extends JPanel
 		setTextUnderIcons(mainGui.showTextUnderIcons());
 		setFontsAll(mainGui.getFontForTextUnderIcons());
 		
-		audioSlider.addChangeListener(new VolumeChangeListener());
+		//audioSlider2.addChangeListener(new VolumeChangeListener());
 		startPlayingButton.addActionListener(new PlayMusikListener());
 		stopPlayingButton.addActionListener(new StopPlayMusikListener());
 		lastStreamButton.addActionListener(new PlayPreviousStreamListener());
@@ -112,7 +114,7 @@ public class InternAudioControlPanel extends JPanel
 	 */
 	public void setToolTipsAll() 
 	{
-		audioSlider.setToolTipText(trans.getString("toolTip.audioSlider"));
+		audioSlider2.setToolTipText(trans.getString("toolTip.audioSlider"));
 		stopPlayingButton.setToolTipText(trans.getString("toolTip.stopHearMusicButton"));
 	}
 	
@@ -126,12 +128,12 @@ public class InternAudioControlPanel extends JPanel
 	
 	public int getAudioVolume() 
 	{
-		return audioSlider.getValue();
+		return audioSlider2.getVolume();
 	}
 	
 	public void setAudioVolume(int newVolume)
 	{
-		audioSlider.setValue(newVolume);
+		audioSlider2.setVolume(newVolume);
 	}
 	
 	/**
@@ -143,7 +145,7 @@ public class InternAudioControlPanel extends JPanel
 		@Override
 		public void stateChanged(ChangeEvent arg0) 
 		{
-			mainGui.setVolume(audioSlider.getValue());
+			mainGui.setVolume(audioSlider2.getVolume());
 		} 
 	}
 
