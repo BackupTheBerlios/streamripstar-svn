@@ -423,7 +423,8 @@ public class Thread_Control_Schedul extends Thread{
 	{
 		for(int i=0; i < schedulVector.capacity() ;i++)
 		{
-			if(schedulVector.get(i).getJobCount() == 3)
+			//only start the recording if the job is enabled
+			if(schedulVector.get(i).getJobCount() == 3 && schedulVector.get(i).isJobenabled())
 			{
 				// start the stream for recording
 				//look for the to recording stream
