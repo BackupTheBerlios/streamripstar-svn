@@ -13,7 +13,6 @@ import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 import javax.swing.ImageIcon;
 import javax.swing.JPanel;
-import javax.swing.JSlider;
 import javax.swing.JTextField;
 import javax.swing.JToolBar;
 import javax.swing.event.ChangeEvent;
@@ -61,7 +60,6 @@ public class InternAudioControlPanel extends JPanel
 		setLayout(new BorderLayout());
 		add(panel,BorderLayout.WEST);
 		add(audioSlider2,BorderLayout.EAST);
-//		add(audioSlider2,BorderLayout.CENTER);
 		add(titleArea,BorderLayout.SOUTH);
 		
 		panel.add(lastStreamButton);

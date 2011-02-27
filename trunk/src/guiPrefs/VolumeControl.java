@@ -11,9 +11,8 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import javax.swing.JComponent;
-import javax.swing.JLabel;
 
-public class VolumeControl extends JLabel implements MouseListener, MouseMotionListener
+public class VolumeControl extends JComponent implements MouseListener, MouseMotionListener
 {
 	private static final long serialVersionUID = -6739267281511679094L;
 	private BasicStroke inUseStroke = new BasicStroke(1);
@@ -26,7 +25,7 @@ public class VolumeControl extends JLabel implements MouseListener, MouseMotionL
 		super();
 //		this.setMinimumSize(new Dimension(100, 2));
 //		this.setPreferredSize(new Dimension(200, 2));
-		setText(" ");
+//		setText(" ");
 		addMouseListener(this);
 		addMouseMotionListener(this);
 	}
