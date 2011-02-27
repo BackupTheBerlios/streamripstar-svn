@@ -118,8 +118,10 @@ public class Thread_Control_Schedul extends Thread{
 					//should schedulejob deleted? //only if:
 					//- record once;
 					//- stop time is in the past
-					if(job.isOnceJob() && job.getStopTime() <= now.getTimeInMillis()|| 
+					//- is no job, which only starts at the start of streamripstar
+					if((job.isOnceJob() && job.getStopTime() <= now.getTimeInMillis() || 
 							(job.isOnceJob() && job.getstatus() && !mainGui.getControlStream().getStreamByID(job.getStreamID()).getStatus()))
+							&& job.getJobCount() != 3)
 					{
 						//remove from job vector
 						removeJobFromVector(job.getSchedulID());

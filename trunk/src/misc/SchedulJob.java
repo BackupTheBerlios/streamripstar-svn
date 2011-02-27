@@ -27,6 +27,7 @@ public class SchedulJob {
 	private boolean monthly = false;
 	private boolean enableJob = false;
 	private boolean isRecording = false;
+	private boolean atStart = false;
 	private String comment = "";
 
 	public static int lastID = 1;
@@ -57,6 +58,8 @@ public class SchedulJob {
 			weekly = true;
 		} else if (howOftenID == 2) {
 			monthly = true;
+		} else if (howOftenID == 3) {
+			atStart = true;
 		}
 	}
 	
@@ -203,7 +206,7 @@ public class SchedulJob {
 	
 	/**
 	 * 
-	 * @return: -1=once; 0=daily; 1=weekly; 2=monthly 
+	 * @return: -1=once; 0=daily; 1=weekly; 2=monthly ;3=at Start 
 	 */
 	public int getJobCount() {
 		int count = -1;
@@ -213,6 +216,8 @@ public class SchedulJob {
 			count = 1;
 		} else if (monthly) {
 			count = 2;
+		} else if (atStart) {
+			count = 3;
 		}
 		return count;
 	}

@@ -9,6 +9,8 @@ import java.net.URL;
 import java.text.*;
 import java.util.*;
 import javax.swing.*;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 import javax.swing.plaf.basic.BasicComboBoxRenderer;
 import javax.swing.text.DateFormatter;
 
@@ -52,6 +54,7 @@ public class Gui_AddSchedul extends JDialog implements WindowListener{
 	private JCheckBox onceCB = new JCheckBox("once",true);
 	private JCheckBox dailyCB = new JCheckBox("daily");
 	private JCheckBox weeklyCB = new JCheckBox("weekly");
+	private JCheckBox atStartCB = new JCheckBox("at Start");
 	
 	private JComboBox nameBox;
 	private String[] streamNames;
@@ -92,6 +95,8 @@ public class Gui_AddSchedul extends JDialog implements WindowListener{
 		howOftenGroup.add(onceCB);
 		howOftenGroup.add(dailyCB);
 		howOftenGroup.add(weeklyCB);
+		howOftenGroup.add(atStartCB);
+		
 		//if this is a new job, enter time from now
 		if(createNew) {
 			
@@ -142,11 +147,15 @@ public class Gui_AddSchedul extends JDialog implements WindowListener{
 		} else {
 			//how often should be recorded?
 			int howOften = oldJob.getJobCount();
+			
 			if(howOften == 0) {
 				dailyCB.setSelected(true);
 			} else if (howOften == 1) {
 				weeklyCB.setSelected(true);
+			} else if (howOften == 3) {
+				atStartCB.setSelected(true);
 			}
+			
 			
 			//set comment
 			commentTF.setText(oldJob.getComment());
@@ -274,6 +283,8 @@ public class Gui_AddSchedul extends JDialog implements WindowListener{
 		datePanel.add(dailyCB,c);
 		c.gridy = 7;
 		datePanel.add(weeklyCB,c);
+		c.gridy = 8;
+		datePanel.add(atStartCB,c);
 		c.gridwidth = 1;
 		
 		//for better look
@@ -310,6 +321,11 @@ public class Gui_AddSchedul extends JDialog implements WindowListener{
 		//add listeners
 		addButton.addActionListener(new AddListener());
 		abortButton.addActionListener(new AbortListener());
+		//when something changes on this checkbox we have to check, if
+		//the time boxes must be enabled/disabled
+		atStartCB.addChangeListener(new AtStartChangeListener());
+		
+		checkAtStartStatus();
 		
 		// grahical
 		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
@@ -407,6 +423,8 @@ public class Gui_AddSchedul extends JDialog implements WindowListener{
 					howOften = 0;
 				} else if (weeklyCB.isSelected()) {
 					howOften = 1;
+				} else if (atStartCB.isSelected()) {
+					howOften = 3;
 				}
 				
 				//get stream index
@@ -482,6 +500,39 @@ public class Gui_AddSchedul extends JDialog implements WindowListener{
 			setFont(list.getFont());
 			setText((value == null) ? "" : value.toString());
 			return this;
+		}
+	}
+	
+	private class AtStartChangeListener implements ChangeListener 
+	{
+		@Override
+		public void stateChanged(ChangeEvent arg0)
+		{
+			checkAtStartStatus();
+		}
+	}
+	
+	public void checkAtStartStatus(){
+		//disable the checkboxes
+		if(atStartCB.isSelected())
+		{
+			startTimeLabel.setEnabled(false);
+			stopTimeLabel.setEnabled(false);
+			atStartTime.setEnabled(false);
+			atStopTime.setEnabled(false);
+			startTimeTF.setEnabled(false);
+			stopTimeTF.setEnabled(false);
+			startDateTF.setEnabled(false);
+			stopDateTF.setEnabled(false);
+		} else {
+			startTimeLabel.setEnabled(true);
+			stopTimeLabel.setEnabled(true);
+			atStartTime.setEnabled(true);
+			atStopTime.setEnabled(true);
+			startTimeTF.setEnabled(true);
+			stopTimeTF.setEnabled(true);
+			startDateTF.setEnabled(true);
+			stopDateTF.setEnabled(true);
 		}
 	}
 }
