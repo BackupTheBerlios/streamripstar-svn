@@ -60,7 +60,9 @@ public class Thread_Control_Schedul extends Thread{
 		//load all jobs from xml-file into vector
 		loadScheduleJobsOnStart();
 		//update times for daily,weekly and monthly jobs
-		setNextTimeForAllJobs(); 
+		setNextTimeForAllJobs();
+		//start all jobs, which should only start the the start of StreamRipStar
+		startAllAtStartJobs();
 		
 		while(!stop) {
 			try {
@@ -77,8 +79,9 @@ public class Thread_Control_Schedul extends Thread{
 					// - isn't already started by schedulemanager  
 					// - the start time is in the past
 					// - the stop time is in the future
+					// - is not the "start at Start of StreamRipStar" job
 					if(job.isJobenabled() && !job.getstatus() && job.getStartTime() < now.getTimeInMillis()
-							&& job.getStopTime() > now.getTimeInMillis()) {
+							&& job.getStopTime() > now.getTimeInMillis() && job.getJobCount() != 3) {
 						
 						//  look for the to recording stream
 						Stream stream = mainGui.getControlStream().getStreamByID(
@@ -98,7 +101,8 @@ public class Thread_Control_Schedul extends Thread{
 					//should a stream stopped? Stop if:
 					// - the stop time is in the past
 					// - the stream is started by the schedule manager
-					if(job.getStopTime() <= now.getTimeInMillis() && job.getstatus())
+					// - is not the "start at Start of StreamRipStar" job
+					if(job.getStopTime() <= now.getTimeInMillis() && job.getstatus() && job.getJobCount() != 3)
 					{
 						// stop ripping stream
 						mainGui.stopRippingUnselected(mainGui.getControlStream()
@@ -410,6 +414,32 @@ public class Thread_Control_Schedul extends Thread{
 		}
 		schedulVector.trimToSize();
 		System.gc();
+	}
+	
+	/**
+	 * Starts all jobs, where the flag "start at the start of StreamRipStar" is set!
+	 */
+	private void startAllAtStartJobs()
+	{
+		for(int i=0; i < schedulVector.capacity() ;i++)
+		{
+			if(schedulVector.get(i).getJobCount() == 3)
+			{
+				// start the stream for recording
+				//look for the to recording stream
+				Stream stream = mainGui.getControlStream().getStreamByID(schedulVector.get(i).getStreamID());
+				
+				//	start recording
+				mainGui.startRippingUnselected(stream);
+				
+				//  show a message in systrayicon
+				String message = trans.getString("conSched.StreamStarted")+" "+stream.name;
+				mainGui.showMessageInTray(message);
+				
+				//  set the status to recording
+				schedulVector.get(i).setStatus(true);
+			}
+		}
 	}
 	
 	/**
