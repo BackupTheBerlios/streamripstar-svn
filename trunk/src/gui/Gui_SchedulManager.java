@@ -204,8 +204,12 @@ public class Gui_SchedulManager extends JFrame implements WindowListener {
 			x[1] = job.getStreamID();
 			x[2] = job.isJobenabled() ;
 			x[3] = controlStreams.getStreamByID(job.getStreamID()).name;
-			x[4] = job.getStartTimeAsLocaleTime();
-			x[5] = job.getStopTimeAsLocaleTime();
+			//only show the time, if this is not a Job, which starts at the start of StreamRipStar
+			if(job.getJobCount() != 3)
+			{
+				x[4] = job.getStartTimeAsLocaleTime();
+				x[5] = job.getStopTimeAsLocaleTime();
+			}
 			x[6] = job.getComment();
 			
 			model.addRow(x);
@@ -254,11 +258,16 @@ public class Gui_SchedulManager extends JFrame implements WindowListener {
 		table.setValueAt(job.isJobenabled(), row, 2);
 		//update Name
 		table.setValueAt(controlStreams.getStreamByID(job.getStreamID()).name, row, 3);
-		//update startTime
-		table.setValueAt(job.getStartTimeAsLocaleTime(), row, 4);
-		//update stopTime
-		table.setValueAt(job.getStopTimeAsLocaleTime(), row, 5);
-		//update comment
+		
+		//only show the time, if this is not a Job, which starts at the start of StreamRipStar
+		if(job.getJobCount() != 3)
+		{
+			//update startTime
+			table.setValueAt(job.getStartTimeAsLocaleTime(), row, 4);
+			//update stopTime
+			table.setValueAt(job.getStopTimeAsLocaleTime(), row, 5);
+			//update comment
+		}
 		table.setValueAt(job.getComment(), row, 6);
 	}
 	
