@@ -151,25 +151,12 @@ public class Gui_SchedulManager extends JFrame implements WindowListener {
 		
 		//graphical
 		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
-//        //get resolution
-//        Dimension screenDim = Toolkit.getDefaultToolkit().getScreenSize();
-//        //calculates the app. values
-//        int x = (screenDim.width - Integer.valueOf(width))/2;
-//        int y = (screenDim.height - Integer.valueOf(high))/2;
-//        //set location
-//        setLocation(x, y);
-//		//setSize
-//        setSize(new Dimension(Integer.valueOf(width),Integer.valueOf(high)));
-//        //make visible
-//		setVisible(true);
 		
-		 Dimension screenDim = Toolkit.getDefaultToolkit().getScreenSize();
+		Dimension screenDim = Toolkit.getDefaultToolkit().getScreenSize();
 		pack();
 		int x = (screenDim.width - Integer.valueOf(getSize().width))/2;
 		int y = (screenDim.height - Integer.valueOf(getSize().height))/2;
-		//set location
 		setLocation(x, y);
-		//make visible
 		setVisible(true);
 		
 		fillTableWithSchedulJobs();
@@ -306,14 +293,18 @@ public class Gui_SchedulManager extends JFrame implements WindowListener {
 	 * for the schedul ID. With this id, it gets the schedul job and
 	 * start the edit gui.
 	 */
-	public class EditListener implements ActionListener{
-		public void actionPerformed(ActionEvent e){
+	public class EditListener implements ActionListener
+	{
+		public void actionPerformed(ActionEvent e)
+		{
 			editSchedulJob();
 		}
 	}
 	
-	private void editSchedulJob() {
-		if(table.getSelectedRow() >= 0 ) {
+	private void editSchedulJob()
+	{
+		if(table.getSelectedRow() >= 0 )
+		{
 			int x = Integer.valueOf(table.getValueAt(table.getSelectedRow(), 0).toString());
 			new Gui_AddSchedul(getMe(),false, controlStreams,
 					controlJob,controlJob.getSchedulJobByID(x));
@@ -400,16 +391,20 @@ public class Gui_SchedulManager extends JFrame implements WindowListener {
 	public void windowDeactivated (WindowEvent e) { }
 
 //	Listener
-	public class CellMouseListener extends MouseAdapter {
-		public void mouseClicked(MouseEvent e) {
-			if(e.getClickCount()==2) {
-				
+	public class CellMouseListener extends MouseAdapter
+	{
+		public void mouseClicked(MouseEvent e)
+		{
+			if(e.getClickCount()==2)
+			{
 				//if it was the left mouse button
-				if(e.getButton() == MouseEvent.BUTTON1) {
+				if(e.getButton() == MouseEvent.BUTTON1)
+				{
 					int row = table.getSelectedRow();
 					
 					//only open the dialog, if a row is selected
-					if (row > -1) {
+					if (row > -1)
+					{
 						editSchedulJob();
 					}
 				}

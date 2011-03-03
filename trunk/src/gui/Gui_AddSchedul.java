@@ -70,9 +70,10 @@ public class Gui_AddSchedul extends JDialog implements WindowListener{
 	
 	
 	/**
-	 * Contructor for an existing stream. Expect a full configured job for getting all fields
+	 * Constructor for an existing stream. Expect a full configured job for getting all fields
+	 * @param schedulManager: the gui, in which the jobs are visible to the user
 	 * @param createNew: should I create a new stream?
-	 * @param controlStreams: the object that controlls all controll streams
+	 * @param controlStreams: the object that controls all control streams
 	 * @param controlDB: object to control the xml-file access
 	 * @param oldJob: the job witch should be updated
 	 */
@@ -200,15 +201,13 @@ public class Gui_AddSchedul extends JDialog implements WindowListener{
 				if(streamNames[i].length() >= MAX_STREAM_NAME_LENGTH)
 				{
 					streamNames_short[i] = streamNames[i].substring(0, MAX_STREAM_NAME_LENGTH) + "...";
-				}
-				else
-				{
+				} else {
 					streamNames_short[i] = streamNames[i];
 				}
 			}
 			
 			//finally create nameBox
-			nameBox = new JComboBox(streamNames);
+			nameBox = new JComboBox(streamNames_short);
 			
 			//look for the right streamID and select the appropriate name
 			for(int i=0; i < streams.capacity(); i++) {
