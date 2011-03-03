@@ -147,7 +147,7 @@ public class Gui_SchedulManager extends JFrame implements WindowListener {
 		table.addMouseListener(new CellMouseListener());
 		scrollPane.addMouseListener(new CellMouseListener());
 		
-		//grahical
+		//graphical
 		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
         //get resolution
         Dimension screenDim = Toolkit.getDefaultToolkit().getScreenSize();
@@ -167,7 +167,7 @@ public class Gui_SchedulManager extends JFrame implements WindowListener {
 	}
 	
 	/**
-	 * updates all textes with a new language
+	 * updates all texts with a new language
 	 */
 	public void setLanguage() {
 		try {
@@ -209,6 +209,9 @@ public class Gui_SchedulManager extends JFrame implements WindowListener {
 			{
 				x[4] = job.getStartTimeAsLocaleTime();
 				x[5] = job.getStopTimeAsLocaleTime();
+			} else {
+				x[4] = "At Start";
+				x[5] = "Never";
 			}
 			x[6] = job.getComment();
 			
@@ -242,18 +245,23 @@ public class Gui_SchedulManager extends JFrame implements WindowListener {
 	
 	/**
 	 * updates the shown values in the table
-	 * @param job: the table entry with should be updatet 
+	 * @param job: the table entry with should be updated
 	 */
-	public void updateTable(SchedulJob job){
+	public void updateTable(SchedulJob job)
+	{
 		int row = -1;
 		//look where job is in table
-		for(int i=0; i < table.getRowCount();i++) {
+		for(int i=0; i < table.getRowCount();i++)
+		{
 			int x = Integer.valueOf(table.getValueAt(table.convertRowIndexToModel(i), 0).toString());
-			if(job.getSchedulID() == x){
+			
+			if(job.getSchedulID() == x)
+			{
 				row = table.convertRowIndexToModel(i);
 				break;
 			}
 		}
+		
 		//update status
 		table.setValueAt(job.isJobenabled(), row, 2);
 		//update Name
