@@ -28,6 +28,7 @@ public class Gui_SchedulManager extends JFrame implements WindowListener {
 	private ImageIcon addIcon = new ImageIcon((URL)getClass().getResource("/Icons/add_small.png"));
 	private ImageIcon editIcon = new ImageIcon((URL)getClass().getResource("/Icons/edit_small.png"));
 	private ImageIcon deleteIcon = new ImageIcon((URL)getClass().getResource("/Icons/delete_small.png"));
+	private ImageIcon closeIcon = new ImageIcon((URL)getClass().getResource("/Icons/ok_small.png"));
 	
 	private JPanel tablePanel = new JPanel();
 	private JPanel buttonPanel = new JPanel();
@@ -35,9 +36,7 @@ public class Gui_SchedulManager extends JFrame implements WindowListener {
 	private JButton addButton = new JButton("Add Task",addIcon);
 	private JButton editButton = new JButton("Edit Task",editIcon);
 	private JButton removeButton = new JButton("Remove Task",deleteIcon);
-	
-	private int width = 700;
-	private int high = 500;
+	private JButton closeButton = new JButton("Close",closeIcon);
 
 	private Object[][] allData = {};
 	
@@ -109,12 +108,14 @@ public class Gui_SchedulManager extends JFrame implements WindowListener {
 		buttonPanel.add(addButton,c);
 		c.gridx = 1;
 		buttonPanel.add(editButton,c);
-		c.weightx = 1.0;
 		c.gridx = 2;
+		buttonPanel.add(removeButton,c);
+		c.weightx = 1.0;
+		c.gridx = 3;
 		buttonPanel.add(new JLabel(" "),c);
 		c.weightx = 0.0;
-		c.gridx = 3;
-		buttonPanel.add(removeButton,c);
+		c.gridx = 4;
+		buttonPanel.add(closeButton,c);
 		
 		//add table
 		c.weightx = 1.0;
@@ -140,6 +141,7 @@ public class Gui_SchedulManager extends JFrame implements WindowListener {
 		addButton.addActionListener(new AddListener());
 		editButton.addActionListener(new EditListener());
 		removeButton.addActionListener(new RemoveListener());
+		closeButton.addActionListener(new CloseListener());
 		
 		addItem.addActionListener(new AddListener());
 		editItem.addActionListener(new EditListener());
@@ -149,16 +151,25 @@ public class Gui_SchedulManager extends JFrame implements WindowListener {
 		
 		//graphical
 		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
-        //get resolution
-        Dimension screenDim = Toolkit.getDefaultToolkit().getScreenSize();
-        //calculates the app. values
-        int x = (screenDim.width - Integer.valueOf(width))/2;
-        int y = (screenDim.height - Integer.valueOf(high))/2;
-        //set location
-        setLocation(x, y);
-		//setSize
-        setSize(new Dimension(Integer.valueOf(width),Integer.valueOf(high)));
-        //make visible
+//        //get resolution
+//        Dimension screenDim = Toolkit.getDefaultToolkit().getScreenSize();
+//        //calculates the app. values
+//        int x = (screenDim.width - Integer.valueOf(width))/2;
+//        int y = (screenDim.height - Integer.valueOf(high))/2;
+//        //set location
+//        setLocation(x, y);
+//		//setSize
+//        setSize(new Dimension(Integer.valueOf(width),Integer.valueOf(high)));
+//        //make visible
+//		setVisible(true);
+		
+		 Dimension screenDim = Toolkit.getDefaultToolkit().getScreenSize();
+		pack();
+		int x = (screenDim.width - Integer.valueOf(getSize().width))/2;
+		int y = (screenDim.height - Integer.valueOf(getSize().height))/2;
+		//set location
+		setLocation(x, y);
+		//make visible
 		setVisible(true);
 		
 		fillTableWithSchedulJobs();
@@ -325,12 +336,15 @@ public class Gui_SchedulManager extends JFrame implements WindowListener {
 	 * Get the selected number from the table
 	 * @return the selected line as int, -1 if nothing is selected
 	 */
-	public int getSelectedRowNumber() {
+	public int getSelectedRowNumber()
+	{
 		return table.getSelectedRow();
 	}
 	
-	public void setSelectedRow(int row) {
-		if(table.getRowCount() > row) {
+	public void setSelectedRow(int row)
+	{
+		if(table.getRowCount() > row)
+		{
 			table.setRowSelectionInterval(row, row);
 		}
 	}
@@ -340,7 +354,8 @@ public class Gui_SchedulManager extends JFrame implements WindowListener {
 	 * removes a stream from table, vector and from the xml-file
 	 *
 	 */
-	public class RemoveListener implements ActionListener{
+	public class RemoveListener implements ActionListener
+	{
 		public void actionPerformed(ActionEvent e){
 			if(table.getSelectedRowCount() > 0) {
 				int id = Integer.valueOf(table.getValueAt(table.getSelectedRow(), 0).toString());
@@ -425,4 +440,16 @@ public class Gui_SchedulManager extends JFrame implements WindowListener {
 			}
 		}
 	}
+	/**
+	 * Closes the windows
+	 *
+	 */
+	public class CloseListener implements ActionListener
+	{
+		public void actionPerformed(ActionEvent e)
+		{
+			Gui_SchedulManager.this.dispose();
+		}
+	}
+	
 }
