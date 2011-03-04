@@ -81,6 +81,8 @@ public class InternAudioControlPanel extends JPanel
 		
 		//add the volume control to the manager
 		vm.addVolumeControl(audioSlider2);
+		audioSlider2.setEnabled(false);
+		audioSlider2.setEnabled(true);
 	}
 
 	public void setTextUnderIcons(boolean textEnabled)

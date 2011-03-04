@@ -10,6 +10,9 @@ import java.awt.RenderingHints;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
+import java.awt.event.MouseWheelEvent;
+import java.awt.event.MouseWheelListener;
+
 import javax.swing.JComponent;
 
 import control.VolumeManager;
@@ -30,6 +33,7 @@ public class VolumeControl extends JComponent implements MouseListener, MouseMot
 		this.vm = vm;
 		addMouseListener(this);
 		addMouseMotionListener(this);
+		addMouseWheelListener(new MouseWheelVolumeChangeListener());
 	}
 	
 	@Override
@@ -147,5 +151,34 @@ public class VolumeControl extends JComponent implements MouseListener, MouseMot
 			percentage = 0;
 		}
 		vm.changeVolume(this,percentage);
+	}
+	
+	class MouseWheelVolumeChangeListener implements MouseWheelListener
+	{
+		@Override
+		public void mouseWheelMoved(MouseWheelEvent arg0)
+		{
+			int howMuch = arg0.getWheelRotation();
+			if(howMuch < 0)
+			{
+				percentage = percentage + 10;
+				if(percentage > 100)
+				{
+					percentage = 100;
+				}
+			}
+			
+			if(howMuch > 0)
+			{
+				percentage = percentage - 10;
+				if(percentage < 0)
+				{
+					percentage = 0;
+				}
+			}
+			
+			vm.changeVolume(VolumeControl.this,percentage);
+			repaint();
+		}
 	}
 }

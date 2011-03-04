@@ -615,15 +615,6 @@ public class Gui_StreamRipStar extends JFrame implements WindowListener
 	 */
 	public void setVolume(int newVolume) 
 	{
-//		if(audioPanel.getAudioVolume() != newVolume) 
-//		{
-//			audioPanel.setAudioVolume(newVolume);
-//		}
-//		
-//		if(streamBrowser != null && streamBrowser.getAudioSlider().getValue() != newVolume) 
-//		{
-//			streamBrowser.getAudioSlider().setValue(newVolume);
-//		}
 		getTabel().setAudioVolume(newVolume);
 	}
 	
