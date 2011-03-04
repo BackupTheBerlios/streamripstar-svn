@@ -19,6 +19,7 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
 import control.SRSOutput;
+import control.VolumeManager;
 
 import gui.Gui_StreamRipStar;
 import guiPrefs.VolumeControl;
@@ -45,18 +46,17 @@ public class InternAudioControlPanel extends JPanel
 	private IconButton nextPlayingButton = new IconButton("Play Next Stream",nextStreamIcon);
 	
 	private JTextField titleArea = new JTextField();
-	private VolumeControl audioSlider2 = new VolumeControl();
+	private VolumeControl audioSlider2;
+	private VolumeManager vm;
 	
 	private JToolBar panel = new JToolBar();
 	private Gui_StreamRipStar mainGui = null;
 	
-	/**
-	 * 
-	 * @param mainGui
-	 */
-	public InternAudioControlPanel(Gui_StreamRipStar mainGui) 
+	public InternAudioControlPanel(Gui_StreamRipStar mainGui, VolumeManager vm) 
 	{
 		this.mainGui = mainGui;
+		this.vm = vm;
+		audioSlider2 = new VolumeControl(this.vm);
 		setLayout(new BorderLayout());
 		add(panel,BorderLayout.WEST);
 		add(audioSlider2,BorderLayout.EAST);
@@ -78,6 +78,9 @@ public class InternAudioControlPanel extends JPanel
 		stopPlayingButton.addActionListener(new StopPlayMusikListener());
 		lastStreamButton.addActionListener(new PlayPreviousStreamListener());
 		nextPlayingButton.addActionListener(new PlayNextStreamListener());
+		
+		//add the volume control to the manager
+		vm.addVolumeControl(audioSlider2);
 	}
 
 	public void setTextUnderIcons(boolean textEnabled)

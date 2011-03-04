@@ -57,6 +57,7 @@ import control.Control_RunExternProgram;
 import control.Control_Stream;
 import control.Control_Threads;
 import control.SRSOutput;
+import control.VolumeManager;
 
 public class Gui_StreamRipStar extends JFrame implements WindowListener 
 {
@@ -68,6 +69,7 @@ public class Gui_StreamRipStar extends JFrame implements WindowListener
 	private Thread_Control_Schedul controlJob = null;
 	private Gui_StreamBrowser2 streamBrowser = null;
 	private InternAudioControlPanel audioPanel = null;
+	private VolumeManager volumeManager = new VolumeManager(this);
 	
 	//for runtime
 	private Boolean tray = false;				// false = hide tray icon
@@ -193,7 +195,7 @@ public class Gui_StreamRipStar extends JFrame implements WindowListener
 		
 		if(useInternalPlayer) {
 			//load the audio panel
-			audioPanel = new InternAudioControlPanel(this);
+			audioPanel = new InternAudioControlPanel(this,volumeManager);
 			contPane.add(this.audioPanel, BorderLayout.SOUTH);
 			hearMusicButton.setEnabled(false);
 			
@@ -613,15 +615,15 @@ public class Gui_StreamRipStar extends JFrame implements WindowListener
 	 */
 	public void setVolume(int newVolume) 
 	{
-		if(audioPanel.getAudioVolume() != newVolume) 
-		{
-			audioPanel.setAudioVolume(newVolume);
-		}
-		
-		if(streamBrowser != null && streamBrowser.getAudioSlider().getValue() != newVolume) 
-		{
-			streamBrowser.getAudioSlider().setValue(newVolume);
-		}
+//		if(audioPanel.getAudioVolume() != newVolume) 
+//		{
+//			audioPanel.setAudioVolume(newVolume);
+//		}
+//		
+//		if(streamBrowser != null && streamBrowser.getAudioSlider().getValue() != newVolume) 
+//		{
+//			streamBrowser.getAudioSlider().setValue(newVolume);
+//		}
 		getTabel().setAudioVolume(newVolume);
 	}
 	

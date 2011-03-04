@@ -12,6 +12,8 @@ import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import javax.swing.JComponent;
 
+import control.VolumeManager;
+
 public class VolumeControl extends JComponent implements MouseListener, MouseMotionListener
 {
 	private static final long serialVersionUID = -6739267281511679094L;
@@ -19,13 +21,13 @@ public class VolumeControl extends JComponent implements MouseListener, MouseMot
 	private int percentage = 50;
 	private final int FAKTOR = 3;
 	private final int PADDING = 5;
+	private VolumeManager vm;
+	
 	//
-	public VolumeControl()
+	public VolumeControl(VolumeManager vm)
 	{
 		super();
-//		this.setMinimumSize(new Dimension(100, 2));
-//		this.setPreferredSize(new Dimension(200, 2));
-//		setText(" ");
+		this.vm = vm;
 		addMouseListener(this);
 		addMouseMotionListener(this);
 	}
@@ -110,7 +112,7 @@ public class VolumeControl extends JComponent implements MouseListener, MouseMot
 		e.consume();
 		int posX = e.getPoint().x;
 		
-		if(posX >= 0) 
+		if(posX >= 0+PADDING) 
 		{
 			percentage = 100*(posX+PADDING+1)/getSize().width;
 			
@@ -119,7 +121,10 @@ public class VolumeControl extends JComponent implements MouseListener, MouseMot
 				percentage = 100;
 			}
 			repaint();
+		} else {
+			percentage = 0;
 		}
+		vm.changeVolume(this,percentage);
 	}
 
 	@Override
@@ -129,7 +134,7 @@ public class VolumeControl extends JComponent implements MouseListener, MouseMot
 		
 		int posX = e.getPoint().x;
 		
-		if(posX >= 0) 
+		if(posX >= 0+PADDING) 
 		{
 			percentage = 100*(posX+PADDING+1)/getSize().width;
 			
@@ -138,6 +143,9 @@ public class VolumeControl extends JComponent implements MouseListener, MouseMot
 				percentage = 100;
 			}
 			repaint();
+		} else {
+			percentage = 0;
 		}
+		vm.changeVolume(this,percentage);
 	}
 }
