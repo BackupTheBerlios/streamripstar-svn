@@ -58,10 +58,7 @@ public class InternAudioControlPanel extends JPanel
 		this.vm = vm;
 		audioSlider2 = new VolumeControl(this.vm);
 		setLayout(new BorderLayout());
-		add(panel,BorderLayout.WEST);
-		add(audioSlider2,BorderLayout.EAST);
-		add(titleArea,BorderLayout.SOUTH);
-		
+			
 		panel.add(lastStreamButton);
 		panel.add(startPlayingButton);
 		panel.add(stopPlayingButton);
@@ -72,17 +69,20 @@ public class InternAudioControlPanel extends JPanel
 		panel.setFloatable(false);
 		setTextUnderIcons(mainGui.showTextUnderIcons());
 		setFontsAll(mainGui.getFontForTextUnderIcons());
-		
-		//audioSlider2.addChangeListener(new VolumeChangeListener());
+
 		startPlayingButton.addActionListener(new PlayMusikListener());
 		stopPlayingButton.addActionListener(new StopPlayMusikListener());
 		lastStreamButton.addActionListener(new PlayPreviousStreamListener());
 		nextPlayingButton.addActionListener(new PlayNextStreamListener());
 		
+		add(panel,BorderLayout.WEST);
+		this.repaint();
+		add(audioSlider2,BorderLayout.EAST);
+		add(titleArea,BorderLayout.SOUTH);
+		
 		//add the volume control to the manager
 		vm.addVolumeControl(audioSlider2);
-		audioSlider2.setEnabled(false);
-		audioSlider2.setEnabled(true);
+		repaint();
 	}
 
 	public void setTextUnderIcons(boolean textEnabled)

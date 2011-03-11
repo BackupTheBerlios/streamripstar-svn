@@ -34,6 +34,9 @@ public class VolumeControl extends JComponent implements MouseListener, MouseMot
 		addMouseListener(this);
 		addMouseMotionListener(this);
 		addMouseWheelListener(new MouseWheelVolumeChangeListener());
+//		repaint();
+		setSize(90,30);
+		setPreferredSize(new Dimension(90,30));
 	}
 	
 	@Override
@@ -116,7 +119,7 @@ public class VolumeControl extends JComponent implements MouseListener, MouseMot
 		e.consume();
 		int posX = e.getPoint().x;
 		
-		if(posX >= 0+PADDING) 
+		if(posX >= 0) 
 		{
 			percentage = 100*(posX+PADDING+1)/getSize().width;
 			
@@ -138,7 +141,7 @@ public class VolumeControl extends JComponent implements MouseListener, MouseMot
 		
 		int posX = e.getPoint().x;
 		
-		if(posX >= 0+PADDING) 
+		if(posX >= 0) 
 		{
 			percentage = 100*(posX+PADDING+1)/getSize().width;
 			
@@ -161,7 +164,8 @@ public class VolumeControl extends JComponent implements MouseListener, MouseMot
 			int howMuch = arg0.getWheelRotation();
 			if(howMuch < 0)
 			{
-				percentage = percentage + 10;
+				percentage += 10;
+				
 				if(percentage > 100)
 				{
 					percentage = 100;
@@ -170,7 +174,8 @@ public class VolumeControl extends JComponent implements MouseListener, MouseMot
 			
 			if(howMuch > 0)
 			{
-				percentage = percentage - 10;
+				percentage -= 10;
+				
 				if(percentage < 0)
 				{
 					percentage = 0;
