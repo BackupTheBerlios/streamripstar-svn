@@ -367,14 +367,7 @@ public class Gui_AddSchedul extends JDialog implements WindowListener{
 		      SRSOutput.getInstance().logE( e.getMessage() ); 
 	    }
 	}
-	
-	/**
-	 * 
-	 * @return: this object
-	 */
-	public Gui_AddSchedul getMe() {
-		return this;
-	}
+
 	
 	/**
 	 * close the window without save anything
@@ -386,15 +379,18 @@ public class Gui_AddSchedul extends JDialog implements WindowListener{
 	}
 	
 	/**
-	 * saves the schedul job in the xml-file and in the 
+	 * saves the schedule job in the xml-file and in the 
 	 * job - array 
 	 */
-	public class AddListener implements ActionListener{
-		public void actionPerformed(ActionEvent e){
+	public class AddListener implements ActionListener 
+	{
+		public void actionPerformed(ActionEvent e)
+		{
 			DateFormat df = DateFormat.getDateInstance (DateFormat.SHORT);
 			DateFormat tf = DateFormat.getTimeInstance (DateFormat.SHORT);
-			try {
-				
+			
+			try
+			{
 				//startTime
 				Calendar now = Calendar.getInstance();
 				Calendar now2 = Calendar.getInstance();
@@ -430,31 +426,35 @@ public class Gui_AddSchedul extends JDialog implements WindowListener{
 				int index = streams.get(nameBox.getSelectedIndex()).id;
 				
 				//if this job is a new one -> save in xml-file
-				//and add to vector and table	
-				if(createNew) {
-					SchedulJob job = new SchedulJob(SchedulJob.getNewID(),index,now.getTimeInMillis(),now3.getTimeInMillis()
-								,howOften,enableCB.isSelected(),commentTF.getText());
-					controlJob.addToSchedulVector(job);
-					schedulManager.addSchedulJobToTable(job);
-					dispose();
-					
-				} else {
-					if(controlJob.jobStillExist(oldJob.getSchedulID())) {
-						oldJob.setComment(commentTF.getText());
-						oldJob.setJobCounts(howOften);
-						oldJob.setJobEnabled(enableCB.isSelected());
-						oldJob.setStartTime(now.getTimeInMillis());
-						oldJob.setStopTime(now3.getTimeInMillis());
-						oldJob.setStreamID(index);
-						controlJob.saveScheduleVector();
-						schedulManager.updateTable(oldJob);
+				//and add to vector and table
+				if(!controlJob.testOverlappingRecordTime(index, now.getTimeInMillis(),now3.getTimeInMillis()))
+				{
+					if(createNew) {
+						SchedulJob job = new SchedulJob(SchedulJob.getNewID(),index,now.getTimeInMillis(),now3.getTimeInMillis()
+									,howOften,enableCB.isSelected(),commentTF.getText());
+						controlJob.addToSchedulVector(job);
+						schedulManager.addSchedulJobToTable(job);
 						dispose();
+						
 					} else {
-						JOptionPane.showMessageDialog(getMe(),trans.getString("jobDoesntExistAnymore"));
+						if(controlJob.jobStillExist(oldJob.getSchedulID())) {
+							oldJob.setComment(commentTF.getText());
+							oldJob.setJobCounts(howOften);
+							oldJob.setJobEnabled(enableCB.isSelected());
+							oldJob.setStartTime(now.getTimeInMillis());
+							oldJob.setStopTime(now3.getTimeInMillis());
+							oldJob.setStreamID(index);
+							controlJob.saveScheduleVector();
+							schedulManager.updateTable(oldJob);
+							dispose();
+						} else {
+							JOptionPane.showMessageDialog(Gui_AddSchedul.this,trans.getString("jobDoesntExistAnymore"));
+						}
+						
 					}
-					
+				} else {
+					JOptionPane.showMessageDialog(Gui_AddSchedul.this,"The is already a record in this time range.\nPlease change the time");
 				}
-				
 				
 			} catch (ParseException e1) {
 				e1.printStackTrace();
@@ -534,4 +534,6 @@ public class Gui_AddSchedul extends JDialog implements WindowListener{
 			stopDateTF.setEnabled(true);
 		}
 	}
+	
+	
 }

@@ -495,5 +495,33 @@ public class Thread_Control_Schedul extends Thread{
 			e.printStackTrace();
 		} 
 	}
+	
+	/**
+	 * Test if a schedule job already exist between the startTime and the endtime
+	 * this is tested for a single stream
+	 *   
+	 * @param streamID the id for the stream for the jobs
+	 * @param startTime the time in millsec when the records does start 
+	 * @param endTime the time in millsec when the records does end
+	 * @return true, if there is a overlapping, else false
+	 */
+	public boolean testOverlappingRecordTime(int streamID, long startTime, long endTime)
+	{
+		for( int i=0 ; i<schedulVector.capacity() ; i++ )
+		{
+			//is overlapping when:
+			// - the job belongs to the right stream
+			// - t
+			if(schedulVector.get(i).getStreamID() == streamID && (
+					(startTime >= schedulVector.get(i).getStartTime() && startTime <= schedulVector.get(i).getStopTime()) ||
+					(endTime >= schedulVector.get(i).getStartTime() && endTime < schedulVector.get(i).getStopTime())  ||
+					(startTime <= schedulVector.get(i).getStartTime() && endTime > schedulVector.get(i).getStopTime())
+					))
+			{
+				return true;
+			}
+		}
+		return false;
+	}
 }	
 
