@@ -234,7 +234,7 @@ public class Thread_Control_Schedul extends Thread{
 				    			howOftenID = Integer.valueOf(parser.getAttributeValue(i));
 				    		} else if (parser.getAttributeLocalName( i ).equals("enableJob")) {
 				    			enableJob = Boolean.valueOf(parser.getAttributeValue(i));
-				    		} else if (parser.getAttributeLocalName( i ).equals("")) {
+				    		} else if (parser.getAttributeLocalName( i ).equals("comment")) {
 				    			comment = parser.getAttributeValue(i);
 				    		}
 				    	}
