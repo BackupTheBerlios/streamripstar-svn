@@ -198,12 +198,10 @@ public class Control_http_Shoutcast_2 {
 			    OutputStreamWriter wr = new OutputStreamWriter(conn.getOutputStream());
 			    wr.write(data);
 			    wr.flush();
-
+			    wr.close();
+			    
 			    // Get the response
 			    bw = new BufferedReader(new InputStreamReader(conn.getInputStream()));
-
-//			    wr.close();
-//			    rd.close();
 
 				// create a stream to save the info from the website
 				String[] streamInfo = new String[8];
