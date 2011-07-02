@@ -182,16 +182,18 @@ public class Control_http_Shoutcast_2 {
 			// make sure, that the Vector of streams is empty
 			streams.removeAllElements();
 			streams.trimToSize();
+			
 			try {
 				int startInt = (currentPage*maxResults);
-				// Construct data
+				
+				// Construct the POST request
 			    String data = URLEncoder.encode("ajax", "UTF-8") + "=" + URLEncoder.encode("true", "UTF-8");
 			    data += "&" + URLEncoder.encode("count", "UTF-8") + "=" + URLEncoder.encode(String.valueOf(maxResults), "UTF-8");
 			    data += "&" + URLEncoder.encode("criteria", "UTF-8") + "=" + URLEncoder.encode("listenershead", "UTF-8");
 			    data += "&" + URLEncoder.encode("order", "UTF-8") + "=" + URLEncoder.encode("desc", "UTF-8");
 			    data += "&" + URLEncoder.encode("strIndex", "UTF-8") + "=" + URLEncoder.encode(String.valueOf(startInt), "UTF-8");
 
-			    // Send data
+			    // Send the POST request
 			    URL url = new URL("http://www.shoutcast.com/genre-ajax/"+genre+"");
 			    URLConnection conn = url.openConnection();
 			    conn.setDoOutput(true);
@@ -298,12 +300,14 @@ public class Control_http_Shoutcast_2 {
 	 * into an Array of Strings into an vector called streaminfo. streaminfo
 	 * contains following information: 
 	 * 
-	 * streaminfo[0] = Name 
-	 * streaminfo[1] = now Playing 
-	 * streaminfo[2] = Listeners
-	 * streaminfo[3] = Bitrate 
-	 * streaminfo[4] = Format
-	 * streaminfo[5] = ID
+	 * streamInfo[0] = Name 
+	 * streamInfo[1] = now Playing 
+	 * streamInfo[2] = Listeners
+	 * streamInfo[3] = Bitrate 
+	 * streamInfo[4] = Format
+	 * streamInfo[5] = ID
+	 * streamInfo[6] = Genres
+	 * streamInfo[7] = Link to Website
 	 * 
 	 * @param genre the keyword for searching
 	 * @param keyword true, if the search should be with keywords 
@@ -312,17 +316,32 @@ public class Control_http_Shoutcast_2 {
 		// make sure, that the Vector of streams is empty
 		streams.removeAllElements();
 		streams.trimToSize();
+		
 		try {
+			
+			int startInt = (currentPage*maxResults);
+			
+			// Construct the POST request
+		    String data = URLEncoder.encode("ajax", "UTF-8") + "=" + URLEncoder.encode("true", "UTF-8");
+		    data += "&" + URLEncoder.encode("count", "UTF-8") + "=" + URLEncoder.encode(String.valueOf(maxResults), "UTF-8");
+		    data += "&" + URLEncoder.encode("criteria", "UTF-8") + "=" + URLEncoder.encode("listenershead", "UTF-8");
+		    data += "&" + URLEncoder.encode("order", "UTF-8") + "=" + URLEncoder.encode("desc", "UTF-8");
+		    data += "&" + URLEncoder.encode("strIndex", "UTF-8") + "=" + URLEncoder.encode(String.valueOf(startInt), "UTF-8");
 
-			URL shoutcast = new URL("http://www.shoutcast.com/search-ajax/"+keyword+"?strIndex="+(currentPage*maxResults)+
-					"&count="+maxResults+"&ajax=true");
-			
-			readGenresStream = shoutcast.openStream();
-			
-			bw = new BufferedReader(new InputStreamReader(readGenresStream));
+		    // Send the POST request
+		    URL url = new URL("http://www.shoutcast.com/search-ajax/"+keyword+"");
+		    URLConnection conn = url.openConnection();
+		    conn.setDoOutput(true);
+		    OutputStreamWriter wr = new OutputStreamWriter(conn.getOutputStream());
+		    wr.write(data);
+		    wr.flush();
+		    wr.close();
+
+		    // Get the response
+		    bw = new BufferedReader(new InputStreamReader(conn.getInputStream()));
 
 			// create a stream to save the info from the website
-			String[] streamInfo = new String[6];
+			String[] streamInfo = new String[8];
 			
 			while (!stopSearching && (text = bw.readLine()) != null) {
 				try {
@@ -337,29 +356,35 @@ public class Control_http_Shoutcast_2 {
 					
 					//here starts a stream
 					if(text.contains("class=\"stationcol\"")) {
-						
 						//scip the first lines
-						for(int i=0; i < 11; i++)
+						for(int i=0; i < 5; i++)
 						{
 							bw.readLine();
 						}
 						//read what we need
 						text = bw.readLine();
-						
+				
 						//now find the ID for the stream
-						streamInfo[5] = text.substring(text.indexOf("\" id=\"")+6, text.indexOf("\" href=\""));
+						streamInfo[5] = text.substring(text.indexOf("\" id=\"")+6, text.indexOf("\" title=\""));
 
 						//the name
-						streamInfo[0] = readNextHtmlLine().trim();
+						streamInfo[0] = text.substring(text.indexOf("\" title=\"")+9, text.indexOf("\" href=\""));
 
+						//look for the Genres the stream belongs to
+						streamInfo[6] = readNextHtmlLine().trim().substring(6);
+						
+						//The link to the website
+						bw.readLine();
+						text = bw.readLine();
+						streamInfo[7] = text.substring(text.indexOf("href=\"")+6, text.indexOf("\" target=\""));
+						
 						//look for the current title
-						streamInfo[1] = readNextHtmlLine().trim().substring(16).trim();
-
-						//the genre witch is only on keyword search available
-						streamInfo[0] += (" - " + readNextHtmlLine().trim());	
+						readNextHtmlLine().trim();
+						streamInfo[1] = text.substring(text.indexOf(" title=\"")+7, text.lastIndexOf("\">"));
 						
 						//look for the amount of listeners to the stream
-						streamInfo[2] = readNextHtmlLine().trim();
+						readNextHtmlLine();
+						streamInfo[2] = readNextHtmlLine();
 						
 						//now have a look at the bitrate
 						streamInfo[3] = readNextHtmlLine().trim();
@@ -371,13 +396,14 @@ public class Control_http_Shoutcast_2 {
 						streams.add(streamInfo);
 						
 						//create an new for the next one
-						streamInfo = new String[6];					
+						streamInfo = new String[8];					
 					}
 
 				} catch (NullPointerException e) {
 					SRSOutput.getInstance().log("Error while loading from shoutcast website 1");
 				} catch (StringIndexOutOfBoundsException e) {
 					SRSOutput.getInstance().log("Error while loading from shoutcast website 2");
+					e.printStackTrace();
 				} catch (NumberFormatException e) {
 					SRSOutput.getInstance().logE("Controled Crash in StreamBrowser");
 					e.printStackTrace();
