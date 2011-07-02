@@ -517,12 +517,6 @@ public class Gui_Settings2 extends JDialog
 		try {
 			//title of window
 			setTitle(trans.getString("pref"));
-			
-			//tabs
-//			settingsPane.setTitleAt(0, trans.getString("tab.general"));
-//			settingsPane.setTitleAt(2, trans.getString("tab.path"));
-//			settingsPane.setTitleAt(3, trans.getString("tab.action"));
-//			settingsPane.setTitleAt(4, trans.getString("tab.languages")+ " - language");
 
 			//general panel
 			activeTrayIcon.setText(trans.getString("showSysTray"));
@@ -563,6 +557,16 @@ public class Gui_Settings2 extends JDialog
 			currentTrackBox.addItem(actions[3]);
 			currentTrackBox.addItem(actions[4]);
 			
+			logLevelBox.removeAllItems();
+			logLevel[0] = trans.getString("Settings.LogString.Nothing");
+			logLevel[1] = trans.getString("Settings.LogString.Error");
+			logLevel[2] = trans.getString("Settings.LogString.Normal");
+			logLevel[3] = trans.getString("Settings.LogString.Everything");
+			logLevelBox.addItem(logLevel[0]);
+			logLevelBox.addItem(logLevel[1]);
+			logLevelBox.addItem(logLevel[2]);
+			logLevelBox.addItem(logLevel[3]);
+			
 			//path panel
 			ripLabel.setText(trans.getString("pathStreamripper"));
 			mediaPlayer.setText(trans.getString("pathToMp3Player"));
@@ -586,9 +590,24 @@ public class Gui_Settings2 extends JDialog
 			currentTrackLabel.setText(trans.getString("curTitle"));
 			lnfLabel.setText(trans.getString("Settings.lnfLabel"));
 			useAnotherLnfBox.setText(trans.getString("Settings.useAnotherLnfBox"));
+			logLabel.setText(trans.getString("Settings.logLabel"));
+			
+			sysTrayTabTitle.setTitle(trans.getString("Settings.title.SysTray"));
+			lookAndFeelTabTitle.setTitle(trans.getString("Settings.title.LookAndFeel"));
+			actionsTabTitle.setTitle(trans.getString("Settings.title.Actions"));
+			languageTabTitle.setTitle(trans.getString("Settings.title.Language"));
+			logTabTitle.setTitle(trans.getString("Settings.title.Log"));
+			internalAudioTitle.setTitle(trans.getString("Settings.title.InternalAudio"));
+			pathTitle.setTitle(trans.getString("Settings.title.Paths"));
+			
+			Object elements[][] = {
+					{trans.getString("Settings.Panel.LookAndFeel"),commonPrefIcon},
+					{trans.getString("Settings.Panel.AudioAndPrograms"),pathPrefIcon},
+					{trans.getString("Settings.Panel.LanguageAndLog"),audioPlayerPrefIcon}};
+			list.setListData(elements);
 
 		} catch ( MissingResourceException e ) { 
-		      e.printStackTrace(); 
+			SRSOutput.getInstance().logE("Error in Translation for the Settings: \n"+e.getStackTrace().toString());
 	    }		
 	}
 	
