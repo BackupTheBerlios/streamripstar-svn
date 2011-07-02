@@ -346,7 +346,6 @@ public class Gui_AddSchedul extends JDialog implements WindowListener{
 	 */
 	public void setLanguage() {
 		try {
-				
 			//buttons
 			addButton.setText(trans.getString("AddJob.addButton"));
 			abortButton.setText(trans.getString("AddJob.abortButton"));
@@ -363,6 +362,8 @@ public class Gui_AddSchedul extends JDialog implements WindowListener{
 			onceCB.setText(trans.getString("AddJob.onceCB"));
 			dailyCB.setText(trans.getString("AddJob.dailyCB"));
 			weeklyCB.setText(trans.getString("AddJob.weeklyCB"));
+			atStartCB.setText(trans.getString("AddJob.atStartCB"));
+			
 		} catch ( MissingResourceException e ) { 
 		      SRSOutput.getInstance().logE( e.getMessage() ); 
 	    }

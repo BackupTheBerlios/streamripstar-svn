@@ -173,6 +173,7 @@ public class Gui_SchedulManager extends JFrame implements WindowListener {
 			addButton.setText(trans.getString("JobMan.AddButton"));
 			editButton.setText(trans.getString("JobMan.editButton"));
 			removeButton.setText(trans.getString("JobMan.removeButton"));
+			closeButton.setText(trans.getString("JobMan.closeButton"));
 			
 			//for the MenuItems
 			addItem.setText(trans.getString("JobMan.AddButton"));
