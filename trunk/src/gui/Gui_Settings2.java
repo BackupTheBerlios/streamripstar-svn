@@ -61,9 +61,9 @@ public class Gui_Settings2 extends JDialog
 	
 	private JList list;
 	
-	private ImageIcon commonPrefIcon = new ImageIcon((URL)getClass().getResource("/Icons/preferences/testicon_64.png"));
-	private ImageIcon pathPrefIcon = new ImageIcon((URL)getClass().getResource("/Icons/preferences/testicon_64.png"));
-	private ImageIcon audioPlayerPrefIcon = new ImageIcon((URL)getClass().getResource("/Icons/preferences/testicon_64.png"));
+	private ImageIcon commonPrefIcon = new ImageIcon((URL)getClass().getResource("/Icons/preferences/LookAndFeel1.png"));
+	private ImageIcon pathPrefIcon = new ImageIcon((URL)getClass().getResource("/Icons/preferences/AudioAndPrograms1.png"));
+	private ImageIcon audioPlayerPrefIcon = new ImageIcon((URL)getClass().getResource("/Icons/preferences/Language1.png"));
 	
 	private OnlyOneActivePanel mainPanel = new OnlyOneActivePanel();
 	private JScrollPane mainSP = new JScrollPane(mainPanel);
