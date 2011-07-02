@@ -17,12 +17,10 @@ import javax.swing.JTextField;
 import javax.swing.JToolBar;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
-
 import control.SRSOutput;
 import control.VolumeManager;
-
 import gui.Gui_StreamRipStar;
-import guiPrefs.VolumeControl;
+import gui.VolumeControlGUI;
 
 /**
  * This GUI provides an interface to control the internal audio player.
@@ -46,7 +44,7 @@ public class InternAudioControlPanel extends JPanel
 	private IconButton nextPlayingButton = new IconButton("Play Next Stream",nextStreamIcon);
 	
 	private JTextField titleArea = new JTextField();
-	private VolumeControl audioSlider2;
+	private VolumeControlGUI audioSlider2;
 	private VolumeManager vm;
 	
 	private JToolBar panel = new JToolBar();
@@ -56,7 +54,7 @@ public class InternAudioControlPanel extends JPanel
 	{
 		this.mainGui = mainGui;
 		this.vm = vm;
-		audioSlider2 = new VolumeControl(this.vm);
+		audioSlider2 = new VolumeControlGUI(this.vm);
 		setLayout(new BorderLayout());
 			
 		panel.add(lastStreamButton);

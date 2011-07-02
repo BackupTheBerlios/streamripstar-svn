@@ -1,13 +1,19 @@
 package control;
 
 import gui.Gui_StreamRipStar;
-import guiPrefs.VolumeControl;
+import gui.VolumeControlGUI;
 
 import java.util.Vector;
-
+/**
+ * This Class makes sure that all volume slider have the same volume and
+ * Synchronize between it. All Volumeslider have to register for that function.
+ * 
+ * @author Johannes Putzke
+ *
+ */
 public class VolumeManager
 {
-	private Vector<VolumeControl> list = new Vector<VolumeControl>(0,1);
+	private Vector<VolumeControlGUI> list = new Vector<VolumeControlGUI>(0,1);
 	private Gui_StreamRipStar mainGui;
 	
 	public VolumeManager(Gui_StreamRipStar mainGui)
@@ -20,7 +26,7 @@ public class VolumeManager
 	 * 
 	 * @param newVolume: the new volume in percent
 	 */
-	public void changeVolume(VolumeControl vc,int newVolume)
+	public void changeVolume(VolumeControlGUI vc,int newVolume)
 	{
 		if(vc != null)
 		{
@@ -38,7 +44,7 @@ public class VolumeManager
 		}
 	}
 	
-	public void addVolumeControl(VolumeControl vc)
+	public void addVolumeControl(VolumeControlGUI vc)
 	{
 		if(vc != null)
 		{
@@ -46,7 +52,7 @@ public class VolumeManager
 		}
 	}
 	
-	public void deleteVolumeControl(VolumeControl vc)
+	public void deleteVolumeControl(VolumeControlGUI vc)
 	{
 		if(vc != null)
 		{
