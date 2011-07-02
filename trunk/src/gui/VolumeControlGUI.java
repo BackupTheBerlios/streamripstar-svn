@@ -26,7 +26,7 @@ public class VolumeControlGUI extends JPanel implements MouseMotionListener, Cha
 	private JSlider audioSlider;
 	
 	/**
-	 * Creates the vertical Slider and the listeners for the mousewheel
+	 * Creates the horizontal Slider and the listeners for the mousewheel
 	 * 
 	 * @param vm the Volumemanager that controls the volume in the whole application
 	 */
@@ -48,6 +48,9 @@ public class VolumeControlGUI extends JPanel implements MouseMotionListener, Cha
 		addMouseMotionListener(this);
 		audioSlider.addChangeListener(this);
 		addMouseWheelListener(new MouseWheelVolumeChangeListener());
+		
+		//add this volume slider to the volume manager
+		vm.addVolumeControl(this);
 	}
 	
 	/**

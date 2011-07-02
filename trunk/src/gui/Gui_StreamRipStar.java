@@ -873,6 +873,11 @@ public class Gui_StreamRipStar extends JFrame implements WindowListener
 		return controlStreams;
 	}
 	
+	public VolumeManager getVolumeManager()
+	{
+		return volumeManager;
+	}
+	
 	/**
 	 * Set the title of the current song in the status field
 	 */
