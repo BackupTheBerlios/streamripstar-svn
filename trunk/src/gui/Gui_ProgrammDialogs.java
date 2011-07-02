@@ -35,7 +35,7 @@ public class Gui_ProgrammDialogs extends JDialog{
 	 * @param title
 	 * @param saveField
 	 */
-	public Gui_ProgrammDialogs(Gui_Settings parentFrame, String title, JTextField saveField) {
+	public Gui_ProgrammDialogs(Gui_Settings2 parentFrame, String title, JTextField saveField) {
 		super(parentFrame, title);
 		this.setModalityType(ModalityType.APPLICATION_MODAL);
 		

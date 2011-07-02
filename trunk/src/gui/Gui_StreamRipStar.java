@@ -230,7 +230,7 @@ public class Gui_StreamRipStar extends JFrame implements WindowListener
         if(openPreferences) 
         {
     		JOptionPane.showMessageDialog(this, trans.getString("firstTime"));
-    		new Gui_Settings(this);
+    		new Gui_Settings2(this);
         }
 	}
 //
