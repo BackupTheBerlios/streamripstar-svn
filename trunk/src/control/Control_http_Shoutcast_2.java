@@ -7,10 +7,13 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
 import java.net.URL;
+import java.net.URLConnection;
+import java.net.URLEncoder;
 import java.util.Vector;
 
-public class Control_http_Shoutcast {
+public class Control_http_Shoutcast_2 {
 	private BufferedReader bw = null;
 	private InputStream readGenresStream = null;
 	private InputStream readStream = null;
@@ -33,7 +36,7 @@ public class Control_http_Shoutcast {
 	/**
 	 * the default constructor. Here is nothing to do at the moment
 	 */
-	public Control_http_Shoutcast() {
+	public Control_http_Shoutcast_2() {
 
 	}
 	
@@ -166,6 +169,8 @@ public class Control_http_Shoutcast {
 	 * streamInfo[3] = Bitrate 
 	 * streamInfo[4] = Format
 	 * streamInfo[5] = ID
+	 * streamInfo[6] = Genres
+	 * streamInfo[7] = Link to Website
 	 * 
 	 * @param genre the keyword (most cases the genre) 
 	 * @param keyword true, if the search should be with keywords 
@@ -178,15 +183,30 @@ public class Control_http_Shoutcast {
 			streams.removeAllElements();
 			streams.trimToSize();
 			try {
-				//new shoutcast
-				URL shoutcast = new URL("http://www.shoutcast.com/genre-ajax/"+genre+"/?strIndex="+(currentPage*maxResults)+
-						"&count="+maxResults+"&ajax=true&mode=listeners&order=desc");
-				
-				readGenresStream = shoutcast.openStream();
-				bw = new BufferedReader(new InputStreamReader(readGenresStream));
-	
+				int startInt = (currentPage*maxResults);
+				// Construct data
+			    String data = URLEncoder.encode("ajax", "UTF-8") + "=" + URLEncoder.encode("true", "UTF-8");
+			    data += "&" + URLEncoder.encode("count", "UTF-8") + "=" + URLEncoder.encode(String.valueOf(maxResults), "UTF-8");
+			    data += "&" + URLEncoder.encode("criteria", "UTF-8") + "=" + URLEncoder.encode("listenershead", "UTF-8");
+			    data += "&" + URLEncoder.encode("order", "UTF-8") + "=" + URLEncoder.encode("desc", "UTF-8");
+			    data += "&" + URLEncoder.encode("strIndex", "UTF-8") + "=" + URLEncoder.encode(String.valueOf(startInt), "UTF-8");
+
+			    // Send data
+			    URL url = new URL("http://www.shoutcast.com/genre-ajax/"+genre+"");
+			    URLConnection conn = url.openConnection();
+			    conn.setDoOutput(true);
+			    OutputStreamWriter wr = new OutputStreamWriter(conn.getOutputStream());
+			    wr.write(data);
+			    wr.flush();
+
+			    // Get the response
+			    bw = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+
+//			    wr.close();
+//			    rd.close();
+
 				// create a stream to save the info from the website
-				String[] streamInfo = new String[6];
+				String[] streamInfo = new String[8];
 				
 				while (!stopSearching && (text = bw.readLine()) != null) {
 					try {
@@ -201,20 +221,34 @@ public class Control_http_Shoutcast {
 						
 						//here starts a stream
 						if(text.contains("class=\"stationcol\"")) {
-							//next line starts a stream
+							//scip the first lines
+							for(int i=0; i < 5; i++)
+							{
+								bw.readLine();
+							}
+							//read what we need
 							text = bw.readLine();
 					
 							//now find the ID for the stream
-							streamInfo[5] = text.substring(text.indexOf("\" id=\"")+6, text.indexOf("\" href=\""));
+							streamInfo[5] = text.substring(text.indexOf("\" id=\"")+6, text.indexOf("\" title=\""));
 
 							//the name
-							streamInfo[0] = readNextHtmlLine().trim();
+							streamInfo[0] = text.substring(text.indexOf("\" title=\"")+9, text.indexOf("\" href=\""));
 
+							//look for the Genres the stream belongs to
+							streamInfo[6] = readNextHtmlLine().trim().substring(6);
+							
 							//look for the current title
-							streamInfo[1] = readNextHtmlLine().trim().substring(16).trim();
-
+							bw.readLine();
+							text = bw.readLine();
+							streamInfo[7] = text.substring(text.indexOf("href=\"")+6, text.indexOf("\" target=\""));
+							
+							//look for the current title
+							readNextHtmlLine().trim();
+							streamInfo[1] = text.substring(text.indexOf("\" title=\"")+9, text.indexOf("\">Recently played"));
+							
 							//look for the amount of listeners to the stream
-							streamInfo[2] = readNextHtmlLine().trim();
+							streamInfo[2] = readNextHtmlLine();
 							
 							//now have a look at the bitrate
 							streamInfo[3] = readNextHtmlLine().trim();
@@ -226,7 +260,7 @@ public class Control_http_Shoutcast {
 							streams.add(streamInfo);
 							
 							//create an new for the next one
-							streamInfo = new String[6];					
+							streamInfo = new String[8];					
 						}
 
 					} catch (NullPointerException e) {
@@ -252,6 +286,7 @@ public class Control_http_Shoutcast {
 				if (readGenresStream != null) {
 					try {
 						readGenresStream.close();
+						
 					} catch (IOException e) {
 					}
 				}
@@ -304,9 +339,15 @@ public class Control_http_Shoutcast {
 					
 					//here starts a stream
 					if(text.contains("class=\"stationcol\"")) {
-						//next line starts a stream
+						
+						//scip the first lines
+						for(int i=0; i < 11; i++)
+						{
+							bw.readLine();
+						}
+						//read what we need
 						text = bw.readLine();
-				
+						
 						//now find the ID for the stream
 						streamInfo[5] = text.substring(text.indexOf("\" id=\"")+6, text.indexOf("\" href=\""));
 
@@ -372,12 +413,17 @@ public class Control_http_Shoutcast {
 		String next = "";
 		
 		try {
-			while(!stopSearching && (text = bw.readLine()) != null) {
-				while(!stopSearching  && !text.trim().endsWith(">")) {
+			while(!stopSearching && (text = bw.readLine()) != null)
+			{
+				while(!stopSearching  && !text.trim().endsWith(">"))
+				{
 					text += bw.readLine();
 				}
+				
 				String noHTML = text.replaceAll("\\<.*?>","").trim();
-				if(noHTML.length() > 0) {
+				
+				if(noHTML.length() > 0)
+				{
 					return noHTML;
 				}
 			}

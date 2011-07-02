@@ -60,7 +60,7 @@ import javax.xml.stream.events.XMLEvent;
 import misc.Stream;
 import thread.Thread_GetStreams_FromShoutcast;
 import control.Control_GetPath;
-import control.Control_http_Shoutcast;
+import control.Control_http_Shoutcast_2;
 import control.SRSOutput;
 import control.Shoutcast2;
 
@@ -71,7 +71,7 @@ public class Gui_StreamBrowser2 extends JFrame implements WindowListener {
 	private ResourceBundle toolTips = ResourceBundle.getBundle("translations.ToolTips");
 	private ResourceBundle trans = ResourceBundle.getBundle("translations.StreamRipStar");
 	
-	private Control_http_Shoutcast controlHttp = new Control_http_Shoutcast();
+	private Control_http_Shoutcast_2 controlHttp = new Control_http_Shoutcast_2();
 	private Object[] browseHeader = {"ID","Name", "Playing Now",
 			"Listeners","Bitrate","Type"};
 	
@@ -460,7 +460,7 @@ public class Gui_StreamBrowser2 extends JFrame implements WindowListener {
 		return browseTree;
 	}
 	
-	public Control_http_Shoutcast  getControlHttp() {
+	public Control_http_Shoutcast_2  getControlHttp() {
 		return controlHttp;
 	}
 	
