@@ -48,7 +48,13 @@ public class VolumeManager
 	{
 		if(vc != null)
 		{
-			list.add(vc);			
+			//add to the vector to manager
+			list.add(vc);
+			//init it to the current value
+			if(list.capacity() > 0)
+			{
+				vc.setVolume(list.get(0).getVolume());
+			}
 		}
 	}
 	
