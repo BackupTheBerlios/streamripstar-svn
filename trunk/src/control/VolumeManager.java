@@ -66,4 +66,20 @@ public class VolumeManager
 			list.trimToSize();
 		}
 	}
+	
+	/**
+	 * Get the actual volume in percent. If no volume control is present,
+	 * the returnvalue is 50 percent. The returnvalue is between 0 and 100.
+	 * 
+	 * @return Volume in percent
+	 */
+	public int getVolume()
+	{
+		if(list.capacity() > 0)
+		{
+			return list.get(0).getVolume();
+		} else {
+			return 50;
+		}
+	}
 }

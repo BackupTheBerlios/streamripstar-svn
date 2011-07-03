@@ -215,3 +215,4 @@
  - fix: Import playlist per Drag&Drop now works again
  - fix: UI for adding schedule jobs does not fit the window and all components disappear
  - fix: Now can load the comment for a schedule again
+ - fix: Remember the volume for a new stream when playing in the internal player

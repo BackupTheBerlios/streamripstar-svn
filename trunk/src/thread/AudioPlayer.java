@@ -28,13 +28,16 @@ public class AudioPlayer extends Thread{
 	
 	/**
 	 * Use this constructor if you want to play a stream
-	 * @param stream
-	 * @param mainGui
+	 * @param stream The stream you want to hear
+	 * @param mainGui Mainwindow
 	 */
-	public AudioPlayer(Stream stream, Gui_StreamRipStar mainGui ) {
+	public AudioPlayer(Stream stream, Gui_StreamRipStar mainGui)
+	{
 		this.stream = stream;
 		this.mainGui = mainGui;
 		playbin = new PlayBin2("AudioPlayer");
+		//set the valume for this new player to avoid a wrong gain at start
+		playbin.setVolumePercent(mainGui.getVolumeManager().getVolume());
 		lg.logD("AudioPlayer: Player created");
 	}
 	
@@ -61,6 +64,7 @@ public class AudioPlayer extends Thread{
 	        		playbin.setURI(new URI("http://127.0.0.1:"+stream.relayServerPortTF));
 	        	} else {
 	        		playbin.setURI(new URI(stream.address));
+	        		
 	        	}
 			} catch (URISyntaxException e) {
 				e.printStackTrace();
@@ -71,8 +75,11 @@ public class AudioPlayer extends Thread{
 	
 	            public void tagsFound(GstObject source, TagList tagList) {
 	                for (String tagName : tagList.getTagNames()) {
-	                    for (Object tagData : tagList.getValues(tagName)) {
-	                    	mainGui.setTitleForAudioPlayer(stream.name ,tagData.toString(),false);
+                		for (Object tagData : tagList.getValues(tagName)) {
+	                    	if(tagList.equals("title"))
+		                	{
+	                    		mainGui.setTitleForAudioPlayer(stream.name ,tagData.toString(),false);
+		                	}
 	                    }
 	                }
 	            }
