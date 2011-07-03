@@ -11,7 +11,6 @@ import javax.swing.JSlider;
 import javax.swing.SwingConstants;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
-
 import control.VolumeManager;
 
 /**
@@ -39,8 +38,10 @@ public class VolumeControlGUI extends JPanel implements MouseMotionListener, Cha
 		audioSlider.setPaintTicks(true);
 
 		Hashtable<Integer,JLabel> labelTable = new Hashtable<Integer,JLabel> ();
-		labelTable.put( new Integer( 0 ), new JLabel("Loudless") );
+		labelTable.put( new Integer( 0 ), new JLabel("0") );
+		labelTable.put( new Integer( 25), new JLabel("25") );
 		labelTable.put( new Integer( 50), new JLabel("50") );
+		labelTable.put( new Integer( 75), new JLabel("75") );
 		labelTable.put( new Integer( 100 ), new JLabel("100") );
 		audioSlider.setLabelTable( labelTable );
 		audioSlider.setPaintLabels(true);
@@ -52,7 +53,7 @@ public class VolumeControlGUI extends JPanel implements MouseMotionListener, Cha
 		//add this volume slider to the volume manager
 		vm.addVolumeControl(this);
 	}
-	
+
 	/**
 	 * Get the current volume of this volume controller
 	 * @return the percentage value between 0 and 100
