@@ -487,12 +487,10 @@ public class Gui_Settings2 extends JDialog
 		list.setSelectedIndex(0);
 		 
 		repaintCommon();
-		
-		//set size of window
-		//pack together
-		pack();
+
 		//get new dimension of the window
-        Dimension frameDim = getSize();
+        Dimension frameDim = new Dimension(800,440);
+        setSize(frameDim);
     	
         //get resolution
         Dimension screenDim = Toolkit.getDefaultToolkit().getScreenSize();
