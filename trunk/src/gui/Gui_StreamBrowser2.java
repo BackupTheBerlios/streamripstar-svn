@@ -616,11 +616,13 @@ public class Gui_StreamBrowser2 extends JFrame implements WindowListener {
 	 * look for:
 	 * 	[0] = address
 	 * 	[1] = name
+	 * 	[2] = Genres
+	 *  [3] = Website
 	 * from the selected stream and return this String
 	 * @return
 	 */
 	public String[] getStreamInfo() {
-		String[] address = new String[2];
+		String[] address = new String[4];
 		
 		//get selectet Streams
 		if(browseTable.getSelectedRow() >= 0) {	
@@ -648,6 +650,8 @@ public class Gui_StreamBrowser2 extends JFrame implements WindowListener {
 				//get address from .pls file
 				address[0] = controlHttp.getfirstStreamFromURL(url);
 				address[1] = streams.get(nr)[0];
+				address[2] = streams.get(nr)[6];
+				address[3] = streams.get(nr)[7];
 			} else {
 				SRSOutput.getInstance().logE("Gets an empty FILTERED stream vector: can't get info");
 			}
