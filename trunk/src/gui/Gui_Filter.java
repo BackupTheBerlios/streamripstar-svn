@@ -262,21 +262,23 @@ public class Gui_Filter extends JPanel {
 				//add stream recursive
 				for(int i=0 ; i < streamsPG.capacity(); i++) {
 					
-					Object[] tmp = new Object[6];
+					Object[] tmp = new Object[8];
 					
 					tmp[0] = i;						//nr
 					tmp[1] = streamsPG.get(i)[0];	//description
 					tmp[2] = streamsPG.get(i)[1];	//now Playing
+					tmp[3] = streamsPG.get(i)[6];	//now Genre
 					try {
-						tmp[3] = Integer.valueOf(streamsPG.get(i)[2]);	//listeners
+						tmp[4] = Integer.valueOf(streamsPG.get(i)[2]);	//listeners
 					} catch (NumberFormatException f) { 
-						tmp[3] = -1;
+						tmp[4] = -1;
 					}
 					
 					try{
-						tmp[4] = Integer.valueOf(streamsPG.get(i)[3]);	//Bitrate
+						tmp[5] = Integer.valueOf(streamsPG.get(i)[3]);	//Bitrate
 					} catch (NumberFormatException f) { tmp[5] = -1; }
-					tmp[5] = streamsPG.get(i)[4];	//Type
+					tmp[6] = streamsPG.get(i)[4];	//Type
+					tmp[7] = streamsPG.get(i)[7];	//Website
 						
 					//add to model
 					streamBrowser.getBrowseModel().addRow(tmp);
