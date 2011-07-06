@@ -727,6 +727,8 @@ public class Gui_StreamRipStar extends JFrame implements WindowListener
 				 
 				    case XMLStreamConstants.START_ELEMENT: 
 				    	String[] path = new String[5];
+				    	int level = 0;		//loglevel
+				    	
 				    	for ( int i = 0; i < parser.getAttributeCount(); i++ ) {
 				    		if(parser.getAttributeLocalName( i ).equals("activeTrayIcon")) {
 				    			tray = Boolean.valueOf(parser.getAttributeValue(i));
@@ -763,10 +765,29 @@ public class Gui_StreamRipStar extends JFrame implements WindowListener
 				    		}
 				    		else if (parser.getAttributeLocalName( i ).equals("windowActionBox_index")) {
 				    			winAction = Integer.valueOf(parser.getAttributeValue(i));
+				    		} else if (parser.getAttributeLocalName( i ).equals("logLevel_index")) {
+				    			level = Integer.valueOf(parser.getAttributeValue(i));
 				    		}
 				    	}
 				    	controlStreams.setPaths(path);
 						setTextUnderIcons();
+						switch(level) 
+						{
+							case 0:
+								SRSOutput.getInstance().setLoglevel(SRSOutput.LOGLEVEL.Nothing);
+								break;
+							case 1:
+								SRSOutput.getInstance().setLoglevel(SRSOutput.LOGLEVEL.Error);
+								break;
+							case 2:
+								SRSOutput.getInstance().setLoglevel(SRSOutput.LOGLEVEL.Normal);
+								break;
+							case 3:
+								SRSOutput.getInstance().setLoglevel(SRSOutput.LOGLEVEL.Debug);
+								break;
+							default:
+								SRSOutput.getInstance().setLoglevel(SRSOutput.LOGLEVEL.Normal);	
+						}
 				    	break; 
 				 
 				    default: 
