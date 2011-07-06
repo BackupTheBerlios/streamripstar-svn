@@ -787,7 +787,7 @@ public class Gui_Settings2 extends JDialog
 				SRSOutput.getInstance().setLoglevel(SRSOutput.LOGLEVEL.Normal);
 				break;
 			case 3:
-				SRSOutput.getInstance().setLoglevel(SRSOutput.LOGLEVEL.Nothing);
+				SRSOutput.getInstance().setLoglevel(SRSOutput.LOGLEVEL.Debug);
 				break;
 			default:
 				SRSOutput.getInstance().setLoglevel(SRSOutput.LOGLEVEL.Normal);	
