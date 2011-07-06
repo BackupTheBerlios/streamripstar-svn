@@ -150,7 +150,7 @@ public class Gui_StreamRipStar extends JFrame implements WindowListener
 	private JMenuItem onlineHelp = new JMenuItem("Online Help");
 	private JMenuItem updateMenuItem = new JMenuItem("Look for an Update");
 	private JMenuItem about = new JMenuItem("About StreamRipStar",aboutStreamRipStarMenu);
-	private JMenuItem viewLog = new JMenuItem("Show the log messages",aboutStreamRipStarMenu);
+	private JMenuItem viewLog = new JMenuItem("Show log messages",aboutStreamRipStarMenu);
 	private JMenuItem streamRipStarSite = new JMenuItem("Go to StreamRipStars Website");
 	private JMenuItem exit = new JMenuItem("Exit");
 	
@@ -560,6 +560,9 @@ public class Gui_StreamRipStar extends JFrame implements WindowListener
 			streamRipStarSite.setText(trans.getString("streamRipStarWebsite"));
 			updateMenuItem.setText(trans.getString("checkUpdateItem"));
 			about.setText(trans.getString("about"));
+			viewLog.setText(trans.getString("mainWin.ViewLog"));
+			playNextStream.setText(trans.getString("mainWin.PlayNextStream"));
+			playLastStream.setText(trans.getString("mainWin.PlayerLastStream"));
 			
 			//Tooltip
 			editButton.setToolTipText(trans.getString("toolTip.editButton"));
