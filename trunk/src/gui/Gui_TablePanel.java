@@ -504,7 +504,7 @@ public class Gui_TablePanel extends JPanel
 	
 	
 	/**
-	 * Set the Thread with the audio player a new valume for the 
+	 * Set the Thread with the audio player a new volume for the 
 	 * audio
 	 * @param percentage: a value in a range of 0 up to 100
 	 */
@@ -512,11 +512,14 @@ public class Gui_TablePanel extends JPanel
 		if(player != null  && percentage >= 0 && percentage <= 100) {
 			
 			double val = 0;
+			
 			//the human ears has a logarithmn frequency characteristic
-			if(percentage !=  0) {
-				val =  10* Math.pow(10, Math.log10(1) + (Math.log10(100)+percentage) /100);
+			if(percentage !=  0)
+			{
+				 val = 100*(Math.pow(2.0,Double.valueOf(percentage)/100.0)-1);
 			} 
 			player.setAudioVolum(new Double(val).intValue());
+			SRSOutput.getInstance().logD("Lautstärke ist nun: "+val);
 		}
 	}
 	
