@@ -221,4 +221,4 @@
  
  0.6 Beta1 -> 0.6 Beta2
  - fix: translation issues
- 
+ - fix: can't change a stream, because it already exist in the time range

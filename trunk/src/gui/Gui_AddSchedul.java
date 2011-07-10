@@ -428,15 +428,19 @@ public class Gui_AddSchedul extends JDialog implements WindowListener{
 				
 				//if this job is a new one -> save in xml-file
 				//and add to vector and table
-				if(!controlJob.testOverlappingRecordTime(index, now.getTimeInMillis(),now3.getTimeInMillis()))
-				{
-					if(createNew) {
-						SchedulJob job = new SchedulJob(SchedulJob.getNewID(),index,now.getTimeInMillis(),now3.getTimeInMillis()
+					if(createNew)
+					{
+						if(!controlJob.testOverlappingRecordTime(index, now.getTimeInMillis(),now3.getTimeInMillis()))
+						{
+							SchedulJob job = new SchedulJob(SchedulJob.getNewID(),index,now.getTimeInMillis(),now3.getTimeInMillis()
 									,howOften,enableCB.isSelected(),commentTF.getText());
-						controlJob.addToSchedulVector(job);
-						schedulManager.addSchedulJobToTable(job);
-						dispose();
-						
+							controlJob.addToSchedulVector(job);
+							schedulManager.addSchedulJobToTable(job);
+							dispose();
+						} else {
+							JOptionPane.showMessageDialog(Gui_AddSchedul.this,trans.getString("AddJob.AlreadyExist"));
+						}
+
 					} else {
 						if(controlJob.jobStillExist(oldJob.getSchedulID())) {
 							oldJob.setComment(commentTF.getText());
@@ -451,11 +455,7 @@ public class Gui_AddSchedul extends JDialog implements WindowListener{
 						} else {
 							JOptionPane.showMessageDialog(Gui_AddSchedul.this,trans.getString("jobDoesntExistAnymore"));
 						}
-						
 					}
-				} else {
-					JOptionPane.showMessageDialog(Gui_AddSchedul.this,trans.getString("AddJob.AlreadyExist"));
-				}
 				
 			} catch (ParseException e1) {
 				SRSOutput.getInstance().logE( e1.getStackTrace().toString()); 
