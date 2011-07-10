@@ -223,3 +223,4 @@
  - fix: translation issues
  - fix: can't change a stream, because it already exist in the time range
  - fix: doesn't log the options for a stream
+ - fix: the log viewer does not update after deleting the log file

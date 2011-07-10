@@ -107,6 +107,8 @@ public class ViewLog extends JDialog
 	{
 		BufferedReader reader = null;
 		String txt = "";
+		logField.setText(""); //make it empty
+		
 		try
 		{
 			String path = new Control_GetPath().getStreamRipStarPath() + "/output.log";
@@ -153,6 +155,7 @@ public class ViewLog extends JDialog
     public class DeleteListener implements ActionListener {
         public void actionPerformed(ActionEvent e) {
             SRSOutput.getInstance().deleteLogFile();
+            loadLogFromFile(); //update the view
         }
     }
 }
