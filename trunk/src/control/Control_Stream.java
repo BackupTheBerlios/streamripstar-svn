@@ -967,7 +967,7 @@ public class Control_Stream
 		options.add(0,streamripperPath);
 
 		try {
-			SRSOutput.getInstance().log("trying to start with command: \n");
+			SRSOutput.getInstance().log("trying to start with command: \n"+options);
 			streamProcess = new ProcessBuilder(options).start();
 		} catch (IOException e) {
 		    SRSOutput.getInstance().logE("Error while executing streamripper"+e);
