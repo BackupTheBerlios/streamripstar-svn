@@ -202,7 +202,7 @@
  
   ----------------------------
  
- 0.5.11 -> 0.6
+ 0.5.11 -> 0.6 Beta1
  - add: can now start/stop multible streams at one time
  - add: play hear next/last stream in list
  - add: can now remember stream details (Bitrate / Server name / Metaintervall etc)
@@ -216,3 +216,9 @@
  - fix: UI for adding schedule jobs does not fit the window and all components disappear
  - fix: Now can load the comment for a schedule again
  - fix: Remember the volume for a new stream when playing in the internal player
+   
+  ----------------------------
+ 
+ 0.6 Beta1 -> 0.6 Beta2
+ - fix: translation issues
+ 

@@ -454,11 +454,13 @@ public class Gui_AddSchedul extends JDialog implements WindowListener{
 						
 					}
 				} else {
-					JOptionPane.showMessageDialog(Gui_AddSchedul.this,"The is already a record in this time range.\nPlease change the time");
+					JOptionPane.showMessageDialog(Gui_AddSchedul.this,trans.getString("AddJob.AlreadyExist"));
 				}
 				
 			} catch (ParseException e1) {
-				e1.printStackTrace();
+				SRSOutput.getInstance().logE( e1.getStackTrace().toString()); 
+			} catch (MissingResourceException f) {
+				SRSOutput.getInstance().logE( f.getStackTrace().toString()); 
 			}
 
 		}
