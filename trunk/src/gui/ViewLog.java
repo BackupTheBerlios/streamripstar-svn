@@ -91,6 +91,7 @@ public class ViewLog extends JDialog
 		{
     		setTitle(trans.getString("ViewLog.title"));
     		OKButton.setText(trans.getString("ViewLog.okButton"));
+    		deleteButton.setText(trans.getString("ViewLog.deleteButton"));
  
     	}
 		catch ( MissingResourceException e )
