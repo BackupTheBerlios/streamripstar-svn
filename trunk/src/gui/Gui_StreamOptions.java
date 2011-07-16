@@ -103,7 +103,7 @@ public class Gui_StreamOptions extends JFrame implements WindowListener {
 	private JTextField maxSizeMBField = new JTextField();
 	private JTextField useragentField = new JTextField();
 	private JTextField runIndexField = new JTextField("000");
-	private JTextField patternField = new JTextField();
+	private JTextField patternField = new JTextField("%X%/");
 	private JTextField realyPortField = new JTextField("8000",5);
 	private JTextField realyConnectionsField = new JTextField("0",5);
 	private JTextField proxyField = new JTextField();
@@ -854,6 +854,7 @@ public class Gui_StreamOptions extends JFrame implements WindowListener {
 		overWriteLargerCheckBox.setSelected(true);
 		dontOverCheckBox.setSelected(true);
 		id3tagV2CB.setSelected(true);
+		patternCheckBox.setSelected(true);
 	}
 	
 	

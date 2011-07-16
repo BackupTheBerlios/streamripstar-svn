@@ -110,7 +110,7 @@ public class Gui_Stream4AllOptions extends JDialog implements WindowListener {
 	private JTextField maxSizeMBField = new JTextField();
 	private JTextField useragentField = new JTextField();
 	private JTextField runIndexField = new JTextField("000");
-	private JTextField patternField = new JTextField();
+	private JTextField patternField = new JTextField("%X%S");
 	private JTextField realyPortField = new JTextField("8000",5);
 	private JTextField realyConnectionsField = new JTextField("0",5);
 	private JTextField proxyField = new JTextField();
@@ -230,6 +230,8 @@ public class Gui_Stream4AllOptions extends JDialog implements WindowListener {
 	
 		//set Language for all textfiels, Labels etc
 		setLanguage();
+		
+		patternCheckBox.setSelected(true);
 		
 		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		addWindowListener(this);
