@@ -76,10 +76,11 @@ public class AudioPlayer extends Thread{
 	            public void tagsFound(GstObject source, TagList tagList) {
 	                for (String tagName : tagList.getTagNames()) {
                 		for (Object tagData : tagList.getValues(tagName)) {
-	                    	if(tagList.equals("title"))
-		                	{
-	                    		mainGui.setTitleForAudioPlayer(stream.name ,tagData.toString(),false);
-		                	}
+//	                    	if(tagList.equals("title"))
+//		                	{
+//	                    		mainGui.setTitleForAudioPlayer(stream.name ,tagData.toString(),false);
+//		                	}
+	                    	mainGui.setTitleForAudioPlayer(stream.name ,tagData.toString(),false);
 	                    }
 	                }
 	            }
