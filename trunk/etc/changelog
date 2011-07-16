@@ -220,7 +220,7 @@
   ----------------------------
  
  0.6 Beta1 -> 0.6 Beta2
- - add: support new file pattern: %S - name of StreamRipStar; %G - Genre in StreamRipStar; %/ folder delimiter (for creating your own folders)
+ - add: support new file pattern: %X - name of StreamRipStar; %G - Genre in StreamRipStar; %/ folder delimiter (for creating your own folders)
  - fix: translation issues
  - fix: can't change a stream, because it already exist in the time range
  - fix: doesn't log the options for a stream
