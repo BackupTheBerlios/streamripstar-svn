@@ -125,7 +125,7 @@ public class Gui_Settings2 extends JDialog
 
 	private JFileChooser dirChooser;
 
-	private String[] languages = {"English", "German"};
+	private String[] languages = {"English", "German", "System"};
 	private String[] actions = {"none","Open Browser","edit Stream","start/stop", "play Stream"};
 	private String[] windowActions = {"do nothing", "Exit StreamRipStar", "Send in Systemtray"};
 	private String[] logLevel = {"Nothing", "Error", "Normal", "Everything"};

@@ -24,7 +24,7 @@ import control.SRSOutput;
 public class StreamRipStar
 {	
 	public static final int releaseRevision = 180;
-	public static final String releaseVersion = "0.6 - Beta 2";
+	public static final String releaseVersion = "0.6 - Beta 3";
 	private static boolean noConfiFileFound = false;
 	private static String lang="",reg ="", lnfClassName = null;
 	
@@ -44,6 +44,8 @@ public class StreamRipStar
 		} else if (langs==1) {
 			lang="de";
 			reg ="DE";
+		} else if (langs==2) {
+			lang="system";
 		} else {
 			lang="system";
 		}
