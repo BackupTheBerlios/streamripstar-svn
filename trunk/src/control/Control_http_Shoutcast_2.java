@@ -380,7 +380,7 @@ public class Control_http_Shoutcast_2 {
 						
 						//look for the current title
 						readNextHtmlLine().trim();
-						streamInfo[1] = text.substring(text.indexOf(" title=\"")+7, text.lastIndexOf("\">"));
+						streamInfo[1] = text.substring(text.indexOf(" title=\"")+8, text.lastIndexOf("\">"));
 						
 						//look for the amount of listeners to the stream
 						readNextHtmlLine();

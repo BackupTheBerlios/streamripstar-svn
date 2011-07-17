@@ -226,3 +226,8 @@
  - fix: doesn't log the options for a stream
  - fix: the log viewer does not update after deleting the log file
  - fix: show the titles again for streams when listing to it
+    
+  ----------------------------
+ 
+ 0.6 Beta2 -> 0.6 Beta3
+ - fix: Show a " before every song in the streambrowser
