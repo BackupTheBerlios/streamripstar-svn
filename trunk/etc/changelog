@@ -230,4 +230,5 @@
   ----------------------------
  
  0.6 Beta2 -> 0.6 Beta3
- - fix: Show a " before every song in the streambrowser
+ - fix: Show a " before every song in the Stream Browser
+ - fix: some translation issues

@@ -170,6 +170,7 @@ public class Gui_SchedulManager extends JFrame implements WindowListener {
 	public void setLanguage() {
 		try {
 			//for buttons
+			setTitle(trans.getString("JobMan.Title"));
 			addButton.setText(trans.getString("JobMan.AddButton"));
 			editButton.setText(trans.getString("JobMan.editButton"));
 			removeButton.setText(trans.getString("JobMan.removeButton"));

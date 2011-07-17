@@ -80,7 +80,7 @@ public class Gui_AddSchedul extends JDialog implements WindowListener{
 	public Gui_AddSchedul(Gui_SchedulManager schedulManager, boolean createNew,
 			Control_Stream controlStreams, Thread_Control_Schedul controlJob, SchedulJob oldJob)
 	{
-		super(schedulManager,"Add SchedulJob");
+		super(schedulManager,"Add Schedule Job");
 		this.schedulManager = schedulManager;
 		this.createNew = createNew;
 		this.controlJob = controlJob;
@@ -347,6 +347,7 @@ public class Gui_AddSchedul extends JDialog implements WindowListener{
 	public void setLanguage() {
 		try {
 			//buttons
+			setTitle(trans.getString("AddJob.Title"));
 			addButton.setText(trans.getString("AddJob.addButton"));
 			abortButton.setText(trans.getString("AddJob.abortButton"));
 			
