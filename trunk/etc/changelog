@@ -230,5 +230,7 @@
   ----------------------------
  
  0.6 Beta2 -> 0.6 Beta3
+ - add: (re)enable a system language for locale date and time support (fallback is still English)
  - fix: Show a " before every song in the Stream Browser
  - fix: some translation issues
+ - fix: doesn't start a daily/weekly schedule job when updating it

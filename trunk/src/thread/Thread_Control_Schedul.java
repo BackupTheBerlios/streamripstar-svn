@@ -90,8 +90,13 @@ public class Thread_Control_Schedul extends Thread{
 					// - the start time is in the past
 					// - the stop time is in the future
 					// - is not the "start at Start of StreamRipStar" job
-					if(job.isJobenabled() && !job.getstatus() && job.getStartTime() < now.getTimeInMillis()
-							&& job.getStopTime() > now.getTimeInMillis() && job.getJobCount() != 3) {
+					if(		job.isJobenabled() && 
+							(!job.getstatus() || !(!mainGui.getControlStream().getStreamByID(job.getStreamID()).getStatus() && mainGui.getControlStream().getStreamByID(job.getStreamID()).userStoppedRecording())) &&
+							!mainGui.getControlStream().getStreamByID(job.getStreamID()).getStatus() &&
+							job.getStartTime() <= now.getTimeInMillis() &&
+							job.getStopTime() > now.getTimeInMillis() && 
+							job.getJobCount() != 3)
+					{
 						
 						SRSOutput.getInstance().logD("Thread Control Schedules: start ripping scheduled job");
 						
@@ -130,6 +135,8 @@ public class Thread_Control_Schedul extends Thread{
 						
 						//save the vector with all schedule jobs
 						saveScheduleVector();
+						
+						job.setStatus(false);
 					
 					}
 					
