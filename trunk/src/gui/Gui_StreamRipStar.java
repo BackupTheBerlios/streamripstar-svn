@@ -1023,11 +1023,8 @@ public class Gui_StreamRipStar extends JFrame implements WindowListener
 	 * reset the optical status on the streamtable
 	 * @param stream
 	 */
-	public void stopRippingUnselected(Stream stream) {
-		stream.getUpdateName().killMe();
-		stream.getProcess().destroy();
-		stream.decreaseRippingCount();
-		stream.setStatus(false);
+	public void stopRippingUnselected(Stream stream, boolean userStoppsRecording) {
+		stream.setStop(userStoppsRecording);
 	}
 	
 	/**
@@ -1043,13 +1040,7 @@ public class Gui_StreamRipStar extends JFrame implements WindowListener
 			if (streamsToStop[i] == null) {
 				JOptionPane.showInputDialog(trans.getString("stopError"));
 			} else {
-				Process x = streamsToStop[i].getProcess();
-				if(x != null) {
-					streamsToStop[i].getUpdateName().killMe();
-					x.destroy();
-					streamsToStop[i].decreaseRippingCount();
-					streamsToStop[i].setStatus(false);
-				}
+				streamsToStop[i].setStop(true);
 			}
 		}
 	}

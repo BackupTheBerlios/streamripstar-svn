@@ -95,6 +95,7 @@ public class Stream
 	private Boolean isRipping = false;	//the the stream ripping?
 	private Process ownStreamripperProcess = null;
 	private Thread_UpdateName updateName = null;
+	private Boolean userStopptRecodring = false;
 
 	/**
 	 * Creates an object stream, including the name and the id.
@@ -117,7 +118,13 @@ public class Stream
 		exeCommand = command;
 	}
 	
-	public void setStop() {
+	/**
+	 * Stop recording streams
+	 * @param userStopped if the user stopped it
+	 */
+	public void setStop(boolean userStopped) {
+		userStopptRecodring = userStopped;
+		
 		isRipping=false;
 		if(ownStreamripperProcess!=null) {
 			ownStreamripperProcess.destroy();
@@ -129,6 +136,15 @@ public class Stream
 			updateName=null;
 		}
 		activeStreams--;
+	}
+	
+	/**
+	 * Returns the value, if the user has stop the last recording from a stream
+	 * @return true, if he stopped it. Else false
+	 */
+	public boolean userStoppedRecording()
+	{
+		return this.userStopptRecodring;
 	}
 	
 	public String[] getMetaData() {

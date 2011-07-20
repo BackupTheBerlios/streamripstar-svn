@@ -243,10 +243,10 @@ public class SchedulJob {
 	 * else false
 	 */
 	public Boolean isOnceJob() {
-		if(!daily && !weekly && !monthly) {
-			return true;
-		} else {
+		if(daily  || weekly  || monthly || atStart) {
 			return false;
+		} else {
+			return true;
 		}
 	}
 	

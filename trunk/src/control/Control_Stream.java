@@ -1042,7 +1042,7 @@ public class Control_Stream
 	public void stopAllStreams() {
 		for(int i=0; i< streamVector.capacity(); i++) {
 			if(streamVector.get(i).getStatus())
-				streamVector.get(i).setStop();
+				streamVector.get(i).setStop(false);
 		}
 	}
 	

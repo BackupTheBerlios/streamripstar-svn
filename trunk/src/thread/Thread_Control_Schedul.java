@@ -5,7 +5,9 @@ package thread;
 
 import gui.Gui_StreamRipStar;
 
+import java.text.DateFormat;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.ResourceBundle;
 import java.util.Vector;
 import java.io.FileInputStream;
@@ -74,14 +76,24 @@ public class Thread_Control_Schedul extends Thread{
 					//get schedulJob for better code
 					SchedulJob job = schedulVector.get(i);
 					
+					//show some debug messages:
+					SRSOutput.getInstance().logD("For Job "+job.getSchedulID()+"\" :");
+					String date = DateFormat.getDateInstance(DateFormat.SHORT).format(new Date(now.getTimeInMillis()));
+					String time = DateFormat.getTimeInstance(DateFormat.SHORT).format(new Date(now.getTimeInMillis()));
+					SRSOutput.getInstance().logD("Now is: "+date+" - "+time);
+					SRSOutput.getInstance().logD("Starttime is: "+job.getStartTimeAsLocaleTime());
+					SRSOutput.getInstance().logD("Stoptime is: "+job.getStopTimeAsLocaleTime());
+					
 					//should a stream started? Start if:
 					// - is enabled
-					// - isn't already started by schedulemanager  
+					// - isn't already started by schedule Manager  
 					// - the start time is in the past
 					// - the stop time is in the future
 					// - is not the "start at Start of StreamRipStar" job
 					if(job.isJobenabled() && !job.getstatus() && job.getStartTime() < now.getTimeInMillis()
 							&& job.getStopTime() > now.getTimeInMillis() && job.getJobCount() != 3) {
+						
+						SRSOutput.getInstance().logD("Thread Control Schedules: start ripping scheduled job");
 						
 						//  look for the to recording stream
 						Stream stream = mainGui.getControlStream().getStreamByID(
@@ -104,11 +116,13 @@ public class Thread_Control_Schedul extends Thread{
 					// - is not the "start at Start of StreamRipStar" job
 					if(job.getStopTime() <= now.getTimeInMillis() && job.getstatus() && job.getJobCount() != 3)
 					{
+						SRSOutput.getInstance().logD("Thread Control Schedules: stop recording job");
+						
 						// stop ripping stream
 						mainGui.stopRippingUnselected(mainGui.getControlStream()
-								.getStreamByID(job.getStreamID()));
+								.getStreamByID(job.getStreamID()),false);
 						
-						// should schedulejob updated?
+						// should schedule Job updated?
 						calculateNextJobTime(job,false);
 						
 						//the Gui_schedulmanager should update it't table
@@ -119,14 +133,15 @@ public class Thread_Control_Schedul extends Thread{
 					
 					}
 					
-					//should schedulejob deleted? //only if:
+					//should schedule Job deleted? //only if:
 					//- record once;
 					//- stop time is in the past
-					//- is no job, which only starts at the start of streamripstar
-					if((job.isOnceJob() && job.getStopTime() <= now.getTimeInMillis() || 
-							(job.isOnceJob() && job.getstatus() && !mainGui.getControlStream().getStreamByID(job.getStreamID()).getStatus()))
-							&& job.getJobCount() != 3)
+					if( job.isOnceJob() &&
+						job.getStopTime() <= now.getTimeInMillis() && 
+						!mainGui.getControlStream().getStreamByID(job.getStreamID()).getStatus())
 					{
+						SRSOutput.getInstance().logD("Thread Control Schedules: delete old job");
+						
 						//remove from job vector
 						removeJobFromVector(job.getSchedulID());
 						
@@ -135,7 +150,7 @@ public class Thread_Control_Schedul extends Thread{
 									mainGui.getControlStream().getStreamByID(job.getStreamID()).name;
 						mainGui.showMessageInTray(message);
 						
-						//save all scheduljobs in xml file
+						//save all schedule Jobs in xml file
 						saveScheduleVector();
 						
 						//the Gui_schedulmanager should update it't table
@@ -149,8 +164,12 @@ public class Thread_Control_Schedul extends Thread{
 					//or:
 					//the job is a daily or weekly job and is stop. This means
 					//the the stream was already started, but the user stopped it
-					else if((!job.isOnceJob() && job.getStopTime() <= now.getTimeInMillis()) || 
-							(!job.isOnceJob() && !mainGui.getControlStream().getStreamByID(job.getStreamID()).getStatus())) {
+					else if(!job.isOnceJob() &&
+							(job.getStopTime() <= now.getTimeInMillis()  ||
+							!mainGui.getControlStream().getStreamByID(job.getStreamID()).getStatus() && mainGui.getControlStream().getStreamByID(job.getStreamID()).userStoppedRecording()))
+					{
+						SRSOutput.getInstance().logD("Thread Control Schedules: old job recognized - update it to next date");
+						
 						calculateNextJobTime(job,true);
 						
 						//the Gui_schedulmanager should update it's table
@@ -158,6 +177,8 @@ public class Thread_Control_Schedul extends Thread{
 						
 						//save the vector with all schedule jobs to harddisk
 						saveScheduleVector();
+						
+						mainGui.getControlStream().getStreamByID(job.getStreamID()).setStop(false);
 					}
 				}
 					

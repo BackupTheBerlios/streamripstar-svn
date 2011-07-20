@@ -205,7 +205,7 @@ public class Thread_UpdateName extends Thread
 			}
 		}
 		if(stream.getStatus())
-			stream.setStop();
+			stream.setStop(false);
 		tablePanel.setSelectedCurrentNameCellAndTitle("",row,false);
 	}
 	
