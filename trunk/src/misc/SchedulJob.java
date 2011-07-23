@@ -281,4 +281,17 @@ public class SchedulJob {
 	public boolean getstatus() {
 		return isRecording;
 	}
+	
+	/**
+	 * changes the status of this job to the other one
+	 * from disable -> enable; enable -> disable
+	 */
+	public void toggleEnableJob()
+	{
+		if(this.enableJob) {
+			enableJob = false;
+		} else {
+			enableJob = true;
+		}
+	}
 }

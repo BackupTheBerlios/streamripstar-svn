@@ -5,11 +5,22 @@ package gui;
 
 import java.awt.*;
 import java.awt.event.*;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.net.URL;
 import java.util.*;
 
 import javax.swing.*;
 import javax.swing.table.*;
+import javax.xml.stream.XMLEventFactory;
+import javax.xml.stream.XMLEventWriter;
+import javax.xml.stream.XMLInputFactory;
+import javax.xml.stream.XMLOutputFactory;
+import javax.xml.stream.XMLStreamConstants;
+import javax.xml.stream.XMLStreamException;
+import javax.xml.stream.XMLStreamReader;
+import javax.xml.stream.events.XMLEvent;
 
 import misc.SchedulJob;
 
@@ -17,6 +28,7 @@ import thread.Thread_Control_Schedul;
 import thread.Thread_KeepTableSchedulUpdated;
 
 
+import control.Control_GetPath;
 import control.Control_Stream;
 import control.SRSOutput;
 
@@ -158,6 +170,8 @@ public class Gui_SchedulManager extends JFrame implements WindowListener {
 		int y = (screenDim.height - Integer.valueOf(getSize().height))/2;
 		setLocation(x, y);
 		setVisible(true);
+		
+		load();	//load saved settings from harddisk
 		
 		fillTableWithSchedulJobs();
 		keepUpdate = new Thread_KeepTableSchedulUpdated(this,controlJob);
@@ -313,6 +327,15 @@ public class Gui_SchedulManager extends JFrame implements WindowListener {
 		}
 	}
 	
+	private void toggleScheduleJob()
+	{
+		if(table.getSelectedRow() >= 0 )
+		{
+			int x = Integer.valueOf(table.getValueAt(table.getSelectedRow(), 0).toString());
+			controlJob.getSchedulJobByID(x).toggleEnableJob();
+		}
+	}
+	
 	/**
 	 * removes all jobs from table and fill new with
 	 * all jobs from the jobs vector
@@ -342,6 +365,147 @@ public class Gui_SchedulManager extends JFrame implements WindowListener {
 		}
 	}
 	
+	/**
+	 * This class save properties from this gui
+	 * into a file
+	 */
+	public void save()
+	{
+		String savePath =  new Control_GetPath().getStreamRipStarPath();
+		XMLOutputFactory outputFactory = XMLOutputFactory.newInstance(); 
+		int[] intOptions = new int[5];
+		
+		try {
+			XMLEventWriter writer = outputFactory.createXMLEventWriter( new FileOutputStream(savePath+"/ScheduleManager.xml" ) );
+			XMLEventFactory eventFactory = XMLEventFactory.newInstance();
+			
+			//save Intgers of the widths of any cell that is shown
+			for(int i=0; i < intOptions.length;i++)
+			{
+				intOptions[i] = table.getColumn(schedulHeader[i+2]).getWidth();
+			}
+			
+			//header for the file
+			XMLEvent header = eventFactory.createStartDocument();
+			XMLEvent startRootSettings = eventFactory.createStartElement( "", "", "Settings" );
+
+			XMLEvent height = eventFactory.createAttribute( "height",  String.valueOf( getSize().height)); 
+			XMLEvent width= eventFactory.createAttribute( "width",  String.valueOf( getSize().width)); 
+			
+			XMLEvent i0 = eventFactory.createAttribute( "i0",  String.valueOf( intOptions[0] ));
+			XMLEvent i1 = eventFactory.createAttribute( "i1",  String.valueOf( intOptions[1] ));
+			XMLEvent i2 = eventFactory.createAttribute( "i2",  String.valueOf( intOptions[2] ));
+			XMLEvent i3 = eventFactory.createAttribute( "i3",  String.valueOf( intOptions[3] ));
+			XMLEvent i4 = eventFactory.createAttribute( "i4",  String.valueOf( intOptions[4] ));
+			
+			XMLEvent endRoot = eventFactory.createEndElement( "", "", "Settings" ); 
+			XMLEvent endDocument = eventFactory.createEndDocument();
+			
+			//finally write into file
+			writer.add( header ); 
+			writer.add( startRootSettings );
+			
+			writer.add( height ); 
+			writer.add( width ); 
+			writer.add( i0 ); 
+			writer.add( i1 ); 
+			writer.add( i2 ); 
+			writer.add( i3 ); 
+			writer.add( i4 ); 
+
+			writer.add( endRoot ); 
+			writer.add( endDocument ); 
+			writer.close();
+
+		} catch (FileNotFoundException e) {
+			SRSOutput.getInstance().logE( "Gui_ScheduleManager: Can't find file ScheduleManager.xml" ); 
+		} catch (XMLStreamException e) {
+			SRSOutput.getInstance().logE( "Gui_ScheduleManager:"+e.getMessage() );
+		} 
+	}
+	
+	/**
+	 * This Method loads the settings the Schedule Manager
+	 * on startup and set it to the window
+	 */
+	public void load()
+	{
+		
+		int[] columnWidths = new int[5];	//the size of of every column in the table
+		int high = 400;
+		int width = 600;
+
+		String loadPath =  new Control_GetPath().getStreamRipStarPath();
+		
+		try
+		{
+			XMLInputFactory factory = XMLInputFactory.newInstance(); 
+			XMLStreamReader parser;
+			parser = factory.createXMLStreamReader( new FileInputStream(loadPath+"/ScheduleManager.xml" ) );
+			while ( parser.hasNext() ) { 
+	 
+				switch ( parser.getEventType() )
+				{ 
+					case XMLStreamConstants.START_DOCUMENT: 
+						SRSOutput.getInstance().log( "Loading file Streambrowser.xml" ); 
+						break; 
+				 
+				    case XMLStreamConstants.END_DOCUMENT: 
+				    	SRSOutput.getInstance().log( "End of read settings " ); 
+				    	parser.close(); 
+				    	break; 
+				 
+				    case XMLStreamConstants.START_ELEMENT: 
+				    	for ( int i = 0; i < parser.getAttributeCount(); i++ ) {
+				    		if(parser.getAttributeLocalName( i ).equals("")) {
+				    			
+				    		} else if (parser.getAttributeLocalName( i ).equals("height")) {
+				    			high = Integer.valueOf(parser.getAttributeValue(i));
+				    		} else if (parser.getAttributeLocalName( i ).equals("width")) {
+				    			width = Integer.valueOf(parser.getAttributeValue(i));
+				    		} else if (parser.getAttributeLocalName( i ).equals("i0")) {
+				    			columnWidths[0] = Integer.valueOf(parser.getAttributeValue(i));
+				    		} else if (parser.getAttributeLocalName( i ).equals("i1")) {
+				    			columnWidths[1] = Integer.valueOf(parser.getAttributeValue(i));
+				    		} else if (parser.getAttributeLocalName( i ).equals("i2")) {
+				    			columnWidths[2] = Integer.valueOf(parser.getAttributeValue(i));
+				    		} else if (parser.getAttributeLocalName( i ).equals("i3")) {
+				    			columnWidths[3] = Integer.valueOf(parser.getAttributeValue(i));
+				    		} else if (parser.getAttributeLocalName( i ).equals("i4")) {
+				    			columnWidths[4] = Integer.valueOf(parser.getAttributeValue(i));
+				    		}
+				    	}
+				    	break; 
+				 
+				    default: 
+				    	break; 
+				  }
+				parser.next(); 
+			}
+			
+			//finally set the size of the window
+			setSize(width, high);
+			
+			//and the size of the columns
+			try {
+				for(int i=0; i<columnWidths.length; i++)
+				{
+					table.getColumn(schedulHeader[i+2]).setPreferredWidth(columnWidths[i]);
+				}
+			} catch (IllegalArgumentException e) {
+				SRSOutput.getInstance().logE("ScheduleManager: Error while setting the columns width:\n"+e.getMessage());
+			}
+			
+		} catch (FileNotFoundException e) {
+			SRSOutput.getInstance().logE("No configuartion file found: ScheduleManager.xml");
+		} catch (XMLStreamException e) {
+			if(e.getMessage().startsWith("Message: Premature end of file.")) {
+				SRSOutput.getInstance().logE("ScheduleManager: XML file had an unexpected end");
+			} else {
+				SRSOutput.getInstance().logE("ScheduleManager: Error while reading the Schedule Manager settings");
+			}
+		}
+	}
 	
 	/**
 	 * removes a stream from table, vector and from the xml-file
@@ -403,11 +567,21 @@ public class Gui_SchedulManager extends JFrame implements WindowListener {
 				if(e.getButton() == MouseEvent.BUTTON1)
 				{
 					int row = table.getSelectedRow();
+					int column = table.getSelectedColumn();
 					
 					//only open the dialog, if a row is selected
 					if (row > -1)
 					{
-						editSchedulJob();
+						if(column == 2)
+						{
+							toggleScheduleJob();
+							Gui_SchedulManager.this.updateTable();
+						}
+						
+						else
+						{
+							editSchedulJob();
+						}
 					}
 				}
 			}
@@ -445,6 +619,7 @@ public class Gui_SchedulManager extends JFrame implements WindowListener {
 	{
 		public void actionPerformed(ActionEvent e)
 		{
+			save();
 			Gui_SchedulManager.this.dispose();
 		}
 	}

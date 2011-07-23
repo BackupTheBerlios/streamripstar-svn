@@ -234,3 +234,9 @@
  - fix: Show a " before every song in the Stream Browser
  - fix: some translation issues
  - fix: doesn't start a daily/weekly schedule job when updating it
+     
+  ----------------------------
+ 
+ 0.6 Beta3 -> 0.6 Beta4
+ -add: can now remember the size of the window and the columns in the schedule manager
+ -add: in schedule manager: double click on the enable column toggle its status (from enable to disable, and vice versa)
